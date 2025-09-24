@@ -1,0 +1,28 @@
+﻿@using Danik.WebUI.Code.Domain
+@model Danik.WebUI.Code.Domain.Order
+@{
+    ViewData["Title"] = "Home page";
+    int i = 0;
+}
+<style>
+    
+</style>
+
+@using (Html.BeginForm("Step5", "Wiz", FormMethod.Post))
+{
+    <h4>Детали заказа</h4>
+    <div class="row">
+        <input type="hidden" name="orderId" class="form-control" value="@Model.Id" />
+
+            <div class="mt-4">
+                <input type="submit" class="btn btn-primary" value="Дальше"/>
+            </div>
+    </div>
+    
+}
+@section Scripts
+{
+    <script>
+
+    </script>
+}
