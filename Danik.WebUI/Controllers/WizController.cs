@@ -79,7 +79,7 @@ public class WizController : Controller
         if (order == null) throw new Exception("Order not found ");
         order.PersonInfos = info;
         Registry.Current.Orders.Save(order);
-        return RedirectToAction("Step4",new {orderId});
+        return RedirectToAction("Step5",new {orderId});
     }
 
     // -------------- STEP 4 ----------------
@@ -89,4 +89,35 @@ public class WizController : Controller
         if (order == null) throw new Exception("Order not found ");
         return View();
     }
+    // -------------- STEP 5 ----------------
+    public IActionResult Step5(Guid orderId)
+    {
+        var order = Registry.Current.Orders.Find(orderId);
+        if (order == null) throw new Exception("Order not found ");
+        return View();
+    }
+    public IActionResult Step5(Guid orderId, Order data)
+    {
+        var order = Registry.Current.Orders.Find(orderId);
+        if (order == null) throw new Exception("Order not found ");
+        
+        order.Phone = data.Phone;
+        order.Email = data.Email;
+        order.ContactName = data.ContactName;
+        order.Comment = data.Comment;
+        
+        order.Options = data.Options;
+        
+        Registry.Current.Orders.Save(order);
+        return RedirectToAction("StepConfirm", new { orderId });
+    }
+
+    // -------------- STEP CONFIRM ----------------
+    public IActionResult StepConfirm(Guid orderId)
+    {
+        var order = Registry.Current.Orders.Find(orderId);
+        if (order == null) throw new Exception("Order not found ");
+        return View();
+    }
+
 }
