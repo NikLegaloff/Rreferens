@@ -24,6 +24,12 @@ public class Order : DomainObject
 
 public class PersonInfo
 {
+    public Guid ImageId{ get; set; }
+    public string F{ get; set; }
+    public string I{ get; set; }
+    public string O{ get; set; }
+    public string Birth{ get; set; }
+    public string Dead{ get; set; }
 
 }
 public class OrderOptions

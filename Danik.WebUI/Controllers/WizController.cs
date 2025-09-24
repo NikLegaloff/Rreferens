@@ -68,7 +68,8 @@ public class WizController : Controller
     {
         var order = Registry.Current.Orders.Find(orderId);
         if (order == null) throw new Exception("Order not found ");
-        return View();
+        if (order.PortraitImages == null) return RedirectToAction("Step4", new { orderId });
+        return View(order);
     }
 
     [HttpPost]
