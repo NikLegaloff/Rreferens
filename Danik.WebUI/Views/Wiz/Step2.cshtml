@@ -1,0 +1,312 @@
+﻿@model WizStep2
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<style>
+    :root{--handle-size:15px}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:16px;background:#f7f7f7;color:#111}
+    .wrap{max-width:900px;margin:0 auto}
+    .stage{position:relative;display:inline-block;touch-action:none;user-select:none;border-radius:6px;overflow:hidden;background:#222}
+    img.img-to-crop{display:block;max-width:75%;height:auto;width:100%;-webkit-user-drag:none}
+
+
+    /* selection box */
+    .sel{
+        position:absolute;
+        box-sizing:border-box;
+        border:3px solid rgba(255,255,255,0.85);
+        background-image: url('/img/Mask2.png');
+        background-size: cover;
+        border-radius:8px;
+        cursor:move;
+        touch-action:none;
+    }
+    .sel .shadow{position:absolute;inset:0;pointer-events:none}
+
+
+    /* handles (corners). We only need corners to preserve aspect ratio easily */
+    .handle{position:absolute;width:var(--handle-size);height:var(--handle-size);background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.3);transform:translate(-50%,-50%);touch-action:none}
+    .handle.nw{left:0;top:0;cursor:nwse-resize}
+    .handle.ne{right:0;top:0;cursor:nesw-resize}
+    .handle.sw{left:0;bottom:0;cursor:nesw-resize}
+    .handle.se{right:0;bottom:0;cursor:nwse-resize}
+
+
+    /* controls */
+    .controls{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    
+
+
+    /* preview */
+    .preview{margin-top:12px}
+    @@media (max-width:600px){:root{--handle-size:22px}}
+</style>
+
+<div class="wrap">
+    <h2>Выделение портрета</h2>
+    <p>Перетащите рамку чтобы переместить, тащите за углы чтобы изменить размер.</p>
+
+    <div id="stage" class="stage" style="margin: 0 auto;">
+        <img id="photo" class="img-to-crop" src="@Model.ImageUrl" alt="photo" crossorigin="anonymous">
+    </div>
+
+
+    <div class="controls">
+        <button class="btn btn-secondary" id="btn-reset">Сбросить</button>
+        <button class="btn btn-secondary" id="btn-rot-left">⟲ Повернуть -90°</button>
+        <button class="btn btn-secondary" id="btn-rot-right">⟳ Повернуть +90°</button>
+        <a class="btn btn-primary" id="btn-crop" href="/Wiz/Step3/">Дальше</a>
+        
+        <!--<button class="btn btn-primary" id="btn-crop">Дальше</button>-->
+    </div>
+
+
+    <div class="preview" id="previewArea"></div>
+</div>
+
+@section Scripts
+{
+    <script>
+        (function(){
+          const img = document.getElementById('photo');
+          const stage = document.getElementById('stage');
+          const btnCrop = document.getElementById('btn-crop');
+          const btnReset = document.getElementById('btn-reset');
+          const previewArea = document.getElementById('previewArea');
+          const btnRotLeft = document.getElementById('btn-rot-left');
+          const btnRotRight = document.getElementById('btn-rot-right');
+
+          // default aspect ratio (height / width). Here 3:4 portrait (0.75)
+          let aspect = 1.33;
+
+          // rotation state
+          let rotation = 0;
+
+
+          // selection element state
+          let sel, handles = {}, state = {mode:null, startX:0, startY:0, startBox:null};
+
+          // create selection once image loaded & sized
+          function createSelection(){
+            if(sel) sel.remove();
+            sel = document.createElement('div');
+            sel.className = 'sel';
+            sel.style.left = '10%';
+            sel.style.top = '10%';
+            sel.style.width = '50%';
+            // compute height from width keeping aspect
+            requestAnimationFrame(()=>{
+              const w = sel.getBoundingClientRect().width;
+              const imgRect = img.getBoundingClientRect();
+              const heightPx = Math.min(imgRect.height, w * aspect * (imgRect.width / imgRect.width));
+              sel.style.height = (heightPx) + 'px';
+            });
+
+            // add 4 corner handles
+            ['nw','ne','sw','se'].forEach(cls=>{
+              const h = document.createElement('div');
+              h.className = 'handle '+cls;
+              h.dataset.dir = cls;
+              sel.appendChild(h);
+              handles[cls] = h;
+            });
+
+            stage.appendChild(sel);
+
+            attachPointerHandlers();
+          }
+
+          function fitSelectionToCenter(){
+            if(!sel) return;
+            const r = img.getBoundingClientRect();
+            // use 60% of smaller dimension (width) to create a centered box
+            const baseW = r.width * 0.6;
+            let w = baseW; let h = w * aspect;
+            if(h > r.height){ h = r.height * 0.8; w = h / aspect; }
+            sel.style.width = w + 'px';
+            sel.style.height = h + 'px';
+            sel.style.left = (r.left - stage.getBoundingClientRect().left + (r.width - w)/2) + 'px';
+            sel.style.top = (r.top - stage.getBoundingClientRect().top + (r.height - h)/2) + 'px';
+          }
+
+          function attachPointerHandlers(){
+            // pointer events will handle touch & mouse
+            // move
+            sel.addEventListener('pointerdown', e=>{
+              // if target is handle -> resize
+              const dir = e.target.dataset.dir;
+              if(dir){
+                state.mode = 'resize';
+                state.dir = dir;
+              } else {
+                state.mode = 'move';
+              }
+              state.startX = e.clientX;
+              state.startY = e.clientY;
+              state.startBox = sel.getBoundingClientRect();
+              // capture pointer to continue receiving events outside element
+              (e.target).setPointerCapture?.(e.pointerId);
+              document.addEventListener('pointermove', onPointerMove);
+              document.addEventListener('pointerup', onPointerUp, {once:true});
+            });
+          }
+
+          function onPointerMove(e){
+            if(!state.mode || !state.startBox) return;
+            const dx = e.clientX - state.startX;
+            const dy = e.clientY - state.startY;
+            const imgRect = img.getBoundingClientRect();
+            const stageRect = stage.getBoundingClientRect();
+
+            if(state.mode === 'move'){
+              let newLeft = state.startBox.left + dx - stageRect.left;
+              let newTop  = state.startBox.top + dy - stageRect.top;
+              // clamp inside image
+              newLeft = Math.max(imgRect.left - stageRect.left, Math.min(newLeft, imgRect.right - stageRect.left - state.startBox.width));
+              newTop  = Math.max(imgRect.top - stageRect.top, Math.min(newTop, imgRect.bottom - stageRect.top - state.startBox.height));
+              sel.style.left = newLeft + 'px';
+              sel.style.top  = newTop  + 'px';
+            } else if(state.mode === 'resize'){
+              // resize from corner while preserving aspect ratio
+              let sx = state.startBox.width;
+              let sy = state.startBox.height;
+              let cx = state.startBox.left, cy = state.startBox.top;
+
+              // depending on corner, compute sign
+              // we'll compute a delta based on pointer movement projected onto the corner direction
+              let signX = (state.dir.includes('e')) ? 1 : -1;
+              let signY = (state.dir.includes('s')) ? 1 : -1;
+
+              // prefer horizontal delta to compute new width, but use whichever is larger in magnitude so user intent is honoured
+              let rawDeltaW = dx * signX;
+              let rawDeltaH = dy * signY;
+              // compute proposed width considering aspect ratio: height = width * aspect
+              // choose delta based on larger normalized change
+              const propW1 = sx + rawDeltaW;
+              const propH1 = propW1 * aspect;
+              const propH2 = sy + rawDeltaH;
+              const propW2 = propH2 / aspect;
+
+              // pick which delta to use by comparing how far from current they'd go
+              let newW, newH;
+              if(Math.abs(propW1 - sx) > Math.abs(propW2 - sx)){
+                newW = Math.max(20, propW1);
+                newH = newW * aspect;
+              } else {
+                newH = Math.max(20, propH2);
+                newW = newH / aspect;
+              }
+
+              // compute new left/top depending on corner
+              let newLeft = state.startBox.left + (signX < 0 ? (sx - newW) : 0) - stageRect.left;
+              let newTop  = state.startBox.top  + (signY < 0 ? (sy - newH) : 0) - stageRect.top;
+
+              // clamp to image bounds
+              if(newLeft < imgRect.left - stageRect.left){
+                // shift and reduce width
+                const overflow = (imgRect.left - stageRect.left) - newLeft;
+                newLeft += overflow;
+                newW -= overflow * (signX < 0 ? -1 : 1);
+                newH = newW * aspect;
+              }
+              if(newTop < imgRect.top - stageRect.top){
+                const overflow = (imgRect.top - stageRect.top) - newTop;
+                newTop += overflow;
+                newH -= overflow * (signY < 0 ? -1 : 1);
+                newW = newH / aspect;
+              }
+
+              // right/bottom clamp
+              if(newLeft + newW > imgRect.right - stageRect.left){
+                const overflow = (newLeft + newW) - (imgRect.right - stageRect.left);
+                newW -= overflow;
+                newH = newW * aspect;
+              }
+              if(newTop + newH > imgRect.bottom - stageRect.top){
+                const overflow = (newTop + newH) - (imgRect.bottom - stageRect.top);
+                newH -= overflow;
+                newW = newH / aspect;
+              }
+
+              // enforce minimum
+              const minW = 40;
+              if(newW < minW){ newW = minW; newH = newW * aspect; }
+
+              sel.style.width = newW + 'px';
+              sel.style.height = newH + 'px';
+              sel.style.left = newLeft + 'px';
+              sel.style.top = newTop + 'px';
+            }
+          }
+
+          function onPointerUp(e){
+            state.mode = null; state.startBox = null;
+            document.removeEventListener('pointermove', onPointerMove);
+          }
+
+          // crop to canvas and show preview
+          btnCrop.addEventListener('click', ()=>{
+              const imgRect = img.getBoundingClientRect();
+              const selRect = sel.getBoundingClientRect();
+              const scaleX = img.naturalWidth / imgRect.width;
+              const scaleY = img.naturalHeight / imgRect.height;
+              const sx = (selRect.left - imgRect.left) * scaleX;
+              const sy = (selRect.top  - imgRect.top)  * scaleY;
+              const sw = selRect.width * scaleX;
+              const sh = selRect.height * scaleY;
+
+              const canvas = document.createElement('canvas');
+              canvas.width = Math.round(sw);
+              canvas.height = Math.round(sh);
+              const ctx = canvas.getContext('2d');
+
+              ctx.save();
+              ctx.translate(canvas.width/2, canvas.height/2);
+              ctx.rotate(rotation * Math.PI/180);
+              ctx.translate(-canvas.width/2, -canvas.height/2);
+              ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+              ctx.restore();
+
+              previewArea.innerHTML = '';
+              const outImg = document.createElement('img');
+              outImg.style.maxWidth = '100%';
+              outImg.src = canvas.toDataURL('image/png');
+              previewArea.appendChild(outImg);
+              const a = document.createElement('a');
+              a.href = outImg.src; a.download = 'portrait.png';
+              a.textContent = 'Скачать кадр';
+              a.style.display = 'inline-block'; a.style.marginLeft = '12px';
+              previewArea.appendChild(a);
+          });
+
+          btnReset.addEventListener('click', ()=>{
+            fitSelectionToCenter();
+          });
+
+          btnRotLeft.addEventListener('click', ()=>{
+              rotation = (rotation - 90 ) % 360;
+              img.style.transform = `rotate(${rotation}deg)`;
+          });
+
+          btnRotRight.addEventListener('click', ()=>{
+              rotation = (rotation + 90) % 360;
+              img.style.transform = `rotate(${rotation}deg)`;
+          });
+
+          // make sure selection is created after image layout
+          function init(){
+            createSelection();
+            fitSelectionToCenter();
+          }
+
+          // re-fit on load and on window resize (responsive)
+          img.addEventListener('load', ()=>{ init(); });
+          window.addEventListener('resize', ()=>{ fitSelectionToCenter(); });
+
+          // if image is cached and already complete
+          if(img.complete){ setTimeout(()=>init(),10); }
+
+        })();
+    </script>
+}
