@@ -14,7 +14,10 @@
     <div class="row">
         <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
             <h4>Заказ #@Model.Number</h4>
+            <p>Ориентация: @(Model.Options.IsVert ? "вертикальная":"горизонтальная")</p>
+            <p>Размер: @Model.Options.Size</p>
             
+
             @foreach (var p in Model.PersonInfos)
             {
                 var img = Registry.Current.Images.Find(p.ImageId);
@@ -26,6 +29,16 @@
                 </div>
             }
             
+            @if(Model.ExampleImages!=null) 
+                foreach (var imgId in Model.ExampleImages)
+            {
+                var img = Registry.Current.Images.Find(imgId);
+                <div class="mt-2 text-center">
+                    <a href="@img.URL" target="_blank"><img src="@img.TMB"/></a>
+                </div>
+            }
+            
+
             <p>Контактное лицо: @Model.ContactName</p>
             <p>Электропочта: @Model.Email</p>
             <p>Телефон: @Model.Phone</p>

@@ -17,19 +17,22 @@
             @foreach (var iid in Model.PortraitImages)
             {
                 var img = Registry.Current.Images.Find(iid);
-                var p = Model.PersonInfos?.FirstOrDefault(p => p.ImageId == iid) ?? new PersonInfo();
+            var p = Model.PersonInfos?.FirstOrDefault(p => p.ImageId == iid) ?? new PersonInfo { Dead = DateTime.Now.Year.ToString(), Birth = (DateTime.Now.Year-80).ToString() };
                 <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
                     <input type="hidden" name="info[@i].ImageId" class="form-control" value="@iid" />
                     <div class="text-center"><img src="@img.TMB"/></div>
-                    <div class="mt-2">Фамилия<input type="text" name="info[@i].F" class="form-control" value="@p.F"/></div>
-                    <div class="mt-1">Имя<input type="text" name="info[@i].I" class="form-control" value="@p.I"/></div>
+                <div class="mt-2">Фамилия<input required type="text" name="info[@i].F" class="form-control" value="@p.F" /></div>
+                <div class="mt-1">Имя<input required type="text" name="info[@i].I" class="form-control" value="@p.I" /></div>
                     <div class="mt-1">Отчество<input type="text" name="info[@i].O" class="form-control" value="@p.O"/></div>
                     <div class="mt-1">Годы жизни
                         <div class="row">
-                            <div class="col"><input type="text" name="info[@i].Birth" class="form-control" value="@p.Birth"/></div>
-                            <div class="col"><input type="text" name="info[@i].Dead" class="form-control" value="@p.Dead"/></div>
+                            <div class="col"><input type="number" required name="info[@i].Birth" class="form-control" value="@p.Birth"/></div>
+                        <div class="col"><input type="number" required name="info[@i].Dead" class="form-control" value="@p.Dead" /></div>
                         </div>
                     </div>
+                <div class="mt-1">Эпитафия<textarea name="info[@i].Epitaph" rows="3" class="form-control">@p.Epitaph</textarea></div>
+                <div class="mt-1">Примечание к фото<textarea rows="5" name="info[@i].Comment" class="form-control">@p.Comment</textarea></div>
+
                 </div>
                 i++;
             }

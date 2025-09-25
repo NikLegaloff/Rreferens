@@ -107,9 +107,19 @@ public class WizController : Controller
         order.Email = data.Email;
         order.ContactName = data.ContactName;
         order.Comment = data.Comment;
-        
         order.Options = data.Options;
-        
+
+        var images = new List<Guid>();
+        foreach (var file in Request.Form.Files)
+        {
+            using var ms = new MemoryStream();
+            file.CopyTo(ms);
+            images.Add(Image.Import(ms.ToArray(), file.FileName));
+        }
+
+        if(images.Count>0) order.ExampleImages = images.ToArray();
+
+
         Registry.Current.Orders.Save(order);
         return RedirectToAction("StepConfirm", new { orderId });
     }

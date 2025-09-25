@@ -1,4 +1,5 @@
 ﻿using Danik.WebUI.Code.ORM;
+using Newtonsoft.Json;
 
 namespace Danik.WebUI.Code.Domain;
 
@@ -28,8 +29,10 @@ public class PersonInfo
     public string F{ get; set; }
     public string I{ get; set; }
     public string O{ get; set; }
+    public string Comment{ get; set; }
     public string Birth{ get; set; }
     public string Dead{ get; set; }
+    public string Epitaph { get; set; }
 
 }
 public class OrderOptions
@@ -38,5 +41,18 @@ public class OrderOptions
     public int Size { get; set; }
     public string? Depth { get; set; }
     public string? OwnSize { get; set; }
+
+    [JsonIgnore]
+    public string SizeStr
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(OwnSize)) return OwnSize;
+            if (Size == 40) return "40x80";
+            if (Size == 50) return "50x100";
+            if (Size == 60) return "60x120";
+            return Size.ToString();
+        }
+    }
 
 }
