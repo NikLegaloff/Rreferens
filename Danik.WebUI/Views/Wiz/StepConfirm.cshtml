@@ -13,10 +13,27 @@
     <h4>Проверка и подтверждение заказа</h4>
     <div class="row">
         <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
-
+            <h4>Заказ #@Model.Number</h4>
+            
+            @foreach (var p in Model.PersonInfos)
+            {
+                var img = Registry.Current.Images.Find(p.ImageId);
+                <div class="mt-2 text-center">
+                    <div><img src="@img.TMB"/></div>
+                    <div class="mt-1 fw-bold">@p.F</div>
+                    <div class="">@p.I @p.O</div>
+                    <div class="mt-1">@p.Birth - @p.Dead</div>
+                </div>
+            }
+            
+            <p>Контактное лицо: @Model.ContactName</p>
+            <p>Электропочта: @Model.Email</p>
+            <p>Телефон: @Model.Phone</p>
+            <p>Комментарий<br/>@Model.Comment</p>
             <input type="hidden" name="orderId" class="form-control" value="@Model.Id"/>
 
             <div class="mt-4">
+                <a class="btn btn-primary" href="/Wiz/Step5/?orderid=@Model.Id">Назад</a>
                 <input type="submit" class="btn btn-primary" value="Оформляем"/>
             </div>
         </div>
