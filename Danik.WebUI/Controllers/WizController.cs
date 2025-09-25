@@ -68,7 +68,7 @@ public class WizController : Controller
     {
         var order = Registry.Current.Orders.Find(orderId);
         if (order == null) throw new Exception("Order not found ");
-        if (order.PortraitImages == null) return RedirectToAction("Step4", new { orderId });
+        if (order.PortraitImages == null) return RedirectToAction("Step1", new { orderId });
         return View(order);
     }
 
@@ -90,12 +90,14 @@ public class WizController : Controller
         return View();
     }
     // -------------- STEP 5 ----------------
+    [HttpGet]
     public IActionResult Step5(Guid orderId)
     {
         var order = Registry.Current.Orders.Find(orderId);
         if (order == null) throw new Exception("Order not found ");
-        return View();
+        return View(order);
     }
+    [HttpPost]
     public IActionResult Step5(Guid orderId, Order data)
     {
         var order = Registry.Current.Orders.Find(orderId);
@@ -117,7 +119,7 @@ public class WizController : Controller
     {
         var order = Registry.Current.Orders.Find(orderId);
         if (order == null) throw new Exception("Order not found ");
-        return View();
+        return View(order);
     }
 
 }

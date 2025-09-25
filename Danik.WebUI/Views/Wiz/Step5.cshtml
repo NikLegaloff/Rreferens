@@ -12,11 +12,19 @@
 {
     <h4>Детали заказа</h4>
     <div class="row">
-        <input type="hidden" name="orderId" class="form-control" value="@Model.Id" />
+    <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
+        <input type="hidden" name="orderId" class="form-control" value="@Model.Id"/>
 
-            <div class="mt-4">
-                <input type="submit" class="btn btn-primary" value="Дальше"/>
-            </div>
+        <div class="mt-1">Ваше имя<input type="text" required class="form-control" name="data.ContactName" value="@Model.ContactName" /></div>
+        <div class="mt-1">Телефон<input type="text" required class="form-control" name="data.Phone" value="@Model.Phone" /></div>
+        <div class="mt-1">Электропочта<input type="text" class="form-control" name="data.Email" value="@Model.Email" /></div>
+        <div class="mt-1">Коментарий к заказу<textarea type="text" class="form-control" style="height: 6rem" name="data.Comment">@Model.Comment</textarea></div>
+
+        <div class="mt-4">
+            <a class="btn btn-primary" href="/Wiz/Step3/?orderid=@Model.Id">Назад</a>
+            <input type="submit" class="btn btn-primary" value="Дальше"/>
+        </div>
+    </div>
     </div>
     
 }

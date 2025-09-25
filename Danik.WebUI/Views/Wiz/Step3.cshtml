@@ -19,7 +19,7 @@
                 var img = Registry.Current.Images.Find(iid);
                 var p = Model.PersonInfos?.FirstOrDefault(p => p.ImageId == iid) ?? new PersonInfo();
                 <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
-                    <input type="hidden" name="info[@i].ImageId" class="form-control" value="@p.ImageId" />
+                    <input type="hidden" name="info[@i].ImageId" class="form-control" value="@iid" />
                     <div class="text-center"><img src="@img.TMB"/></div>
                     <div class="mt-2">Фамилия<input type="text" name="info[@i].F" class="form-control" value="@p.F"/></div>
                     <div class="mt-1">Имя<input type="text" name="info[@i].I" class="form-control" value="@p.I"/></div>
@@ -35,6 +35,7 @@
             }
 
             <div class="mt-4">
+                <a class="btn btn-primary" href="/Wiz/Step1/">Назад</a>
                 <input type="submit" class="btn btn-primary" value="Дальше"/>
             </div>
     </div>
