@@ -59,13 +59,13 @@ public class DomainTable<T> where T : DomainObject
     {
         subj.Id = Guid.NewGuid();
         _identityMap[subj.Id] = subj;
-        File.WriteAllText(BasePath + subj.Id, subj.ToJsonMin());
+        File.WriteAllText(BasePath + subj.Id, subj.ToJsonMax());
     }
 
 
     private void Update(T subj)
     {
-        File.WriteAllText(BasePath + subj.Id, subj.ToJsonMin());
+        File.WriteAllText(BasePath + subj.Id, subj.ToJsonMax());
     }
 
     public void Delete(Guid id)

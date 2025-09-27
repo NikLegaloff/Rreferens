@@ -7,7 +7,31 @@
 
 @using (Html.BeginForm("Step1", "Wiz", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    <h4>1. Ориентация</h4>
+
+    <h4 class="">1. Число усопших</h4>
+
+    <div class="row mt-3">
+        <div class="col-auto text-center">
+            <label class="px-4">
+                <input name="count" checked type="radio" onchange="ColChange(1)"/> <i class="fa fa-user fs-3"></i>
+                
+            </label>
+        </div>
+        <div class="col-auto  text-center">
+            <label class="px-4">
+                <input name="count" type="radio" onchange="ColChange(2)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user  fs-3"></i>
+                
+            </label>
+        </div>
+        <div class="col-auto text-center">
+            <label class="px-4">
+                <input name="count" type="radio" onchange="ColChange(3)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i>
+                
+            </label>
+        </div>
+    </div>
+
+    <h4 class="mt-3">2. Ориентация</h4>
 
     <table class="table table-borderless w-auto">
         <tr>
@@ -20,7 +44,7 @@
         </tr>
     </table>
 
-    <h4 class="mt-3">2. Размер</h4>
+    <h4 class="mt-3">3. Размер</h4>
 
     <div class="row">
         <div class="col-md-2">
@@ -32,20 +56,9 @@
         </div>
     </div>
 
-    <h4 class="mt-3">3. Число усопших</h4>
 
-    <div class="row">
-        <div class="col-md-2">
-            <select class="form-select" name="count" id="ddlCount" onchange="ColChange()">
-                <!option value="1">Один</!option>
-                <!option value="2">Двое</!option>
-                <!option disabled="disabled" value="3">Трое</!option>
-                <!option disabled="disabled" value="4">Четверо</!option>
-            </select>
-        </div>
-    </div>
     
-    <h4 class="mt-3">4. Фото усопших</h4>
+    <h4 class="mt-3">4. Фото</h4>
 
     <div class="row">
         <div class="col-md-3" id="f1">
@@ -54,7 +67,6 @@
         </div>
         <div class="col-md-3" required style="display: none;" id="f2">Фото №2<input type="file" name="file" class="form-control" /></div>
         <div class="col-md-3" required style="display: none;" id="f3">Фото №3<input type="file" name="file" class="form-control" /></div>
-        <div class="col-md-3" required style="display: none;" id="f4">Фото №4<input type="file" name="file" class="form-control" /></div>
     </div>
 
     <div class="mt-4">
@@ -66,23 +78,17 @@
     <script>
         function SetVert(isVert) {
             var s = document.getElementById('ddlSize');
-            var c = document.getElementById('ddlCount');
-            console.log(s.options[0].text );
+
+
             s.options[0].text = isVert ? "40 x 80" : "80 x 40";
             s.options[1].text = isVert ? "50 x 100" : "100 x 50";
             s.options[2].text = isVert ? "60 x 120" : "120 x 60";
-            
-            c.options[2].disabled = isVert;
-            c.options[3].disabled = isVert;
-            if (isVert && c.selectedIndex>1) {
-                c.options[0].selected=true;
-                ColChange();
-            }
+
+
         }
 
-        function ColChange() {
-            var count = $('#ddlCount').val() * 1;
-            for (var i = 1; i < 5; i++) {
+        function ColChange(count) {
+            for (var i = 1; i < 4; i++) {
                 if (i <= count) {
                     $('#f' + i).show();
                 } else {

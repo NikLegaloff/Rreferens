@@ -9,6 +9,7 @@ public static class Helper
 {
 
     public static string ToJsonMin(this object subj) => JsonConvert.SerializeObject(subj, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore });
+    public static string ToJsonMax(this object subj) => JsonConvert.SerializeObject(subj, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Include });
     public static Guid ToGuid(this string input) => new Guid(input);
     public static Guid MD5(this string input)
     {
