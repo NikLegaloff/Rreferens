@@ -3,10 +3,24 @@ using Newtonsoft.Json;
 
 namespace Danik.WebUI.Code.Domain;
 
+public enum Type
+{
+    Вертикальный, Горизонтальный, Сплит
+}
+public enum OrderStatus
+{
+    Создаётся,
+    Создан,
+    В_рвботе,
+    Завершён,
+}
+
 public class Order : DomainObject
 {
+    public OrderStatus Status { get; set; }=OrderStatus.Создаётся;
     public DateTime Date{ get; set; }
     public required string Number{ get; set; }
+    public required Type Type{ get; set; }
     public required int Persons{ get; set; }
     public string? Phone{ get; set; }
     public string? Email{ get; set; }
@@ -37,7 +51,6 @@ public class PersonInfo
 }
 public class OrderOptions
 {
-    public bool IsVert { get; set; }
     public int Size { get; set; }
     public string? Depth { get; set; }
     public string? OwnSize { get; set; }

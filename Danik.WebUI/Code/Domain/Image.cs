@@ -7,21 +7,26 @@ namespace Danik.WebUI.Code.Domain;
 
 public class Image : DomainObject
 {
+    public static string GetURL(Guid id) => $"/Images/GetImage/{id}";
+    public static string GetTmb(Guid id) => $"/Images/GetTmb/{id}";
+
     public required DateTime Date { get; set; }
     public required string Name { get; set; }
-    
-    [JsonIgnore]
-    public string URL => $"/Images/GetImage/{Id}";
-    [JsonIgnore]
-    public string TMB => $"/Images/GetTmb/{Id}";
-    
-    [JsonIgnore]
-    public string Path => $"{Env.Current.DataBasePath}Images\\{Id}." + Ext;
+    public int Size { get; set; }
 
+    [JsonIgnore]
+    public string URL => GetURL(Id);
+    [JsonIgnore]
+    public string TMB => GetTmb(Id);
+    
+    [JsonIgnore]
+    public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
+
+    [JsonIgnore]
     public string Ext => Name.Contains(".") ? Name.Split('.').Last():"jpg";
 
     [JsonIgnore]
-    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id}_tmb.jpg";
+    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
 
     public void SaveImageData(byte[] data)
     {
@@ -32,7 +37,7 @@ public class Image : DomainObject
 
     public static Guid Import(byte[] data, string name)
     {
-        var img = new Image() { Date = DateTime.Now, Name = name };
+        var img = new Image() { Date = DateTime.Now, Name = name, Size=data.Length };
         Registry.Current.Images.Save(img);
         img.SaveImageData(data);
 
@@ -43,6 +48,7 @@ public class Image : DomainObject
         })).SaveAsJpeg(img.TmbPath);
         return img.Id;
     }
+
 
     public override void OnDelete()
     {

@@ -10,11 +10,21 @@
 
 @using (Html.BeginForm("Step5", "Wiz", FormMethod.Post))
 {
-    <h4>Проверка и подтверждение заказа</h4>
+    if(Model.Status==OrderStatus.Создаётся){
+        <h4>Проверка и подтверждение заказа</h4>
+    }
+    else
+    {
+        <h4 class="text-success">Заказ подтверждён</h4>
+        <div class="alert alert-success">
+            В ближайшее время наши операторы свяжутся свами по номеру @Model.Phone и передадут ваш заказ в работу.
+            Исполнение заказа обычно составляет 2-3 рабочих дня. 
+        </div>
+    }
     <div class="row">
         <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
             <h4>Заказ #@Model.Number</h4>
-            <p>Ориентация: @(Model.Options.IsVert ? "вертикальная":"горизонтальная")</p>
+            <p>Ориентация: @(Model.Type)</p>
             <p>Размер: @Model.Options.Size</p>
             
 
@@ -43,11 +53,12 @@
             <p>Электропочта: @Model.Email</p>
             <p>Телефон: @Model.Phone</p>
             <p>Комментарий<br/>@Model.Comment</p>
-            <input type="hidden" name="orderId" class="form-control" value="@Model.Id"/>
+            <input type="hidden" name="id" class="form-control" value="@Model.Id"/>
 
             <div class="mt-4">
-                <a class="btn btn-primary" href="/Wiz/Step5/?orderid=@Model.Id">Назад</a>
-                <input type="submit" class="btn btn-primary" value="Оформляем"/>
+                <a class="btn btn-secondary" href="/Wiz/Step5/Model.Id">Назад</a>
+                <a class="btn btn-primary" href="/Wiz/DoConfirm/@Model.Id">Всё верно, подтверждаю заказ</a>
+                
             </div>
         </div>
     </div>
