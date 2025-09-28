@@ -15,7 +15,7 @@ public class WizController : AppController
         return View(order);
     }
     [HttpPost]
-    public IActionResult Step1(Guid id, Type type,int count, int size)
+    public IActionResult Step1(Guid id, Type type,int count, int ddlSize)
     {
         Order order;
         if(id==Guid.Empty)
@@ -27,13 +27,14 @@ public class WizController : AppController
                 Status = OrderStatus.Создаётся,
                 Options =
                 {
-                    Size = size
+                    Size = ddlSize
                 },
             };
         else
-        
             order = Registry.Current.Orders.Find(id);
-        
+        order.Type = type;
+        order.Persons = count;
+        order.Options.Size = ddlSize;
 
         if (Request.Form.Files.Count > 0)
         {

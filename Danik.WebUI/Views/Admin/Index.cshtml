@@ -20,7 +20,7 @@
     {
         <tr>
             <td>
-                <div>№@order.Number</div>
+                <b>№@order.Number</b>
                 <div>@order.Date.ToString("dd.MM.yyyy HH:mm")</div>
             </td>
             <td>@order.Status</td>
@@ -33,6 +33,7 @@
                 @order.Email
             </td>
             <td>
+            <a  class="btn btn-primary" href="/Admin/OrderView/@order.Id">Посмотреть</a>
             <a  class="btn btn-primary" href="/Wiz/Step1/@order.Id">Редактировать</a>
         </tr>
     }

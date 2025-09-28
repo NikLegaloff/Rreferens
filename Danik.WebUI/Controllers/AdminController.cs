@@ -8,6 +8,10 @@ public class AdminController : AdmController
 {
 
 
+    public IActionResult OrderView(Guid id)
+    {
+        return View(Registry.Current.Orders.Find(id));
+    }
     public IActionResult Index()
     {
         var selectAll = Registry.Current.Orders.SelectAll().ToList();
