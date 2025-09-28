@@ -20,13 +20,15 @@ public class Image : DomainObject
     public string TMB => GetTmb(Id);
     
     [JsonIgnore]
-    public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
+    public string Path => $"{Env.Current.DataBasePath}Images\\{Id}." + Ext;
+    //public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
+    [JsonIgnore]
+    //public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
+    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id}_tmb.jpg";
 
     [JsonIgnore]
     public string Ext => Name.Contains(".") ? Name.Split('.').Last():"jpg";
 
-    [JsonIgnore]
-    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
 
     public void SaveImageData(byte[] data)
     {

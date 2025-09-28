@@ -26,6 +26,8 @@ public class ImagesController : Controller
     {
         var img = Registry.Current.Images.Find(id);
         if (img == null) return NotFound();
+        var path = img.Path;
+        if (!System.IO.File.Exists(path)) return NotFound();
         return File(System.IO.File.ReadAllBytes(img.TmbPath), "image/jpeg");
     }
 }

@@ -1,0 +1,56 @@
+﻿@using Danik.WebUI.Code.Domain
+@model Danik.WebUI.Code.Domain.Order[]
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<style>
+
+</style>
+
+<table class="table">
+    <tr>
+        <th>№, дата</th>
+        <th>Фото</th>
+        <th>Статус</th>
+        <th>Детали</th>
+        <th>Контакт</th>
+        <th></th>
+    </tr>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>
+                <div>№@order.Number</div>
+                <div>@order.Date.ToString("dd.MM.yyyy HH:mm")</div>
+            </td>
+            <td>
+                @if (order.PortraitImages != null && order.PortraitImages.Length > 0)
+                {
+                    foreach (var id in order.PortraitImages)
+                    {
+                        var img = Registry.Current.Images.Find(id);
+                        if (img != null)
+                        {
+                            <img src="@img.TMB" style="max-width: 100px; max-height: 100px;"/>
+                        }
+                    }
+                }
+            </td>
+            <td>@order.Status</td>
+            <td>@order.Persons чел, @order.Type, @order.Options.SizeStr</td>
+            <td>
+                @order.ContactName @order.Phone<br />
+                @order.Email
+            </td>
+            <td>
+            <a  class="btn btn-primary" href="/Wiz/Step1/@order.Id">Редактировать</a>
+        </tr>
+    }
+</table>
+
+@section Scripts
+{
+    <script>
+    </script>
+}

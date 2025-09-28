@@ -19,19 +19,19 @@
             <div class="row mt-3">
                 <div class="col-4 text-center">
                     <label style="cursor: pointer;">
-                        <input name="count" @(Model.Persons==1?"checked":"") type="radio" onchange="ColChange(1)"/> <i class="fa fa-user fs-3"></i>
+                        <input name="count" @(Model.Persons==1?"checked":"") type="radio" value="1" onchange="ColChange(1)"/> <i class="fa fa-user fs-3"></i>
                         
                     </label>
                 </div>
                 <div class="col-4  text-center">
                     <label style="cursor: pointer;">
-                        <input name="count" type="radio"  @(Model.Persons==1?"checked":"") onchange="ColChange(2)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user  fs-3"></i>
+                        <input name="count" type="radio"  @(Model.Persons==2?"checked":"")  value="2" onchange="ColChange(2)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user  fs-3"></i>
                         
                     </label>
                 </div>
                 <div class="col-4 text-center">
                     <label style="cursor: pointer;">
-                        <input name="count" type="radio"  @(Model.Persons==1?"checked":"") onchange="ColChange(3)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i>
+                        <input name="count" type="radio"  @(Model.Persons==3?"checked":"")  value="3" onchange="ColChange(3)" /> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i> <i class="fa fa-user fs-3"></i>
                         
                     </label>
                 </div>
