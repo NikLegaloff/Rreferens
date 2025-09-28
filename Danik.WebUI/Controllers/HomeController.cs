@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Danik.WebUI.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : AppController
     {
         public IActionResult Index()
         {

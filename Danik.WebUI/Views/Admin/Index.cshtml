@@ -11,7 +11,6 @@
 <table class="table">
     <tr>
         <th>№, дата</th>
-        <th>Фото</th>
         <th>Статус</th>
         <th>Детали</th>
         <th>Контакт</th>
@@ -24,21 +23,11 @@
                 <div>№@order.Number</div>
                 <div>@order.Date.ToString("dd.MM.yyyy HH:mm")</div>
             </td>
-            <td>
-                @if (order.PortraitImages != null && order.PortraitImages.Length > 0)
-                {
-                    foreach (var id in order.PortraitImages)
-                    {
-                        var img = Registry.Current.Images.Find(id);
-                        if (img != null)
-                        {
-                            <img src="@img.TMB" style="max-width: 100px; max-height: 100px;"/>
-                        }
-                    }
-                }
-            </td>
             <td>@order.Status</td>
-            <td>@order.Persons чел, @order.Type, @order.Options.SizeStr</td>
+            <td>
+                @order.Persons чел, @order.Type, @order.Options.SizeStr
+                <div>@(order.PersonInfos==null ? "Нет": order.PersonInfos.Length)  фото</div>
+            </td>
             <td>
                 @order.ContactName @order.Phone<br />
                 @order.Email

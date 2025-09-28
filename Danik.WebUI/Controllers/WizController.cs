@@ -6,7 +6,7 @@ using Type = Danik.WebUI.Code.Domain.Type;
 
 namespace Danik.WebUI.Controllers;
 
-public class WizController : Controller
+public class WizController : AppController
 {
     [HttpGet]
     public IActionResult Step1(Guid? id)
@@ -15,19 +15,25 @@ public class WizController : Controller
         return View(order);
     }
     [HttpPost]
-    public IActionResult Step1(Type type,int count, int size)
+    public IActionResult Step1(Guid id, Type type,int count, int size)
     {
-        var order = new Order
-        {
-            Number = "O-" + (Registry.Current.Orders.SelectAll().Length + 10001), Persons = count,
-            Type = type, 
-            Date = DateTime.Now, 
-            Status = OrderStatus.Создаётся,
-            Options =
+        Order order;
+        if(id==Guid.Empty)
+            order = new Order
             {
-                Size = size
-            },
-        };
+                Number = "O-" + (Registry.Current.Orders.SelectAll().Length + 10001), Persons = count,
+                Type = type, 
+                Date = DateTime.Now, 
+                Status = OrderStatus.Создаётся,
+                Options =
+                {
+                    Size = size
+                },
+            };
+        else
+        
+            order = Registry.Current.Orders.Find(id);
+        
 
         if (Request.Form.Files.Count > 0)
         {

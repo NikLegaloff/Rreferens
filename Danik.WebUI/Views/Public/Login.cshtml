@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Login";
+
+}
+@using (Html.BeginForm("Login", "Public"))
+{
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-sm-4">
+            <input type="password" autofocus name="password" class="form-control form-control-lg"/>
+            <div class="mt-3">
+                <input type="submit" value="LOGIN" class="btn btn-primary btn-lg w-100"/>
+            </div>
+        </div>
+    </div>
+}

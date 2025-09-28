@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm("Step1", "Wiz", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-
+    <input type="hidden" name="id" value="@Model.Id"/>
     <div class="row">
         <div class="col-xxl-4 col-xl-6 col-lg-8 col-md-10">
 

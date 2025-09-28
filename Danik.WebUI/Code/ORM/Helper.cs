@@ -19,4 +19,19 @@ public static class Helper
         return new Guid(hasher.ComputeHash(Encoding.Default.GetBytes(input)));
     }
 
+    public static string? ToMinJSON<T>(this T? subj, bool typeNameHandle = false, bool ignoreDefaults = true)
+    {
+        if (subj == null) return null;
+        var settings = new JsonSerializerSettings();
+        if (ignoreDefaults)
+        {
+            settings.DefaultValueHandling = DefaultValueHandling.Ignore;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+        }
+        if (typeNameHandle) settings.TypeNameHandling = TypeNameHandling.Objects;
+        var minJSON = JsonConvert.SerializeObject(subj, Formatting.None, settings);
+        return minJSON;
+    }
+
+
 }
