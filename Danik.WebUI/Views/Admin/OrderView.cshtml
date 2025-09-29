@@ -7,72 +7,83 @@
 <a href="/Admin/">Назад к заказам</a>
 
 <div class="row">
-    <div class="col-xxl-4 col-lg-6">
-<div>
-    <label>Номер заказа:</label>
-    <input type="text" value="@Model.Number" readonly class="form-control" />
-</div>
-<div>
-    <label>Статус:</label>
-    <input type="text" value="@Model.Status" readonly class="form-control" />
-</div>
-<div>
-    <label>Дата:</label>
-    <input type="text" value="@Model.Date.ToString()" readonly class="form-control" />
-</div>
-<div>
-    <label>Тип:</label>
-    <input type="text" value="@Model.Type" readonly class="form-control" />
-</div>
-<div>
-    <label>Количество персон:</label>
-    <input type="text" value="@Model.Persons" readonly class="form-control" />
-</div>
-<div>
-    <label>Телефон:</label>
-    <input type="text" value="@Model.Phone" readonly class="form-control" />
-</div>
-<div>
-    <label>Email:</label>
-    <input type="text" value="@Model.Email" readonly class="form-control" />
-</div>
-<div>
-    <label>Контактное лицо:</label>
-    <input type="text" value="@Model.ContactName" readonly class="form-control" />
-</div>
-    <div>
-        <label>Комментарий:</label>
-        <textarea readonly class="form-control">@Model.Comment</textarea>
-    </div>
-    <div>
-        <label>Размер:</label>
-        <input type="text" value="@Model.Options?.SizeStr" readonly class="form-control" />
-    </div>
-    <div>
-        <label>Глубина:</label>
-        <input type="text" value="@Model.Options?.Depth" readonly class="form-control" />
-    </div>
-    <div>
-        <label>Свой размер:</label>
-        <input type="text" value="@Model.Options?.OwnSize" readonly class="form-control" />
-    </div>
+    <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
+
+        <div class="row">
+            <div class="col-4">
+                <label>Номер заказа:</label>
+                <input type="text" value="@Model.Number" readonly class="form-control" />
+            </div>
+            <div class="col-4">
+                <label>Статус:</label>
+                <input type="text" value="@Model.Status" readonly class="form-control" />
+            </div>
+            <div class="col-4">
+                <label>Дата:</label>
+                <input type="text" value="@Model.Date.ToString()" readonly class="form-control" />
+            </div>
+        </div>
+
+        <h4 class="mt-3">Камень</h4>
+        <div class="row">
+            <div class="col">
+                <label>Тип:</label>
+                <input type="text" value="@Model.Type" readonly class="form-control" />
+            </div>
+            <div class="col">
+                <label>Кол-во:</label>
+                <input type="text" value="@Model.Persons" readonly class="form-control" />
+            </div>
+            <div class="col">
+                <label>Размер:</label>
+                <input type="text" value="@Model.Options?.SizeStr" readonly class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Толщина:</label>
+                <input type="text" value="@Model.Options?.Depth" readonly class="form-control" />
+            </div>
+            <div class="col">
+                <label>Свой размер:</label>
+                <input type="text" value="@Model.Options?.OwnSize" readonly class="form-control" />
+            </div>
+        </div>
+        <h4 class="mt-3">Конакты</h4>
+        <div class="row">
+            <div class="col">
+                <label>Телефон:</label>
+                <input type="text" value="@Model.Phone" readonly class="form-control" />
+            </div>
+            <div class="col">
+                <label>Email:</label>
+                <input type="text" value="@Model.Email" readonly class="form-control" />
+            </div>
+            <div class="col">
+                <label>Имя:</label>
+                <input type="text" value="@Model.ContactName" readonly class="form-control" />
+            </div>
+        </div>
+        <div>
+            <label>Комментарий:</label>
+            <textarea readonly class="form-control">@Model.Comment</textarea>
+        </div>
 
     </div>
 </div>
-<div>
-    <label>Person Infos:</label>
+
+<div class="mt-3">
+    <h4>Персоны</h4>
     @if (Model.PersonInfos != null && Model.PersonInfos.Length > 0)
     {
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
                 <tr>
                     <th></th>
-                    <th>Фамилия</th>
-                    <th>Имя</th>
-                    <th>Отчество</th>
-                    <th>Комментарий</th>
+                    <th>ФИО</th>
                     <th>Дата рождения</th>
                     <th>Дата смерти</th>
+                    <th>Комментарий</th>
                     <th>Эпитафия</th>
                 </tr>
             </thead>
@@ -82,12 +93,10 @@
                     var img = Registry.Current.Images.Find(p.ImageId);
                 <tr>
                     <td><a href="@img.URL"><img src="@img.TMB"/></a></td>
-                    <td>@p.F</td>
-                    <td>@p.I</td>
-                    <td>@p.O</td>
-                    <td>@p.Comment</td>
-                    <td>@p.Birth</td>
-                    <td>@p.Dead</td>
+                    <td>@p.F @p.I @p.O</td>
+                        <td>@p.Birth</td>
+                        <td>@p.Dead</td>
+                        <td>@p.Comment</td>
                     <td>@p.Epitaph</td>
                 </tr>
             }
@@ -99,8 +108,8 @@
         <span>Нет</span>
     }
 </div>
-<div>
-    <label>Свои примеры:</label>
+<div class="mt-3">
+    <h4>Свои примеры</h4>
     @if (Model.ExampleImages != null && Model.ExampleImages.Length > 0)
     {
         
