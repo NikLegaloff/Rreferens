@@ -13,10 +13,12 @@ namespace Danik.WebUI.Code.Domain
             Images = new DomainTable<Image>(config);
             Templates = new DomainTable<Template>(config);
             Orders = new DomainTable<Order>(config);
+            SystemSettings = new SystemSettingsDomainTable(config);
         }
 
         public DomainTable<Image> Images { get; }
         public DomainTable<Order> Orders { get; }
+        public SystemSettingsDomainTable SystemSettings { get; }
         public DomainTable<Template> Templates { get; set; }
     }
 }

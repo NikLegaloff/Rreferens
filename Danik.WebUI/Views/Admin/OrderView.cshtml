@@ -79,10 +79,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>Фото</th>
                     <th>ФИО</th>
-                    <th>Дата рождения</th>
-                    <th>Дата смерти</th>
+                    <th>Даты</th>
                     <th>Комментарий</th>
                     <th>Эпитафия</th>
                 </tr>
@@ -94,9 +93,8 @@
                 <tr>
                     <td><a href="@img.URL"><img src="@img.TMB"/></a></td>
                     <td>@p.F @p.I @p.O</td>
-                        <td>@p.Birth</td>
-                        <td>@p.Dead</td>
-                        <td>@p.Comment</td>
+                    <td>@p.Birth - @p.Dead</td>
+                    <td>@p.Comment</td>
                     <td>@p.Epitaph</td>
                 </tr>
             }

@@ -13,6 +13,7 @@ public enum OrderStatus
     Создан,
     В_рвботе,
     Завершён,
+    Отменён,
 }
 
 public class Order : DomainObject

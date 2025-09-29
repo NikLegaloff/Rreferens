@@ -21,7 +21,7 @@ public class WizController : AppController
         if(id==Guid.Empty)
             order = new Order
             {
-                Number = "O-" + (Registry.Current.Orders.SelectAll().Length + 10001), Persons = count,
+                Number = (Registry.Current.SystemSettings.GetOrderNumber()), Persons = count,
                 Type = type, 
                 Date = DateTime.Now, 
                 Status = OrderStatus.Создаётся,
