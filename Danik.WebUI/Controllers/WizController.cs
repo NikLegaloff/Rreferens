@@ -120,10 +120,8 @@ public class WizController : AppController
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
-        
-        order.Phone = data.Phone;
-        order.Email = data.Email;
-        order.ContactName = data.ContactName;
+
+        order.Contact = data.Contact;
         order.Comment = data.Comment;
         order.Options = data.Options;
 

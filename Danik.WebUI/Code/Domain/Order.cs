@@ -25,11 +25,11 @@ public class Order : DomainObject
     public required string Number{ get; set; }
     public required Type Type{ get; set; }
     public required int Persons{ get; set; }
-    public string? Phone{ get; set; }
-    public string? Email{ get; set; }
-    public string? ContactName{ get; set; }
-    public string? Comment{ get; set; }
-    
+    public Contact? Contact { get; set; }
+    public string? Comment { get; set; }
+
+
+
     public Guid? StoneForm { get; set; }
     public Guid? StoreFormImage { get; set; }
 
@@ -44,6 +44,12 @@ public class Order : DomainObject
 }
 
 
+public class Contact
+{
+    public required string Name { get; set; }
+    public required string Phone { get; set; }
+    public string? Email { get; set; }
+}
 public class PersonInfo
 {
     public Guid ImageId{ get; set; }

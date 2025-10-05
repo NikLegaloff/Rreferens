@@ -53,8 +53,8 @@
                 <div>@(order.PersonInfos==null ? "Нет": order.PersonInfos.Length)  фото</div>
             </td>
             <td>
-                @order.ContactName @order.Phone<br />
-                @order.Email
+                @order.Contact?.Name @order.Contact?.Phone<br />
+                @order.Contact?.Email
             </td>
             <td>
                 <a class="btn btn-primary" href="/Admin/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>

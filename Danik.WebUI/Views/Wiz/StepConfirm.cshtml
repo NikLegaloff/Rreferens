@@ -17,7 +17,7 @@
     {
         <h4 class="text-success">Заказ подтверждён</h4>
         <div class="alert alert-success">
-            В ближайшее время наши операторы свяжутся свами по номеру @Model.Phone и передадут ваш заказ в работу.
+            В ближайшее время наши операторы свяжутся свами по номеру @Model.Contact?.Phone и передадут ваш заказ в работу.
             Исполнение заказа обычно составляет 2-3 рабочих дня. 
         </div>
     }
@@ -47,12 +47,12 @@
                     <a href="@img.URL" target="_blank"><img src="@img.TMB"/></a>
                 </div>
             }
-            
 
-            <p>Контактное лицо: @Model.ContactName</p>
-            <p>Электропочта: @Model.Email</p>
-            <p>Телефон: @Model.Phone</p>
-            <p>Комментарий<br/>@Model.Comment</p>
+
+            <p>Контактное лицо: @Model.Contact?.Name</p>
+            <p>Электропочта: @Model.Contact?.Email</p>
+            <p>Телефон: @Model.Contact?.Phone</p>
+            <p>Комментарий<br />@Model.Comment</p>
             <input type="hidden" name="id" class="form-control" value="@Model.Id"/>
 
             <div class="mt-4">

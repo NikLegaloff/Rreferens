@@ -20,9 +20,9 @@ public class AdminController : AdmController
         if (!string.IsNullOrWhiteSpace(q))
         {
             selectAll = selectAll.Where(o => o.Number==q 
-                                             || (o.ContactName!=null && o.ContactName.Contains(q)) 
-                                             || (o.Phone!=null && o.Phone.Contains(q)) 
-                                             || (o.Email!=null && o.Email.Contains(q))
+                                             || (o.Contact?.Name!=null && o.Contact.Name.Contains(q)) 
+                                             || (o.Contact?.Phone!=null && o.Contact.Phone.Contains(q)) 
+                                             || (o.Contact?.Email!=null && o.Contact.Email.Contains(q))
                                              ).ToList();
         }
         selectAll.Sort((a, b) => b.Number.CompareTo(a.Number));

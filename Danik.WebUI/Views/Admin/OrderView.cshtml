@@ -53,15 +53,15 @@
         <div class="row">
             <div class="col">
                 <label>Телефон:</label>
-                <input type="text" value="@Model.Phone" readonly class="form-control" />
+                <input type="text" value="@Model.Contact?.Phone" readonly class="form-control" />
             </div>
             <div class="col">
                 <label>Email:</label>
-                <input type="text" value="@Model.Email" readonly class="form-control" />
+                <input type="text" value="@Model.Contact?.Email" readonly class="form-control" />
             </div>
             <div class="col">
                 <label>Имя:</label>
-                <input type="text" value="@Model.ContactName" readonly class="form-control" />
+                <input type="text" value="@Model.Contact?.Name" readonly class="form-control" />
             </div>
         </div>
         <div>
