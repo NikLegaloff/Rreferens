@@ -19,11 +19,11 @@
             <div class="col">
                 <select name="status" class="form-select">
                     <!option value="">Все статусы</!option>
-                    <!option @(Model.Status == OrderStatus.Создаётся? "selected":"") value="0">Создаётся</!option>
-                    <!option @(Model.Status == OrderStatus.Создан ? "selected" : "")  value="1">Создан</!option>
-                    <!option @(Model.Status == OrderStatus.В_рвботе ? "selected" : "")  value="2">В рвботе</!option>
-                    <!option @(Model.Status == OrderStatus.Завершён ? "selected" : "")  value="3">Завершён</!option>
-                    <!option @(Model.Status == OrderStatus.Отменён ? "selected" : "")  value="4">Отменён</!option>
+                    @foreach (var s in Enum.GetNames(typeof(OrderStatus)))
+                    {
+                        var st = Enum.Parse<OrderStatus>(s);
+                        <!option @(Model.Status == st? "selected":"") value="@((int)st)">@st</!option>
+                    }
                 </select>
             </div>
             <div class="col">

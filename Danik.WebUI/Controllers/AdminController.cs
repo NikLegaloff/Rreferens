@@ -26,7 +26,7 @@ public class AdminController : AdmController
                                              ).ToList();
         }
         selectAll.Sort((a, b) => b.Number.CompareTo(a.Number));
-        return View(new OrdersList(selectAll.ToArray(),status, q));
+        return View(new OrdersList(selectAll.ToArray(),status??OrderStatus.Создан, q));
     }
 
 }
