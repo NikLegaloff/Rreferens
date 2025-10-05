@@ -14,7 +14,7 @@ builder.Services.AddSession(options =>
         options.Cookie.IsEssential = true;
 });
 
-
+//new QuickJob().Process();
 
 var app = builder.Build();
 
