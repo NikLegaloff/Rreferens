@@ -5,11 +5,16 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Danik.WebUI.Code.Domain;
 
+public enum ImageFolder
+{
+    Portrait, Clipart
+}
 public class Image : DomainObject
 {
     public static string GetURL(Guid id) => $"/Images/GetImage/{id}";
     public static string GetTmb(Guid id) => $"/Images/GetTmb/{id}";
 
+    public required ImageFolder Folder { get; set; }
     public required DateTime Date { get; set; }
     public required string Name { get; set; }
     public int Size { get; set; }
@@ -20,11 +25,11 @@ public class Image : DomainObject
     public string TMB => GetTmb(Id);
     
     [JsonIgnore]
-    public string Path => $"{Env.Current.DataBasePath}Images\\{Id}." + Ext;
-    //public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
+    //public string Path => $"{Env.Current.DataBasePath}Images\\{Id}." + Ext;
+    public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
     [JsonIgnore]
-    //public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
-    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id}_tmb.jpg";
+    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
+    //public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id}_tmb.jpg";
 
     [JsonIgnore]
     public string Ext => Name.Contains(".") ? Name.Split('.').Last():"jpg";
@@ -37,9 +42,15 @@ public class Image : DomainObject
         File.WriteAllBytes(Path, data);
     }
 
-    public static Guid Import(byte[] data, string name)
+    public static Guid Import(byte[] data, string name, ImageFolder folder=ImageFolder.Portrait)
     {
-        var img = new Image() { Date = DateTime.Now, Name = name, Size=data.Length };
+        var img = new Image
+        {
+            Date = DateTime.Now,
+            Name = name,
+            Size = data.Length,
+            Folder = folder
+        };
         Registry.Current.Images.Save(img);
         img.SaveImageData(data);
 

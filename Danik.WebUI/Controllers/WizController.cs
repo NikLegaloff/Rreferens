@@ -137,7 +137,6 @@ public class WizController : AppController
 
         if(images.Count>0) order.ExampleImages = images.ToArray();
 
-
         Registry.Current.Orders.Save(order);
         return RedirectToAction("StepConfirm", new { id });
     }
