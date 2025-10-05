@@ -1,4 +1,4 @@
-﻿namespace Danik.WebUI.Code.Domain;
+﻿namespace Danik.WebUI.Code.Helpers;
 
 public class Env
 {

@@ -1,4 +1,6 @@
-﻿namespace Danik.WebUI.Code.Domain;
+﻿using Danik.WebUI.Code.ORM;
+
+namespace Danik.WebUI.Code.Domain;
 
 public class StoneForm : ImageDomainObject
 {

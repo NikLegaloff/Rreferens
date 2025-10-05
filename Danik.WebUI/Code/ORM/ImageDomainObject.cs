@@ -1,6 +1,6 @@
-﻿using Danik.WebUI.Code.ORM;
+﻿using Danik.WebUI.Code.Domain;
 
-namespace Danik.WebUI.Code.Domain;
+namespace Danik.WebUI.Code.ORM;
 
 public class ImageDomainObject : DomainObject
 {

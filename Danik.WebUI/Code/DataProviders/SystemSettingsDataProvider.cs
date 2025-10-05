@@ -1,8 +1,9 @@
-﻿using Danik.WebUI.Code.ORM;
+﻿using Danik.WebUI.Code.Domain;
+using Danik.WebUI.Code.ORM;
 
-namespace Danik.WebUI.Code.Domain;
+namespace Danik.WebUI.Code.DataProviders;
 
-public class SystemSettingsDomainTable(Config config) : DomainTable<SystemSettings>(config)
+public class SystemSettingsDataProvider(Config config) : DataProvider<SystemSettings>(config)
 {
     public SystemSettings Current()
     {

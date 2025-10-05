@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using Danik.WebUI.Code.DataProviders;
+using Danik.WebUI.Code.Helpers;
 using Danik.WebUI.Code.ORM;
 
 namespace Danik.WebUI.Code.Domain
@@ -10,15 +12,15 @@ namespace Danik.WebUI.Code.Domain
         public Registry()
         {
             var config = new Config(Env.Current.DataBasePath);
-            Images = new DomainTable<Image>(config);
-            Templates = new DomainTable<Template>(config);
-            Orders = new DomainTable<Order>(config);
-            SystemSettings = new SystemSettingsDomainTable(config);
+            Images = new DataProvider<Image>(config);
+            Templates = new DataProvider<Template>(config);
+            Orders = new DataProvider<Order>(config);
+            SystemSettings = new SystemSettingsDataProvider(config);
         }
 
-        public DomainTable<Image> Images { get; }
-        public DomainTable<Order> Orders { get; }
-        public SystemSettingsDomainTable SystemSettings { get; }
-        public DomainTable<Template> Templates { get; set; }
+        public DataProvider<Image> Images { get; }
+        public DataProvider<Order> Orders { get; }
+        public SystemSettingsDataProvider SystemSettings { get; }
+        public DataProvider<Template> Templates { get; set; }
     }
 }

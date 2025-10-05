@@ -2,13 +2,13 @@
 
 namespace Danik.WebUI.Code.ORM;
 
-public class DomainTable<T> where T : DomainObject
+public class DataProvider<T> where T : DomainObject
 {
     private readonly Config _config;
     private readonly Dictionary<Guid, T> _identityMap = new();
     private readonly string _tableName;
 
-    public DomainTable(Config config)
+    public DataProvider(Config config)
     {
         _tableName = typeof(T).Name;
         _config = config;

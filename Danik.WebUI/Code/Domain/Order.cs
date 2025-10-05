@@ -20,19 +20,19 @@ public class Order : DomainObject
 {
     public Guid? UserId{ get; set; }
 
+    public required string Number{ get; set; }
     public OrderStatus Status { get; set; }=OrderStatus.Создаётся;
     public DateTime Date{ get; set; }
-    public required string Number{ get; set; }
-    public required Type Type{ get; set; }
+
     public required int Persons{ get; set; }
-    public Contact? Contact { get; set; }
-    public string? Comment { get; set; }
-
-
+    public required Type Type{ get; set; }
 
     public Guid? StoneForm { get; set; }
     public Guid? StoreFormImage { get; set; }
 
+    public Contact? Contact { get; set; }
+    public string? Comment { get; set; }
+    
 
     public Guid? TemplateId{ get; set; }
     public Guid[]? PortraitImages{ get; set; }
@@ -64,6 +64,7 @@ public class PersonInfo
 }
 public class OrderOptions
 {
+
     public int Size { get; set; }
     public string? Depth { get; set; }
     public string? OwnSize { get; set; }
