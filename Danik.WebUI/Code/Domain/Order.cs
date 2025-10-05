@@ -18,6 +18,8 @@ public enum OrderStatus
 
 public class Order : DomainObject
 {
+    public Guid? UserId{ get; set; }
+
     public OrderStatus Status { get; set; }=OrderStatus.Создаётся;
     public DateTime Date{ get; set; }
     public required string Number{ get; set; }
@@ -27,6 +29,10 @@ public class Order : DomainObject
     public string? Email{ get; set; }
     public string? ContactName{ get; set; }
     public string? Comment{ get; set; }
+    
+    public Guid? StoneForm { get; set; }
+    public Guid? StoreFormImage { get; set; }
+
 
     public Guid? TemplateId{ get; set; }
     public Guid[]? PortraitImages{ get; set; }

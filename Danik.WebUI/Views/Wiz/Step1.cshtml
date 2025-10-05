@@ -14,7 +14,8 @@
     <div class="row">
         <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
 
-            <h4 class="">1. Число усопших</h4>
+            <h4 class="">Основные параметры</h4>
+            <h5 class="">1. Число усопших</h5>
 
             <div class="row mt-3">
                 <div class="col-4 text-center">
@@ -37,7 +38,7 @@
                 </div>
             </div>
 
-            <h4 class="mt-4">2. Ориентация</h4>
+            <h5 class="mt-4">2. Ориентация</h5>
 
             <div class="row">
                 <div class="col-4 text-center  mt-2">
@@ -55,7 +56,7 @@
             </div>
 
 
-            <h4 class="mt-4">3. Размер</h4>
+            <h5 class="mt-4">3. Размер</h5>
 
             <div class="row sizeOption">
                 <div class="col-4 text-center d-flex align-items-end" id="pSize40">
@@ -83,7 +84,7 @@
 
 
             
-            <h4 class="mt-3">4. Фото </h4>
+            <h5 class="mt-3">4. Фото </h5>
             @if (!isNew)
             {
                 <div>Не выбирайте фото если хотите оставить уже загруженные фотографии</div>
@@ -95,6 +96,7 @@
             </div>
             <div class="mt-3"><a id="lh1" href="javascript:$('#lh1').hide();$('#h1').show(200);">Советы по пересьёмке фото на телефон</a></div>
             <div class="alert alert-success mt-3" id="h1" style="display: none;">
+                <div style="float: right;" class="px-2"><a class="text-danger" href="javascript:$('#lh1').show();$('#h1').hide(200);">Заакрыть</a></div>
                 <ol>
 
 
@@ -120,6 +122,7 @@
 
                     <li>Делай несколько дублей – выбирай лучший позже.</li>
                 </ol>
+
             </div>
 
         <div class="mt-4">
