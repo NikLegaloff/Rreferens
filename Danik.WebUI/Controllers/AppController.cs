@@ -31,7 +31,12 @@ public class AppController : Controller
 
 }
 
-public class BusinessException : Exception { }
+public class BusinessException : Exception
+{
+    public BusinessException(string? message) : base(message)
+    {
+    }
+}
 public class NotAuthenticatedException : Exception
 {
 

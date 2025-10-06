@@ -1,11 +1,12 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace Danik.WebUI.Code.ORM;
 
 public class DataProvider<T> where T : DomainObject
 {
     private readonly Config _config;
-    private readonly Dictionary<Guid, T> _identityMap = new();
+    private readonly ConcurrentDictionary<Guid, T> _identityMap = new();
     private readonly string _tableName;
 
     public DataProvider(Config config)
@@ -20,13 +21,13 @@ public class DataProvider<T> where T : DomainObject
 
     public T? Find(Guid id)
     {
-        if (_identityMap.ContainsKey(id)) return _identityMap[id];
+        if (_identityMap.TryGetValue(id, out var find)) return find;
         if (!File.Exists(BasePath + id)) return null;
         try
         {
             var subj = JsonConvert.DeserializeObject<T>(File.ReadAllText(BasePath + id));
             subj.Id = id;
-            _identityMap[id] = subj;
+            _identityMap.TryAdd(id, subj); 
             return subj;
         }
         catch (FileNotFoundException)
@@ -70,7 +71,7 @@ public class DataProvider<T> where T : DomainObject
 
     public void Delete(Guid id)
     {
-        if (_identityMap.ContainsKey(id)) _identityMap.Remove(id);
+        if (_identityMap.ContainsKey(id)) _identityMap.Remove(id,out _);
         if (File.Exists(BasePath + id)) return;
         Find(id)?.OnDelete();
         File.Delete(BasePath + id);

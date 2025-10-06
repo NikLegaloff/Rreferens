@@ -3,6 +3,10 @@ using Danik.WebUI.Code.ORM;
 
 namespace Danik.WebUI.Code.DataProviders;
 
+public class StoneFormDataProvider(Config config) : DataProvider<StoneForm>(config)
+{
+
+}
 public class SystemSettingsDataProvider(Config config) : DataProvider<SystemSettings>(config)
 {
     public SystemSettings Current()

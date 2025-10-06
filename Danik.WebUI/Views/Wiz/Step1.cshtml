@@ -1,11 +1,22 @@
-﻿@using Type = Danik.WebUI.Code.Domain.Type
+﻿@using Danik.WebUI.Code.Domain
+@using Type = Danik.WebUI.Code.Domain.StoneType
 @model Danik.WebUI.Code.Domain.Order
 @{
     ViewData["Title"] = "Home page";
     var isNew = Model.PersonInfos==null || Model.PersonInfos.Length == 0;
+    var allSf = Registry.Current.StoneForms.SelectAll();
 }
 <style>
     .stone{  border-radius: 10px 10px 0 0; cursor: pointer; }
+
+    .stoneType img {
+        max-width: 200px;
+        max-height: 200px;
+    }
+    .stoneType a {
+        display: inline-block;
+        margin: 1rem;
+    }
 </style>
 
 @using (Html.BeginForm("Step1", "Wiz", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -14,8 +25,8 @@
     <div class="row">
         <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
 
-            <h4 class="">Основные параметры</h4>
-            <h5 class="">1. Число персон</h5>
+            
+            <h4 class="">1. Число персон</h4>
 
             <div class="row mt-3">
                 <div class="col-4 text-center">
@@ -37,30 +48,68 @@
                     </label>
                 </div>
             </div>
-
-            <h5 class="mt-4">2. Форма камня</h5>
-            
             
 
-            <h5 class="mt-4">3. Ориентация</h5>
+            <h4 class="mt-4">2. Ориентация</h4>
 
             <div class="row">
                 <div class="col-4 text-center  mt-2">
                     <div><img onclick="$('#o1').click()" id="img1" src="/img/v1.png" class="stone" style="width: 100%;" /></div>
-                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true)" id="o1" @(Model.Type==Type.Вертикальный ? "checked":"") value="0" /> Верт</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true,0)" id="o1" @(Model.Type==Type.Вертикальный ? "checked":"") value="0" /> Верт</label></div>
                 </div>
                 <div class="col-4 text-center  mt-2">
                     <div><img onclick="$('#o2').click()" id="img2" src="/img/h1.png" class="stone" style="width:100%;" /></div>
-                    <div class="mt-2"><label><input type="radio" name="type"  @(Model.Type==Type.Горизонтальный ? "checked":"") onchange="SetVert(false)" id="o2" value="1" /> Горизон</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type"  @(Model.Type==Type.Горизонтальный ? "checked":"") onchange="SetVert(false,1)" id="o2" value="1" /> Горизон</label></div>
                 </div>
                 <div class="col-4 text-center  mt-2" style="display: none;" id="pSplit">
                     <div><img onclick="$('#o3').click()" id="img3" src="/img/split2.png" class="stone" style="width: 100%; " /></div>
-                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true)"  @(Model.Type==Type.Сплит ? "checked":"") id="o3" value="2" /> Сплит</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true,2)"  @(Model.Type==Type.Сплит ? "checked":"") id="o3" value="2" /> Сплит</label></div>
                 </div>
             </div>
 
 
-            <h5 class="mt-4">3. Размер</h5>
+            <h4 class="mt-4">3. Форма камня</h4>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div id="pForm" class="text-center"></div>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Выберите форму 
+                        </button>
+                    </div>
+                    
+                </div>
+                <div class="col-6">
+                    Или загрузите фотографию со своим вариантом формы камня<br />
+                    <input type="file" name="ownFormFile" class="form-control mt-2" />
+                </div>
+            </div>
+            
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Выберите вариант формы камня</h1>
+                            <button type="button" id="btnCloseSF" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @for (StoneType st = StoneType.Вертикальный; st <= StoneType.Сплит; st++)
+                            {
+                                <div class="stoneType stoneType@((int)st)">
+                                    @foreach (var sf in allSf.Where(s => s.Type == st))
+                                    {
+                                        <a href="javascript:SelectStone('@sf.Id','@sf.ImageURL')"><img src="@sf.ImageURL"/></a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <h4 class="mt-4">4. Размер</h4>
 
             <div class="row sizeOption">
                 <div class="col-4 text-center d-flex align-items-end" id="pSize40">
@@ -88,15 +137,15 @@
 
 
             
-            <h5 class="mt-3">4. Фото </h5>
+            <h4 class="mt-3">5. Фото </h4>
             @if (!isNew)
             {
                 <div>Не выбирайте фото если хотите оставить уже загруженные фотографии</div>
             }
             <div class="row">
-                <div class="col-6" id="f1">Фото №1<input type="file" name="file" @(isNew ? "required":"") class="form-control" /></div>
-                <div class="col-6" @(isNew ? "required":"") style="display: none;" id="f2">Фото №2<input type="file" name="file" class="form-control" /></div>
-                <div class="col-6" @(isNew ? "required":"") style="display: none;" id="f3">Фото №3<input type="file" name="file" class="form-control" /></div>
+                <div class="col-6" id="f1">Фото №1<input type="file" name="personFile" @(isNew ? "required" : "") class="form-control" /></div>
+                <div class="col-6" @(isNew ? "required" : "") style="display: none;" id="f2">Фото №2<input type="file" name="personFile" class="form-control" /></div>
+                <div class="col-6" @(isNew ? "required" : "") style="display: none;" id="f3">Фото №3<input type="file" name="personFile" class="form-control" /></div>
             </div>
             <div class="mt-3"><a id="lh1" href="javascript:$('#lh1').hide();$('#h1').show(200);">Советы по пересьёмке фото на телефон</a></div>
             <div class="alert alert-success mt-3" id="h1" style="display: none;">
@@ -141,9 +190,9 @@
     <script>
 
         function ColChange(count) {
-            document.getElementById('img1').src="/img/v" + count + ".png";
-            document.getElementById('img2').src="/img/h" + count + ".png";
-            document.getElementById('img3').src="/img/split" + count + ".png";
+            document.getElementById('img1').src = "/img/v" + count + ".png";
+            document.getElementById('img2').src = "/img/h" + count + ".png";
+            document.getElementById('img3').src = "/img/split" + count + ".png";
             if (count > 1) {
                 document.getElementById('pSplit').style.display = 'block';
             } else {
@@ -164,14 +213,23 @@
             }
         }
 
-        function SetVert(isVert) {
-            document.getElementById('sSize1').innerHTML=isVert ? "40 x 80" : "80 x 40";
-            document.getElementById('sSize2').innerHTML=isVert ? "50 x 100" : "100 x 50";
-            document.getElementById('sSize3').innerHTML=isVert ? "60 x 120" : "120 x 60";
-            $(".sizeOption img").attr("src",isVert ? "/img/v1.png" : "/img/h1.png");
+        function SelectStone(id, url) {
+            var html = '<input type="hidden" name="stoneFormId" value="' + id + '"/><img src="' + url + '" style="max-width:200px;max-height:200px;"/>';
+            document.getElementById('pForm').innerHTML = html;
+            $("#btnCloseSF").click();
+        }
+
+        function SetVert(isVert, t) {
+            document.getElementById('sSize1').innerHTML = isVert ? "40 x 80" : "80 x 40";
+            document.getElementById('sSize2').innerHTML = isVert ? "50 x 100" : "100 x 50";
+            document.getElementById('sSize3').innerHTML = isVert ? "60 x 120" : "120 x 60";
+            $(".sizeOption img").attr("src", isVert ? "/img/v1.png" : "/img/h1.png");
+
+            $(".stoneType").hide();
+            $(".stoneType" + t).show();
         }
 
         ColChange(@Model.Persons);
-        SetVert(@(Model.Type == Type.Вертикальный || Model.Type == Type.Сплит ? "true" : "false"));
+        SetVert(@(Model.Type == Type.Вертикальный || Model.Type == Type.Сплит ? "true" : "false"), @((int)Model.Type));
     </script>
 }

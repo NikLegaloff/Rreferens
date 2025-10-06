@@ -1,7 +1,6 @@
 using Danik.WebUI.Code.Domain;
 using Danik.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using Type = Danik.WebUI.Code.Domain.Type;
 
 
 namespace Danik.WebUI.Controllers;
@@ -11,13 +10,13 @@ public class WizController : AppController
     [HttpGet]
     public IActionResult Step1(Guid? id)
     {
-        var order = id != null ? Registry.Current.Orders.Find(id.Value) : new Order(){Number = "",Persons = 1,Type = Type.Вертикальный,Options = new OrderOptions{Size = 40}};
+        var order = id != null ? Registry.Current.Orders.Find(id.Value) : new Order(){Number = "",Persons = 1,Type = StoneType.Вертикальный,Options = new OrderOptions{Size = 40}};
         return View(order);
     }
     [HttpPost]
-    public IActionResult Step1(Guid id, Type type,int count, int ddlSize)
+    public IActionResult Step1(Guid id, StoneType type,int count, int ddlSize, IFormFile? ownFormFile,IFormFile[]? personFile, Guid? stoneFormId)
     {
-        Order order;
+        Order? order;
         if(id==Guid.Empty)
             order = new Order
             {
@@ -32,21 +31,34 @@ public class WizController : AppController
             };
         else
             order = Registry.Current.Orders.Find(id);
+        if (order == null) throw new BusinessException("Order not found ");
         order.Type = type;
         order.Persons = count;
         order.Options.Size = ddlSize;
+        order.StoneForm=stoneFormId;
 
-        if (Request.Form.Files.Count > 0)
+        if (ownFormFile != null && ownFormFile.Length > 0)
+        {
+            using var ms = new MemoryStream();
+            ownFormFile.CopyTo(ms);
+            var imgId = Image.Import(ms.ToArray(), ownFormFile.FileName, ImageFolder.UserStoneForm);
+            if(order.StoreFormImage!=null) Registry.Current.Images.Delete(order.StoreFormImage.Value);
+            order.StoreFormImage = imgId;
+        }
+
+
+        if (personFile!=null && personFile.Length> 0)
         {
             var images = new List<Guid>();
 
-            foreach (var file in Request.Form.Files)
+            foreach (var file in personFile)
             {
                 using var ms = new MemoryStream();
                 file.CopyTo(ms);
                 images.Add(Image.Import(ms.ToArray(), file.FileName));
             }
-
+            if(order.PortraitImages!=null) foreach (var imId in order.PortraitImages) Registry.Current.Images.Delete(imId);
+                
             order.PortraitImages = images.ToArray();
         }
 

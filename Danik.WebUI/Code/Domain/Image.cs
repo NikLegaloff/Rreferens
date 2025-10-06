@@ -8,7 +8,7 @@ namespace Danik.WebUI.Code.Domain;
 
 public enum ImageFolder
 {
-    Portrait, StoreForm, Clipart
+    Portrait, StoreForm, Clipart, UserStoneForm
 }
 public class Image : DomainObject
 {

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Danik.WebUI.Code.Domain;
 
-public enum Type
+public enum StoneType
 {
     Вертикальный, Горизонтальный, Сплит
 }
@@ -25,7 +25,7 @@ public class Order : DomainObject
     public DateTime Date{ get; set; }
 
     public required int Persons{ get; set; }
-    public required Type Type{ get; set; }
+    public required StoneType Type{ get; set; }
 
     public Guid? StoneForm { get; set; }
     public Guid? StoreFormImage { get; set; }
