@@ -4,8 +4,8 @@ namespace Danik.WebUI.Code.Domain;
 
 public class Template : DomainObject
 {
-    public bool IsVert { get; set; }
-    public Guid ImageId { get; set; }
+    public StoneType Type{ get; set; }
+    public int Persons{ get; set; }
     
     public required TemplatePortrait[] Portraits { get; set; }
     public required TemplateImage[] Images { get; set; }
