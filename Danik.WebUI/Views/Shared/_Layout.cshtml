@@ -16,34 +16,59 @@
 
 <div class="container py-3">
     <header>
-
-        <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-            <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
-                <h3>Примерочная</h3>
-            </a> 
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Wiz/Step1/">Новый заказ</a>
-                    
-                
-                    @if (user!=null)
-                    {
-                        
-                        <a class="me-3 py-2 link-body-emphasis text-decoration-none text-info" href="/User/Index/">@(user.Email)</a>
-                        @if (user.IsAdmin)
-                        {
-                            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Admin/">Заказы</a>
-                            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Admin/Gallery/">Галерея</a>
-                        }
-                        <a class="me-3 py-2 link-body-emphasis text-decoration-none text-danger" href="/Public/Logout/">Выход</a>
-                    }
-                    else
-                    {
-                        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Public/Login/">Вход</a>
-                    }
-                
-            </nav>
-        </div>
         
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Референс</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/Wiz/Step1/">Новый заказ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Примеры работ</a>
+                        </li>
+                        
+                        @if (user == null)
+                        {
+                            <li class="nav-item">
+                                    <a class="nav-link" href="/Public/Login/">Для партнёрв</a>
+                            </li>
+
+                        }
+                        
+
+                        
+
+                    </ul>
+                </div>
+                @if (user != null)
+                {
+                    <div class="d-lg-flex  justify-content-lg-end dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user"></i>  @(user.Email.Split('@')[0])
+                        </a>
+                        <ul class="dropdown-menu">
+                            @if (user.IsAdmin)
+                            {
+                                <li><a class="dropdown-item" href="/Admin/">Заказы</a></li>
+                                <li><a class="dropdown-item" href="/Admin/Gallery/">Галерея</a></li>
+
+                            }
+
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="/User/">Мой аккаунт</a></li>
+                            <li><a class="dropdown-item text-danger" href="/Public/Logout/">Выйти</a></li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </nav>
+
+
     </header>
     <main>
         @RenderBody()
