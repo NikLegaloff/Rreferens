@@ -1,5 +1,7 @@
 using System.Net;
+using Danik.WebUI.Code.Domain;
 using Danik.WebUI.Code.Helpers;
+using Danik.WebUI.Code.ORM;
 using Danik.WebUI.Controllers;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -15,6 +17,9 @@ builder.Services.AddSession(options =>
 });
 
 //new QuickJob().Process();
+var nik = new User() { Email = "danila.md@gmail.com", Password = "123".MD5(), IsAdmin = true, Name = "Danik" };
+Registry.Current.Users.Save(nik);
+
 
 var app = builder.Build();
 

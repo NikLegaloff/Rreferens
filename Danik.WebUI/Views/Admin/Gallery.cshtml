@@ -1,0 +1,50 @@
+﻿@using Danik.WebUI.Code.Domain
+@model GalleryList
+@{
+    ViewData["Title"] = "Галлерея";
+}
+
+<style>
+
+    </style>
+@using (Html.BeginForm("Gallery", "Admin", FormMethod.Get))
+{
+
+
+    <div class="alert alert-light" role="alert">
+        <div class="row">
+            <div class="col-6">
+                <select name="folder" class="form-select">
+                    @foreach (var s in Enum.GetNames(typeof(ImageFolder)))
+                    {
+                        var folder = Enum.Parse<ImageFolder>(s);
+                        <!option @(Model.Folder == folder? "selected":"") value="@((int)folder)">@(folder.ToString().Replace("_"," "))</!option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <input type="submit" value="Показать" class="btn btn-primary w-100"/>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    @foreach (var img in Model.Images)
+    {
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2 col-xxl-2 mb-3">
+            <a href="@img.URL" target="_blank">
+                <img src="@img.TMB" style="width: 100%; "/>
+            </a>
+            <div class="mt-2 text-center" style="overflow-x: hidden;">
+                <b>@img.Name</b>  <br />
+                <span class="text-secondary">@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
+            </div>
+        </div>
+    }
+</div>
+
+    @section Scripts
+{
+    <script>
+    </script>
+}

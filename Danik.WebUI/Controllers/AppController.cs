@@ -2,6 +2,8 @@ using Danik.WebUI.Code.ORM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
+using Danik.WebUI.Code.Domain;
 
 namespace Danik.WebUI.Controllers;
 
@@ -9,8 +11,8 @@ public class AppController : Controller
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var fromSession = GetFromSession<string?>("Admin");
-        ViewData["Admin"] = fromSession;
+        var fromSession = GetFromSession<User?>("User");
+        ViewData["User"] = fromSession;
         base.OnActionExecuting(context);
     }
 
@@ -42,11 +44,23 @@ public class NotAuthenticatedException : Exception
 
 }
 
-public class AdmController : AppController
+public class PartController : AppController
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        if (GetFromSession<string?>("Admin") == null) throw new NotAuthenticatedException();
+        var user = GetFromSession<User?>("User");
+        if (user == null) throw new NotAuthenticatedException();
+        base.OnActionExecuting(context);
+    }
+}
+public class AdmController : AppController
+{
+    
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        var user = GetFromSession<User?>("User");
+        if (user == null) throw new NotAuthenticatedException();
+        if (!user.IsAdmin) throw new BusinessException("Access denied");
         base.OnActionExecuting(context);
     }
 

@@ -1,3 +1,5 @@
+using Danik.WebUI.Code.Domain;
+using Danik.WebUI.Code.ORM;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Danik.WebUI.Controllers;
@@ -6,7 +8,7 @@ public class PublicController : AppController
 {
     public IActionResult Logout()
     {
-        PutInSession("Admin", null);
+        PutInSession("User", null);
         return Redirect("/");
     }
 
@@ -16,12 +18,17 @@ public class PublicController : AppController
         return View();
     }
     [HttpPost]
-    public IActionResult Login(string password)
+    public IActionResult Login(string? email, string? password)
     {
-        if (password == "123")
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password)) return RedirectToAction("Login");
+        var pwd = password.MD5();
+        var user = Registry.Current.Users.SelectAll().FirstOrDefault(u => u.Email.ToLower() == email.ToLower() && u.Password == pwd);
+        if (user!=null)
         {
-            PutInSession("Admin", "Admin");
-            return Redirect("/Admin/");
+            PutInSession("User", user);
+            if (user.IsAdmin) return Redirect("/Admin/");
+            return Redirect("/Partner/");
+
         }
         return RedirectToAction("Login");
     }

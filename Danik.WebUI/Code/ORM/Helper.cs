@@ -13,6 +13,7 @@ public static class Helper
     public static Guid ToGuid(this string input) => new Guid(input);
     public static Guid MD5(this string input)
     {
+        if (string.IsNullOrWhiteSpace(input)) return Guid.Empty;
 #pragma warning disable SYSLIB0021
         var hasher = new MD5CryptoServiceProvider();
 #pragma warning restore SYSLIB0021

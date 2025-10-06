@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Danik.WebUI.Code.ORM
+@model Danik.WebUI.Code.Domain.Template
+@{
     ViewData["Title"] = "Home page";
 }
 
@@ -13,7 +15,7 @@
         <div id="pMain">
             
             <div id="pMain" style="position: absolute; z-index: -1; overflow: hidden"><img style="filter: grayscale(100%);transform: translateX(-50%);" id="imgMain" src="~/img/1.png" /></div>
-            <div><img src="~/img/TV.png" id="imgFrame" style="width: 100%; z-index: 0" /></div>
+            
         </div>
     </div>
 
@@ -30,15 +32,18 @@
 {
     <script>
         var px = 0;
+        var model = @Html.Raw(Model.ToJsonMin());
 
         $(document).ready(function() {
             Init();
+            Draw(model);
         });
 
         function Draw(m) {
+            var html = "";
 
-            mainImg.style.marginTop = (px * 65)  + "px";
-            mainImg.style.marginLeft = (px * 500)  + "px";
+            html += "<div><img src=\"/img/TV.png\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
+            $("#pMain").html(html);
         }
 
         function Init() {

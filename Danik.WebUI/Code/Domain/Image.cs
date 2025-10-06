@@ -8,7 +8,7 @@ namespace Danik.WebUI.Code.Domain;
 
 public enum ImageFolder
 {
-    Portrait, StoreForm, Clipart, UserStoneForm
+    Загруженные_фото, Формы_камней, Клипарт, Пользовательские_формы_камней
 }
 public class Image : DomainObject
 {
@@ -43,7 +43,7 @@ public class Image : DomainObject
         File.WriteAllBytes(Path, data);
     }
 
-    public static Guid Import(byte[] data, string name, ImageFolder folder=ImageFolder.Portrait)
+    public static Guid Import(byte[] data, string name, ImageFolder folder=ImageFolder.Загруженные_фото)
     {
         var img = new Image
         {

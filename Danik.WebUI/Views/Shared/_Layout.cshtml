@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Danik.WebUI.Code.Domain
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,7 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 @{
-    var admin = ViewData["Admin"] != null;
+    var user = (User?)ViewData["User"];
 }
 <body>
 
@@ -22,11 +23,22 @@
             </a> 
             <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
                 <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Wiz/Step1/">Новый заказ</a>
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Admin/">Админ</a>
+                    
                 
-                    @if (admin)
+                    @if (user!=null)
                     {
+                        
+                        <a class="me-3 py-2 link-body-emphasis text-decoration-none text-info" href="/User/Index/">@(user.Email)</a>
+                        @if (user.IsAdmin)
+                        {
+                            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Admin/">Заказы</a>
+                            <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Admin/Gallery/">Галерея</a>
+                        }
                         <a class="me-3 py-2 link-body-emphasis text-decoration-none text-danger" href="/Public/Logout/">Выход</a>
+                    }
+                    else
+                    {
+                        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/Public/Login/">Вход</a>
                     }
                 
             </nav>

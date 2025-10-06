@@ -15,6 +15,7 @@ namespace Danik.WebUI.Code.Domain
             Images = new DataProvider<Image>(config);
             StoneForms = new StoneFormDataProvider(config);
             Templates = new DataProvider<Template>(config);
+            Users = new DataProvider<User>(config);
             Orders = new DataProvider<Order>(config);
             SystemSettings = new SystemSettingsDataProvider(config);
         }
@@ -24,6 +25,7 @@ namespace Danik.WebUI.Code.Domain
         public DataProvider<Order> Orders { get; }
         public SystemSettingsDataProvider SystemSettings { get; }
         public DataProvider<Template> Templates { get; set; }
+        public DataProvider<User> Users { get; set; }
         
     }
 }

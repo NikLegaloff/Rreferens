@@ -41,7 +41,7 @@ public class WizController : AppController
         {
             using var ms = new MemoryStream();
             ownFormFile.CopyTo(ms);
-            var imgId = Image.Import(ms.ToArray(), ownFormFile.FileName, ImageFolder.UserStoneForm);
+            var imgId = Image.Import(ms.ToArray(), ownFormFile.FileName, ImageFolder.Пользовательские_формы_камней);
             if(order.StoreFormImage!=null) Registry.Current.Images.Delete(order.StoreFormImage.Value);
             order.StoreFormImage = imgId;
         }

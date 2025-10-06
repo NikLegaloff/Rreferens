@@ -13,6 +13,14 @@ public class AdminController : AdmController
     {
         return View(Registry.Current.Orders.Find(id));
     }
+
+    public IActionResult Gallery(ImageFolder folder = ImageFolder.Загруженные_фото)
+    {
+        var images = Registry.Current.Images.SelectAll().Where(i=>i.Folder==folder).ToList();
+        images.Sort((i1, i2) => i2.Date.CompareTo(i1.Date));
+        return View(new GalleryList(images.ToArray(),folder));
+    }
+
     public IActionResult Index(OrderStatus? status=null, string? q=null)
     {
         var selectAll = Registry.Current.Orders.SelectAll().ToList();
