@@ -8,7 +8,7 @@ namespace Danik.WebUI.Code.Domain;
 
 public enum ImageFolder
 {
-    Загруженные_фото, Формы_камней, Клипарт, Пользовательские_формы_камней
+    Загруженные_фото, Формы_камней, Клипарт, Пользовательские_формы_камней, Фоны_шаблонов
 }
 public class Image : DomainObject
 {

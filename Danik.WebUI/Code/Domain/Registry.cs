@@ -13,19 +13,22 @@ namespace Danik.WebUI.Code.Domain
         {
             var config = new Config(Env.Current.DataBasePath);
             Images = new DataProvider<Image>(config);
-            StoneForms = new StoneFormDataProvider(config);
             Templates = new DataProvider<Template>(config);
             Users = new DataProvider<User>(config);
             Orders = new DataProvider<Order>(config);
+            TemplateBgImages = new TemplateBgImageDataProvider(config);
+
+            StoneForms = new StoneFormDataProvider(config);
             SystemSettings = new SystemSettingsDataProvider(config);
         }
 
-        public StoneFormDataProvider StoneForms { get; }
         public DataProvider<Image> Images { get; }
         public DataProvider<Order> Orders { get; }
-        public SystemSettingsDataProvider SystemSettings { get; }
         public DataProvider<Template> Templates { get; set; }
         public DataProvider<User> Users { get; set; }
-        
+        public TemplateBgImageDataProvider TemplateBgImages { get; set; }
+
+        public StoneFormDataProvider StoneForms { get; }
+        public SystemSettingsDataProvider SystemSettings { get; }
     }
 }

@@ -15,13 +15,13 @@ public class Template : DomainObject
 
 public class TemplatePortrait
 {
-    public required string URL { get; set; }
+    public required string ImageId { get; set; }
     public required Area Area { get; set; }
 }
 
 public class TemplateImage
 {
-    public required string URL{ get; set; }
+    public required string ImageId{ get; set; }
     public bool IsVert{ get; set; }
     public required Area Area { get; set; }
 }

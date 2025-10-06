@@ -7,20 +7,25 @@ namespace Danik.WebUI.Code.Helpers
         public void Process()
         {
             return;
-            for (int i = 1; i <= 56; i++)
-            {
-                var path = "D:\\Dropbox\\Danik\\Tmp\\V-" + i +".jpg";
-                var sf = new StoneForm(){Type = StoneType.Вертикальный,Persons = 1,SortNumber = i*10,ImageId = Image.Import(File.ReadAllBytes(path),"В 1ч №" + i+".jpg",ImageFolder.Формы_камней)};
-                Registry.Current.StoneForms.Save(sf);
-            }
-           
-            for (int i = 1; i <= 24; i++)
-            {
-                var path = "D:\\Dropbox\\Danik\\Tmp\\H-" + i +".jpg";
-                var sf = new StoneForm(){Type = StoneType.Горизонтальный,Persons = 1,SortNumber = 1000 +i*10,ImageId = Image.Import(File.ReadAllBytes(path),"Г 1ч №" + i + ".jpg", ImageFolder.Формы_камней)};
-                Registry.Current.StoneForms.Save(sf);
-            }
-           
+            string path;
+            path = "J:\\Projects\\Danik\\Danik.WebUI\\wwwroot\\img\\TV.png";
+            var sf = new TemplateBgImage() { Type = StoneType.Вертикальный, ImageId = Image.Import(File.ReadAllBytes(path), "Вертикаль.png", ImageFolder.Фоны_шаблонов) };
+            Registry.Current.TemplateBgImages.Save(sf);
+
+            path = "J:\\Projects\\Danik\\Danik.WebUI\\wwwroot\\img\\TH.png";
+            sf = new TemplateBgImage() { Type = StoneType.Горизонтальный, ImageId = Image.Import(File.ReadAllBytes(path), "Горизонталь.png", ImageFolder.Фоны_шаблонов) };
+            Registry.Current.TemplateBgImages.Save(sf);
+
+            path = "J:\\Projects\\Danik\\Danik.WebUI\\wwwroot\\img\\TS2.png";
+            sf = new TemplateBgImage() { Type = StoneType.Сплит,Persons = 2,ImageId = Image.Import(File.ReadAllBytes(path), "Сплит 2.pmg", ImageFolder.Фоны_шаблонов) };
+            Registry.Current.TemplateBgImages.Save(sf);
+
+            path = "J:\\Projects\\Danik\\Danik.WebUI\\wwwroot\\img\\TS3.png";
+            sf = new TemplateBgImage() { Type = StoneType.Сплит,Persons = 3,ImageId = Image.Import(File.ReadAllBytes(path), "Сплит 3.pmg", ImageFolder.Фоны_шаблонов) };
+            Registry.Current.TemplateBgImages.Save(sf);
+
+
+
         }
 
     }

@@ -33,7 +33,7 @@
     {
         <div class="col-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1 mb-3">
             <a href="@img.URL" target="_blank">
-                <img src="@img.TMB" style="width: 100%; "/>
+                <img src="@(Model.Folder==ImageFolder.Загруженные_фото? img.TMB : img.URL)" style="width: 100%; " />
             </a>
             <div class="mt-2 text-center" style="overflow-x: hidden;">
                 <b>@img.Name</b>  <br />
