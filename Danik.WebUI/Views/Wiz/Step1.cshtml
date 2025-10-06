@@ -15,7 +15,7 @@
     }
     .stoneType a {
         display: inline-block;
-        margin: 1rem;
+        margin: 2rem;
     }
 </style>
 
@@ -92,7 +92,7 @@
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Выберите вариант формы камня</h1>
                             <button type="button" id="btnCloseSF" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-center">
                             @for (StoneType st = StoneType.Вертикальный; st <= StoneType.Сплит; st++)
                             {
                                 <div class="stoneType stoneType@((int)st)">
