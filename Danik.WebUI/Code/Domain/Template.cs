@@ -6,7 +6,7 @@ public class Template : DomainObject
 {
     public StoneType Type{ get; set; }
     public int Persons{ get; set; }
-    public Guid? BgImage { get; set; }
+    public Guid BgImageId { get; set; }
     
     public required TemplatePortrait[] Portraits { get; set; }
     public required TemplateImage[] Images { get; set; }

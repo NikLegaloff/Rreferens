@@ -31,24 +31,30 @@
 @section Scripts
 {
     <script>
-        var px = 0;
         var model = @Html.Raw(Model.ToJsonMin());
 
         $(document).ready(function() {
             Init();
-            Draw(model);
         });
+
+
+        function Init() {
+            px = document.getElementById("pMain").clientWidth / 1000;
+            Draw(model);
+        }
+
+        // COMMON CODE
+        var px = 0;
 
         function Draw(m) {
             var html = "";
 
-            html += "<div><img src=\"/img/TV.png\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
+            html += "<div><img src=\"" + GetURL(m.BgImageId) + "\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
             $("#pMain").html(html);
         }
 
-        function Init() {
-            px = document.getElementById("pMain").clientWidth / 1000;
-        }
+        function GetURL(id) { return "/Images/GetImage/" + id ; };
+
 
     </script>
 }

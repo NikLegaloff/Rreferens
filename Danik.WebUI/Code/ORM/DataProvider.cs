@@ -25,7 +25,8 @@ public class DataProvider<T> where T : DomainObject
         if (!File.Exists(BasePath + id)) return null;
         try
         {
-            var subj = JsonConvert.DeserializeObject<T>(File.ReadAllText(BasePath + id));
+            var readAllText = File.ReadAllText(BasePath + id);
+            var subj = JsonConvert.DeserializeObject<T>(readAllText);
             subj.Id = id;
             _identityMap.TryAdd(id, subj); 
             return subj;

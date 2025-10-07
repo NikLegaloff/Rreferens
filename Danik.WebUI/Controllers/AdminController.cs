@@ -9,6 +9,10 @@ public class AdminController : AdmController
 {
 
 
+    public IActionResult TemplateBgImage()
+    {
+        return View(Registry.Current.TemplateBgImages.SelectAll());
+    }
     public IActionResult OrderView(Guid id)
     {
         return View(Registry.Current.Orders.Find(id));

@@ -212,13 +212,7 @@
                 }
             }
         }
-
-        function SelectStone(id, url) {
-            var html = '<input type="hidden" name="stoneFormId" value="' + id + '"/><img src="' + url + '" style="max-width:200px;max-height:200px;"/>';
-            document.getElementById('pForm').innerHTML = html;
-            $("#btnCloseSF").click();
-        }
-
+        
         function SetVert(isVert, t) {
             document.getElementById('sSize1').innerHTML = isVert ? "40 x 80" : "80 x 40";
             document.getElementById('sSize2').innerHTML = isVert ? "50 x 100" : "100 x 50";
@@ -229,7 +223,21 @@
             $(".stoneType" + t).show();
         }
 
+        function SelectStone(id, url) {
+            var html = '<input type="hidden" name="stoneFormId" value="' + id + '"/><img src="' + url + '" style="max-width:200px;max-height:200px;"/>';
+            document.getElementById('pForm').innerHTML = html;
+            $("#btnCloseSF").click();
+        }
+
         ColChange(@Model.Persons);
         SetVert(@(Model.Type == Type.Вертикальный || Model.Type == Type.Сплит ? "true" : "false"), @((int)Model.Type));
+        @if (Model.StoneForm != null)
+        {
+            var sf = Registry.Current.StoneForms.Find((Guid)Model.StoneForm);
+            var sfi = Registry.Current.Images.Find(sf.ImageId);
+            <text>
+                SelectStone('@sf.Id','@sfi.URL');
+            </text>
+        }
     </script>
 }

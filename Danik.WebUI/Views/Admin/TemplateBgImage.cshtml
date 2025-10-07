@@ -1,0 +1,30 @@
+﻿@using Danik.WebUI.Code.Domain
+@model TemplateBgImage[]
+@{
+    ViewData["Title"] = "Галлерея";
+}
+
+<style>
+
+    </style>
+
+<div class="row mt-4">
+    @foreach (var tbi in Model)
+    {
+        var img = Registry.Current.Images.Find(tbi.ImageId);
+        <div class="col-3 mb-3">
+            <a href="@img.URL" target="_blank">
+                <img src="@(img.URL)" style="width: 100%; border: solid 1px #ccc;" />
+            </a>
+            <div class="mt-2 text-center" style="overflow-x: hidden;">
+                <b>@tbi.Type</b>  @(tbi.Persons==null ? "":(tbi.Persons + "чел"))
+            </div>
+        </div>
+    }
+</div>
+
+    @section Scripts
+{
+    <script>
+    </script>
+}

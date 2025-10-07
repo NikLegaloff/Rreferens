@@ -117,7 +117,7 @@ public class WizController : AppController
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
-        return View();
+        return View(Registry.Current.Templates.SelectAll().First());
     }
     // -------------- STEP 5 ----------------
     [HttpGet]

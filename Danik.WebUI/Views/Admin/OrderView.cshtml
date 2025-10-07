@@ -39,6 +39,8 @@
                 <input type="text" value="@Model.Options?.SizeStr" readonly class="form-control" />
             </div>
         </div>
+
+
         <div class="row">
             <div class="col">
                 <label>Толщина:</label>
@@ -49,6 +51,15 @@
                 <input type="text" value="@Model.Options?.OwnSize" readonly class="form-control" />
             </div>
         </div>
+        @if (Model.StoneForm != null)
+        {
+            var sf = Registry.Current.StoneForms.Find((Guid)Model.StoneForm);
+            var sfi = Registry.Current.Images.Find(sf.ImageId);
+            <div class="mt-2">
+                <label>Форма камня:</label><br />
+                <a target="_blank" href="@sfi.URL"><img src="@sfi.TMB" /></a>
+            </div>
+        }
         <h4 class="mt-3">Конакты</h4>
         <div class="row">
             <div class="col">
