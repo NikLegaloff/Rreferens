@@ -53,10 +53,12 @@
                 </div>
                 <div class="mt-3 text-center" style="overflow-x: hidden;">
                     <label>@if (Image.Editable.Contains(Model.Folder)) { <input type="checkbox" value="@img.Id" name="img"/> }
-                    <b>@img.Name</b>
-                    </label><br />
-                    <span>@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
-                    <div onclick="this.select()" style="font-size: 10px;" >@img.Id</div>
+                        <b>@img.Name</b>
+                    </label>
+                    <div class="opacity-50">
+                        <span>@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
+                        <div onclick="this.select()" style="font-size: 10px;" >@img.Id</div>
+                    </div>
                 </div>
             </div>
         }

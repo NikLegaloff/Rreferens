@@ -5,7 +5,8 @@
 @{
     ViewData["Title"] = "Home page";
     var isNew = Model.PersonInfos==null || Model.PersonInfos.Length == 0;
-    var allSf = Registry.Current.StoneForms.SelectAll();
+    var allSf = Registry.Current.StoneForms.SelectAll().ToList();
+    allSf.Sort();
 }
 <style>
     .stone{  border-radius: 10px 10px 0 0; cursor: pointer; }

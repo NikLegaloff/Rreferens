@@ -11,7 +11,20 @@ public class WizController : AppController
     [HttpGet]
     public IActionResult Step1(Guid? id)
     {
-        var order = id != null ? Registry.Current.Orders.Find(id.Value) : new Order(){Number = "",Persons = 1,Type = StoneType.Вертикальный,Options = new OrderOptions{Size = 40}};
+        Order? order;
+        if (id != null)
+            order = Registry.Current.Orders.Find(id.Value);
+        else
+        {
+            var stoneForms = Registry.Current.StoneForms.SelectAll().ToList();
+            stoneForms.Sort();
+            order = new Order()
+            {
+                Number = "", Persons = 1, Type = StoneType.Вертикальный,
+                StoneForm = stoneForms.FirstOrDefault(f => f.Type == StoneType.Вертикальный)?.Id,
+                Options = new OrderOptions { Size = 40 }
+            };
+        }
         return View(order);
     }
     [HttpPost]
