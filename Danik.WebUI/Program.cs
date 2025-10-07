@@ -1,9 +1,12 @@
 using System.Net;
-using Danik.WebUI.Code.Domain;
 using Danik.WebUI.Code.Helpers;
-using Danik.WebUI.Code.ORM;
 using Danik.WebUI.Controllers;
 using Microsoft.AspNetCore.Diagnostics;
+
+
+// new QuickJob().Process();
+// return;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +19,7 @@ builder.Services.AddSession(options =>
         options.Cookie.IsEssential = true;
 });
 
-//new QuickJob().Process();
+
 
 
 var app = builder.Build();
