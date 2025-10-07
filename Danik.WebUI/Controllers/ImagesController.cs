@@ -1,4 +1,4 @@
-using Danik.WebUI.Code.Domain;
+using Danik.WebUI.Code;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Danik.WebUI.Controllers;

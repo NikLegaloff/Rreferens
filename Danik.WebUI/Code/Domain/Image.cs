@@ -8,10 +8,12 @@ namespace Danik.WebUI.Code.Domain;
 
 public enum ImageFolder
 {
-    Загруженные_фото, Формы_камней, Клипарт, Пользовательские_формы_камней, Фоны_шаблонов
+    Загруженные_фото, Формы_камней, Клипарт_верт, Пользовательские_формы_камней, Фоны_шаблонов,
+    Клипарт_гориз
 }
 public class Image : DomainObject
 {
+    public static ImageFolder[] Editable => [ImageFolder.Формы_камней, ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз];
     public static string GetURL(Guid id) => $"/Images/GetImage/{id}";
     public static string GetTmb(Guid id) => $"/Images/GetTmb/{id}";
 

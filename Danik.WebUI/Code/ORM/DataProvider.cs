@@ -73,7 +73,7 @@ public class DataProvider<T> where T : DomainObject
     public void Delete(Guid id)
     {
         if (_identityMap.ContainsKey(id)) _identityMap.Remove(id,out _);
-        if (File.Exists(BasePath + id)) return;
+        if (!File.Exists(BasePath + id)) return;
         Find(id)?.OnDelete();
         File.Delete(BasePath + id);
     }

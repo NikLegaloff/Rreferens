@@ -11,9 +11,9 @@
 {
 
 
-    <div class="alert alert-light" role="alert">
+    <div class="alert alert-light mt-2" role="alert">
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-3 col-8 mt-2">
                 <select name="folder" onchange="$('#btnSearch').click();" class="form-select">
                     @foreach (var s in Enum.GetNames(typeof(ImageFolder)))
                     {
@@ -22,29 +22,61 @@
                     }
                 </select>
             </div>
-            <div class="col-auto">
+            <div class="col-md-3 col-4 mt-2">
                 <input type="submit" id="btnSearch" value="Показать" class="btn btn-primary w-100"/>
             </div>
+            @if (Image.Editable.Contains(Model.Folder))
+            {
+                <div class="col-md-3 col-6 mt-2">
+                <input type="submit" name="action" onclick="return confirm('Удалить выбранные?')" value="Удалить" class="btn btn-danger w-100"/>
+            </div>
+                <div class="col-md-3 col-6 mt-2">
+                    <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Загрузить фото
+                    </button>
+                </div>
+            }
         </div>
     </div>
-}
-<div class="row mt-2 pt-4" style="background-color: @(Model.Folder == ImageFolder.Загруженные_фото ?  "#fff":"#aaa"); border-radius: 1rem;">
-    @foreach (var img in Model.Images)
-    {
-        <div class="col-6 col-md-4 col-lg-3 col-xl-2 col-xxl-2 mb-3 text-center">
-            <a href="@img.URL" target="_blank">
-                <img src="@(Model.Folder==ImageFolder.Загруженные_фото? img.TMB : img.URL)" style="max-width: 100%; max-height: 250px; " />
-            </a>
-            <div class="mt-2 text-center" style="overflow-x: hidden;">
-                <b>@img.Name</b>  <br />
-                <span>@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
-                <div onclick="this.select()" style="font-size: 10px;" >@img.Id</div>
+
+    <div class="row mt-2 pt-4" style="background-color: @(Model.Folder == ImageFolder.Загруженные_фото ?  "#fff":"#aaa"); border-radius: 1rem;">
+        @foreach (var img in Model.Images)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2 col-xxl-2 mb-3 text-center">
+                <a href="@img.URL" target="_blank">
+                    <img src="@(Model.Folder==ImageFolder.Загруженные_фото? img.TMB : img.URL)" style="max-width: 100%; max-height: 250px; " />
+                </a>
+                <div class="mt-2 text-center" style="overflow-x: hidden;">
+                    <label>@if (Image.Editable.Contains(Model.Folder)) { <input type="checkbox" value="@img.Id" name="img"/> }
+                    <b>@img.Name</b>
+                    </label><br />
+                    <span>@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
+                    <div onclick="this.select()" style="font-size: 10px;" >@img.Id</div>
+                </div>
             </div>
+        }
+    </div>
+}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("GalleryUpload", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Загрузка фото</h1>
+                    <button type="button" id="btnCloseSF" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" name="files" accept="image/png, image/jpeg" multiple class="form-control" />
+                    <div class="mt-2"><input type="submit" value="Загрузить в @(Model.Folder.ToString().Replace("_"," "))" class="btn btn-primary"/></div>
+                    <input type="hidden" name="folder" value="@((int)Model.Folder)" />
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
 
-    @section Scripts
+@section Scripts
 {
     <script>
     </script>

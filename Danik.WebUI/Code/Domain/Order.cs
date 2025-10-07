@@ -40,6 +40,9 @@ public class Order : DomainObject
 
     public PersonInfo[]? PersonInfos{ get; set; }
     public string? Epitaph { get; set; }
+    public TemplateData? TemplateData { get; set; }
+
+
 
     public Guid[]? ExampleImages { get; set; }
     public OrderOptions Options { get; set; } = new();
