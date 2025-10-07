@@ -21,7 +21,6 @@ public class WizController : AppController
             order = new Order()
             {
                 Number = "", Persons = 1, Type = StoneType.Вертикальный,
-                StoneForm = stoneForms.FirstOrDefault(f => f.Type == StoneType.Вертикальный)?.Id,
                 Options = new OrderOptions { Size = 40 }
             };
         }
