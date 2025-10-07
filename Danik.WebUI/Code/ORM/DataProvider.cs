@@ -21,7 +21,7 @@ public class DataProvider<T> where T : DomainObject
 
     public T? Find(Guid id)
     {
-        if (_identityMap.TryGetValue(id, out var find)) return find;
+        //if (_identityMap.TryGetValue(id, out var find)) return find;
         if (!File.Exists(BasePath + id)) return null;
         try
         {

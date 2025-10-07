@@ -38,6 +38,7 @@
             <div class="mt-2 text-center" style="overflow-x: hidden;">
                 <b>@img.Name</b>  <br />
                 <span class="text-secondary">@img.Date.ToShortDateString() &nbsp; <i>@(img.Size / 1024)kb</i></span>
+                <div onclick="this.select()" style="font-size: 10px;" class="text-secondary">@img.Id</div>
             </div>
         </div>
     }

@@ -30,12 +30,13 @@
                         <div class="col"><input type="number" required name="info[@i].Dead" class="form-control" value="@p.Dead" /></div>
                         </div>
                     </div>
-                <div class="mt-1">Эпитафия<textarea name="info[@i].Epitaph" rows="3" class="form-control">@p.Epitaph</textarea></div>
+                
                 <div class="mt-1">Примечание к фото<textarea rows="5" name="info[@i].Comment" class="form-control">@p.Comment</textarea></div>
 
                 </div>
                 i++;
             }
+        <div class="mt-2">Эпитафия<textarea name="Epitaph" rows="3" class="form-control">@Model.Epitaph</textarea></div>
 
             <div class="mt-4">
                 <a class="btn btn-primary" href="/Wiz/Step1/@Model.Id">Назад</a>

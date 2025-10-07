@@ -1,25 +1,25 @@
 ﻿@using Danik.WebUI.Code.ORM
-@model Danik.WebUI.Code.Domain.Template
+@model WizStep4
 @{
     ViewData["Title"] = "Home page";
 }
 
 <style>
-    .layer {
+    .Portrait { width: 100%;}
+    .Layer {
         transform: translate(-50%,-50%);
         position: absolute;
+        color: #fff;
     }
 </style>
-<div class="row">
-    <div class="col-md-8">
+<div class="row mt-4">
+    <div class="col-12">
         <div id="pMain">
-            
-            <div id="pMain" style="position: absolute; z-index: -1; overflow: hidden"><img style="filter: grayscale(100%);transform: translateX(-50%);" id="imgMain" src="~/img/1.png" /></div>
             
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 d-none">
 
         <div class="mb-2"><input type="submit" class="btn btn-sm btn-primary w-100" value="OK" /></div>
     </div>
@@ -31,7 +31,8 @@
 @section Scripts
 {
     <script>
-        var model = @Html.Raw(Model.ToJsonMin());
+        var template = @Html.Raw(Model.Template.Data.ToJsonMin());
+        var order = @Html.Raw(Model.Order);
 
         $(document).ready(function() {
             Init();
@@ -40,7 +41,7 @@
 
         function Init() {
             px = document.getElementById("pMain").clientWidth / 1000;
-            Draw(model);
+            Draw(template);
         }
 
         // COMMON CODE
@@ -49,11 +50,27 @@
         function Draw(m) {
             var html = "";
 
+            m.Portraits.forEach(function(o, i) {
+                html += AddLayer(o, "<img src='" + GetURL(o.ImageId) + "' class='Portrait'>");
+            });
+
+            m.Texts.forEach(function(o, i) {
+                html += AddLayer(o, "<div style='text-align:" + o.AlignStr + "; font-size:" + GetPx(o.Size) + "; " + (o.Bold ? "font-weight:bold":"") + "'>" + o.Text + "</div>");
+            });
+
+
             html += "<div><img src=\"" + GetURL(m.BgImageId) + "\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
             $("#pMain").html(html);
         }
 
-        function GetURL(id) { return "/Images/GetImage/" + id ; };
+        function GetURL(id) { return "/Images/GetImage/" + id; };
+
+        function GetPx(i) {return px*i + "px"}
+
+        function AddLayer(subj, html) {
+            console.log(subj);
+            return "<div id='Layer" + subj.Num + "' style='z-index: " + subj.Num + ";width:" + GetPx(subj.Area.W) + "; margin-left:" + GetPx(subj.Area.X) + "; margin-top:" + GetPx(subj.Area.Y) + "'  class='Layer'>" + html + "</div>";
+        };
 
 
     </script>

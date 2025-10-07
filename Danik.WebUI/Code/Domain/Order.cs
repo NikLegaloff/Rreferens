@@ -35,11 +35,13 @@ public class Order : DomainObject
     
 
     public Guid? TemplateId{ get; set; }
+
     public Guid[]? PortraitImages{ get; set; }
+
     public PersonInfo[]? PersonInfos{ get; set; }
+    public string? Epitaph { get; set; }
 
-    public Guid[]? ExampleImages{ get; set; }
-
+    public Guid[]? ExampleImages { get; set; }
     public OrderOptions Options { get; set; } = new();
 }
 
@@ -56,10 +58,11 @@ public class PersonInfo
     public string F{ get; set; }
     public string I{ get; set; }
     public string O{ get; set; }
-    public string Comment{ get; set; }
+    
     public string Birth{ get; set; }
     public string Dead{ get; set; }
-    public string Epitaph { get; set; }
+
+    public string Comment { get; set; }
 
 }
 public class OrderOptions

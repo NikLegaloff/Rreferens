@@ -24,20 +24,27 @@ public class WizController : AppController
                 Type = type, 
                 Date = DateTime.Now, 
                 Status = OrderStatus.Создаётся,
-                Options =
-                {
-                    Size = ddlSize
-                },
+                Options = new OrderOptions()
             };
         else
             order = Registry.Current.Orders.Find(id);
         if (order == null) throw new BusinessException("Order not found ");
+        var changeTemplate = order.Type != type || order.Persons != count;
+
         order.Type = type;
         order.Persons = count;
+        
         order.Options.Size = ddlSize;
         order.StoneForm=stoneFormId;
+        
+        if (order.TemplateId==null || changeTemplate)
+        {
+            var template = Registry.Current.Templates.SelectAll().FirstOrDefault(t => t.Type == type && t.Persons == count);
+            if (template == null) throw new BusinessException("No template for this type and persons count");
+            order.TemplateId = template.Id;
+        }
 
-        if (ownFormFile != null && ownFormFile.Length > 0)
+        if (ownFormFile is { Length: > 0 })
         {
             using var ms = new MemoryStream();
             ownFormFile.CopyTo(ms);
@@ -65,7 +72,7 @@ public class WizController : AppController
         Registry.Current.Orders.Save(order);
 
         return RedirectToAction("Step3",new {order.Id });
-       // return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
+        // return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
     }
 
     // -------------- STEP 2 ----------------
@@ -103,11 +110,12 @@ public class WizController : AppController
     }
 
     [HttpPost]
-    public IActionResult Step3(Guid id, PersonInfo[] info)
+    public IActionResult Step3(Guid id, PersonInfo[] info, string? epitaph=null)
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
         order.PersonInfos = info;
+        order.Epitaph = epitaph;
         Registry.Current.Orders.Save(order);
         return RedirectToAction("Step5",new {id});
     }
@@ -116,7 +124,7 @@ public class WizController : AppController
     public IActionResult Step4(Guid id)
     {
         var order = Registry.Current.Orders.Find(id);
-        if (order == null) throw new Exception("Order not found ");
+       // if (order == null) throw new Exception("Order not found ");
         return View(Registry.Current.Templates.SelectAll().First());
     }
     // -------------- STEP 5 ----------------
