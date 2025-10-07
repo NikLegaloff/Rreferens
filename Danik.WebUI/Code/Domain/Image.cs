@@ -13,7 +13,7 @@ public enum ImageFolder
 }
 public class Image : DomainObject
 {
-    public static ImageFolder[] Editable => [ImageFolder.Формы_камней, ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз];
+    public static ImageFolder[] Editable => [ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз];
     public static string GetURL(Guid id) => $"/Images/GetImage/{id}";
     public static string GetTmb(Guid id) => $"/Images/GetTmb/{id}";
 
