@@ -39,10 +39,12 @@
             }
         <div class="mt-2">Эпитафия<textarea name="Epitaph" rows="3" class="form-control">@Model.Epitaph</textarea></div>
 
-            <div class="mt-4">
-                <a class="btn btn-primary" href="/Wiz/Step1/@Model.Id">Назад</a>
-                <input type="submit" class="btn btn-primary" value="Дальше"/>
-            </div>
+        <div class="mt-4 row">
+            <div class="col-xxl-2 col-4"><a class="btn btn-secondary w-100" href="/Wiz/Step1/@Model.Id">Назад</a></div>
+            <div class="col-xxl-4 col-8"><input type="submit" class="btn btn-primary w-100" value="Дальше" /></div>
+            
+            
+        </div>
     </div>
     
 }
