@@ -33,14 +33,13 @@ public class Order : DomainObject
     public Contact? Contact { get; set; }
     public string? Comment { get; set; }
     
+    public OrderTemplateData? TemplateData { get; set; }
+    
 
     public Guid? TemplateId{ get; set; }
 
     public Guid[]? PortraitImages{ get; set; }
 
-    public PersonInfo[]? PersonInfos{ get; set; }
-    public string? Epitaph { get; set; }
-    public TemplateData? TemplateData { get; set; }
 
 
 
@@ -49,6 +48,13 @@ public class Order : DomainObject
 }
 
 
+public class OrderTemplateData
+{
+    public PersonInfo[]? PersonInfos { get; set; }
+    public string? Epitaph { get; set; }
+    public TemplateData? Template { get; set; }
+
+}
 public class Contact
 {
     public required string Name { get; set; }

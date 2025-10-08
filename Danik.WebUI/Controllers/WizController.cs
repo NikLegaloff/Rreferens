@@ -137,8 +137,8 @@ public class WizController : AppController
     public IActionResult Step4(Guid id)
     {
         var order = Registry.Current.Orders.Find(id);
-       // if (order == null) throw new Exception("Order not found ");
-        return View(Registry.Current.Templates.SelectAll().First());
+        if (order == null) throw new Exception("Order not found ");
+        return View(new WizStep4(order, Registry.Current.Templates.SelectAll().First()));
     }
     // -------------- STEP 5 ----------------
     [HttpGet]

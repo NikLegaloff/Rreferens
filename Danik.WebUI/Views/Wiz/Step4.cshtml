@@ -1,5 +1,5 @@
 ﻿@using Danik.WebUI.Code.ORM
-@model WizStep4
+@model Danik.WebUI.Code.Domain.OrderTemplateData
 @{
     ViewData["Title"] = "Home page";
 }
@@ -31,8 +31,8 @@
 @section Scripts
 {
     <script>
-        var template = @Html.Raw(Model.Template.Data.ToJsonMin());
-        var order = @Html.Raw(Model.Order);
+        var template = @Html.Raw(Model.ToJsonMin());
+
 
         $(document).ready(function() {
             Init();
@@ -50,22 +50,40 @@
         function Draw(m) {
             var html = "";
 
-            m.Portraits.forEach(function(o, i) {
+            var template = structuredClone(m.Template);
+            FillTemplate(template, m.PersonInfos, m.Epitaph);
+            template.Portraits.forEach(function(o, i) {
                 html += AddLayer(o, "<img src='" + GetURL(o.ImageId) + "' class='Portrait'>");
             });
 
-            m.Texts.forEach(function(o, i) {
-                html += AddLayer(o, "<div style='text-align:" + o.AlignStr + "; font-size:" + GetPx(o.Size) + "; " + (o.Bold ? "font-weight:bold":"") + "'>" + o.Text + "</div>");
+            template.Texts.forEach(function(o, i) {
+                html += AddLayer(o, "<div style='text-align:" + o.AlignStr + "; font-size:" + GetPx(o.Size) + "; " + (o.Bold ? "font-weight:bold" : "") + "'>" + o.Text + "</div>");
             });
 
 
-            html += "<div><img src=\"" + GetURL(m.BgImageId) + "\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
+            html += "<div><img src=\"" + GetURL(template.BgImageId) + "\" id=\"imgBack\" style=\"width: 100%; z-index: 0\" /></div>";
             $("#pMain").html(html);
+        }
+
+        function FillTemplate(t, pis, epitaph) {
+            for (var i = 0; i < pis.length; i++) {
+                var pi = pis[i];
+                t.Portraits[i].ImageId = pi.ImageId;
+                for (var j = 0; j < t.Texts; j++) {
+                    var ttx = t.Texts[j];
+                    ttx.Text = ttx.Text.replace("{фамилия" + i+1 + "}",pi.F);
+                    ttx.Text = ttx.Text.replace("{имя" + i+1 + "}",pi.I);
+                    ttx.Text = ttx.Text.replace("{отчество" + i+1 + "}",pi.O);
+                    ttx.Text = ttx.Text.replace("{датар" + i+1 + "}",pi.Birth);
+                    ttx.Text = ttx.Text.replace("{датас" + i+1 + "}",pi.Dead);
+                    ttx.Text = ttx.Text.replace("{эпитафия}",epitaph);
+                }
+            }
         }
 
         function GetURL(id) { return "/Images/GetImage/" + id; };
 
-        function GetPx(i) {return px*i + "px"}
+        function GetPx(i) { return px * i + "px" }
 
         function AddLayer(subj, html) {
             console.log(subj);
