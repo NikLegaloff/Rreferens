@@ -12,15 +12,9 @@
         color: #fff;
     }
 </style>
-<div class="row mt-4">
-    <div class="col-lg-8 mb-2">
-        <div id="pMain">
-            
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-      <div id="pEditorPersons">
+<div class="row ">
+    <div class="col-md-6 order-2  order-md-1 mt-4">
+        <div id="pEditorPersons">
 
         </div>
         <div class="row mt-4">
@@ -28,6 +22,13 @@
             <div class="col-8"><a class="btn btn-primary w-100" href="javascript:Save()">Дальше</a></div>
         </div>
     </div>
+
+    <div class="col-md-6 order-1 order-md-2 mt-4 ">
+        <div id="pMain">
+
+        </div>
+    </div>
+
 
 </div>
 
@@ -64,6 +65,12 @@
             px = document.getElementById("pMain").clientWidth / 1000;
             DrawEditor();
             Draw(template);
+            // on window resize call Draw(template);
+            $(window).on("resize", function() {
+                px = document.getElementById("pMain").clientWidth / 1000;
+                Draw(template);
+            });
+
         }
 
 // COMMON CODE
