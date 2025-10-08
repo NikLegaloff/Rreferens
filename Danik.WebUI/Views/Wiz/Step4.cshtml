@@ -13,14 +13,17 @@
     }
 </style>
 <div class="row mt-4">
-    <div class="col-md-8">
+    <div class="col-lg-8">
         <div id="pMain">
             
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-lg-4">
         <h4>Редактирование</h4>
+        <div id="pEditorPersons">
+
+        </div>
         <div class="mt-4"><a class="btn btn-sm btn-primary w-100" href="/Wiz/Step5/@Model.Id">Продолжить</a></div>
     </div>
 
@@ -33,18 +36,37 @@
     <script>
         var template = @Html.Raw(Model.TemplateData.ToJsonMin());
         var orderId = '@Html.Raw(Model.Id)';
-        
+
         $(document).ready(function() {
             Init();
         });
-        
+
         function Init() {
             px = document.getElementById("pMain").clientWidth / 1000;
+            DrawEditor(template);
             Draw(template);
         }
 
         // COMMON CODE
         var px = 0;
+
+        function DrawEditor(m) {
+            for (var i = 0; i <  m.PersonInfos.length; i++) {
+                var pi =  m.PersonInfos[i];
+                var html = "<div class='mb-2' id='person" + i + "'>";
+                if(m.PersonInfos.length>1) html += "<div><b>Персона " + (i + 1) + "</b></div>";
+
+                html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='form-control' value='" + pi.F + "'/></div>";
+                html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='form-control' value='" + pi.I + "'/></div>";
+                html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='form-control' value='" + pi.O + "'/></div>";
+                html += "<div class='row'>";
+                html += "<div class='col-6 mt-1'>Дата рождения<input type='text' id='p" + i + "b' class='form-control' value='" + pi.Birth + "'/></div>";
+                html += "<div class='col-6 mt-1'>Дата смерти<input type='text' id='p" + i + "d' class='form-control' value='" + pi.Dead + "'/></div>";
+                html += "</div>";
+                html += "</div>";
+                $("#pEditorPersons").html(html);
+            }
+        }
 
         function Draw(m) {
             var html = "";
@@ -65,23 +87,23 @@
         }
 
         function FillTemplate(t, pis, epitaph) {
-           // console.log(pis);
+            // console.log(pis);
             for (var i = 0; i < pis.length; i++) {
                 var pi = pis[i];
                 t.Portraits[i].ImageId = pi.ImageId;
                 for (var j = 0; j < t.Texts.length; j++) {
                     var ttx = t.Texts[j];
                     console.log(ttx.Text);
-                    ttx.Text = ttx.Text.replace("{фамилия" + (i+1) + "}",pi.F);
-                    ttx.Text = ttx.Text.replace("{имя" + (i+1) + "}",pi.I);
-                    ttx.Text = ttx.Text.replace("{отчество" + (i+1) + "}",pi.O);
-                    ttx.Text = ttx.Text.replace("{датар" + (i+1) + "}",pi.Birth);
-                    ttx.Text = ttx.Text.replace("{датас" + (i+1) + "}",pi.Dead);
-                    ttx.Text = ttx.Text.replace("{эпитафия}",epitaph.replace('\n',"<br/>").replace('\n',"<br/>").replace('\n',"<br/>").replace('\n',"<br/>").replace('\n',"<br/>"));
+                    ttx.Text = ttx.Text.replace("{фамилия" + (i + 1) + "}", pi.F);
+                    ttx.Text = ttx.Text.replace("{имя" + (i + 1) + "}", pi.I);
+                    ttx.Text = ttx.Text.replace("{отчество" + (i + 1) + "}", pi.O);
+                    ttx.Text = ttx.Text.replace("{датар" + (i + 1) + "}", pi.Birth);
+                    ttx.Text = ttx.Text.replace("{датас" + (i + 1) + "}", pi.Dead);
+                    ttx.Text = ttx.Text.replace("{эпитафия}", epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
                     console.log(ttx.Text);
                 }
             }
-           // console.log(t);
+            // console.log(t);
 
         }
 
@@ -90,7 +112,7 @@
         function GetPx(i) { return px * i + "px" }
 
         function AddLayer(subj, html) {
-            
+
             return "<div id='Layer" + subj.Num + "' style='z-index: " + subj.Num + ";width:" + GetPx(subj.Area.W) + "; margin-left:" + GetPx(subj.Area.X) + "; margin-top:" + GetPx(subj.Area.Y) + "'  class='Layer'>" + html + "</div>";
         };
 

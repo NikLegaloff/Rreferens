@@ -92,10 +92,8 @@
             <thead>
             <tr>
                 <th>Фото</th>
-                <th>ФИО</th>
-                <th>Даты</th>
+                <th>ФИО / Даты</th>
                 <th>Комментарий</th>
-                <th>Эпитафия</th>
             </tr>
             </thead>
             <tbody>
@@ -104,8 +102,11 @@
                 var img = Registry.Current.Images.Find(p.ImageId);
                 <tr>
                     <td><a href="@img.URL"><img src="@img.TMB"/></a></td>
-                    <td>@p.F @p.I @p.O</td>
-                    <td>@p.Birth - @p.Dead</td>
+                    <td>
+                        @p.F @p.I @p.O
+                        <div class="mt-2">@p.Birth - @p.Dead</div>
+                    </td>
+                    
                     <td>@p.Comment</td>
                 </tr>
             }
@@ -117,27 +118,32 @@
         <span>Нет</span>
     }
 </div>
+<div class="row">
+    <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
 
-<div class="mt-3">
-    Эпитафия: <br />
-    @Model.TemplateData.Epitaph
-</div>
-<div class="mt-3">
-    <h4>Свои примеры</h4>
-    @if (Model.ExampleImages != null && Model.ExampleImages.Length > 0)
-    {
-        
-        @foreach (var img in Model.ExampleImages)
-        {
-                var i = Registry.Current.Images.Find(img);
-            <div><a href="@i.URL"><img src="@i.TMB" /></a></div>
-        }
-        
-    }
-    else
-    {
-        <span>Нет</span>
-    }
+
+        <div class="mt-3">
+            Эпитафия: <br />
+            <textarea readonly="readonly" rows="5" class="form-control">@Model.TemplateData.Epitaph</textarea>
+        </div>
+        <div class="mt-3">
+            <h4>Свои примеры</h4>
+            @if (Model.ExampleImages != null && Model.ExampleImages.Length > 0)
+            {
+                
+                @foreach (var img in Model.ExampleImages)
+                {
+                        var i = Registry.Current.Images.Find(img);
+                    <div><a href="@i.URL"><img src="@i.TMB" /></a></div>
+                }
+                
+            }
+            else
+            {
+                <span>Нет</span>
+            }
+        </div>
+    </div>
 </div>
 
 @section Scripts
