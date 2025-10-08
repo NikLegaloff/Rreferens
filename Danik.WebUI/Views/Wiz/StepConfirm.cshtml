@@ -55,11 +55,12 @@
             <p>Телефон: @Model.Contact?.Phone</p>
             <p>Комментарий<br />@Model.Comment</p>
             <input type="hidden" name="id" class="form-control" value="@Model.Id"/>
-
-            <div class="mt-4 row">
-                <div class="col-4"><a class="btn btn-secondary w-100" href="/Wiz/Step5/@Model.Id">Назад</a></div>
-                <div class="col-8"><a class="btn btn-primary w-100" href="/Wiz/DoConfirm/@Model.Id">Всё верно, оформляем</a></div>
-            </div>
+            @if(Model.Status==OrderStatus.Создаётся){
+                <div class="mt-4 row">
+                    <div class="col-4"><a class="btn btn-secondary w-100" href="/Wiz/Step5/@Model.Id">Назад</a></div>
+                    <div class="col-8"><a class="btn btn-primary w-100" href="/Wiz/DoConfirm/@Model.Id">Всё верно, оформляем</a></div>
+                </div>
+            }
         </div>
     </div>
     
