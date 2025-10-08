@@ -4,7 +4,7 @@
 @model Danik.WebUI.Code.Domain.Order
 @{
     ViewData["Title"] = "Home page";
-    var isNew = Model.PersonInfos==null || Model.PersonInfos.Length == 0;
+    var isNew = Model.TemplateData.PersonInfos==null || Model.TemplateData.PersonInfos.Length == 0;
     var allSf = Registry.Current.StoneForms.SelectAll().ToList();
     allSf.Sort();
 }

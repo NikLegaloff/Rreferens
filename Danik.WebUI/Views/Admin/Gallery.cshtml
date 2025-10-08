@@ -42,7 +42,7 @@
         </div>
     </div>
     
-    <div class="row mt-2 pt-4 @(Image.Editable.Contains(Model.Folder) ? "blackBg":"")" style="border-radius: 1rem;">
+    <div class=" @(Image.Editable.Contains(Model.Folder) ? "blackBg":"") row mt-2 pt-4" style="border-radius: 1rem;">
         @foreach (var img in Model.Images)
         {
             <div class="col-6 col-md-4 col-lg-3 col-xl-2 col-xxl-2 mb-3 text-center">
@@ -62,7 +62,8 @@
                 </div>
             </div>
         }
-    </div>
+    
+     </div>
 }
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -14,6 +14,12 @@ public class AdminController : AdmController
     {
         return View(Registry.Current.TemplateBgImages.SelectAll());
     }
+
+    public IActionResult OrderDelete(Guid id)
+    {
+        Registry.Current.Orders.Delete(id);
+        return RedirectToAction("Index");
+    }
     public IActionResult OrderView(Guid id)
     {
         return View(Registry.Current.Orders.Find(id));

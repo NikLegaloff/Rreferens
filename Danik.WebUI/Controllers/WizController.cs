@@ -55,6 +55,7 @@ public class WizController : AppController
             var template = Registry.Current.Templates.SelectAll().FirstOrDefault(t => t.Type == type && t.Persons == count);
             if (template == null) throw new BusinessException("No template for this type and persons count");
             order.TemplateId = template.Id;
+            order.TemplateData.Template=template.Data;
         }
 
         if (ownFormFile is { Length: > 0 })
@@ -127,10 +128,10 @@ public class WizController : AppController
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
-        order.PersonInfos = info;
-        order.Epitaph = epitaph;
+        order.TemplateData.PersonInfos = info;
+        order.TemplateData.Epitaph = epitaph;
         Registry.Current.Orders.Save(order);
-        return RedirectToAction("Step5",new {id});
+        return RedirectToAction("Step4",new {id});
     }
 
     // -------------- STEP 4 ----------------
@@ -138,7 +139,14 @@ public class WizController : AppController
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
-        return View(new WizStep4(order, Registry.Current.Templates.SelectAll().First()));
+       // if (order.TemplateData.Template == null)
+        {
+            var template = Registry.Current.Templates.SelectFor(order).FirstOrDefault();
+            order.TemplateData.Template = template?.Data;
+            order.TemplateId= template?.Id;
+            Registry.Current.Orders.Save(order);
+        }
+        return View(order);
     }
     // -------------- STEP 5 ----------------
     [HttpGet]

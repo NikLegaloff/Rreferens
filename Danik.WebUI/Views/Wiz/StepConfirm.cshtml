@@ -29,7 +29,7 @@
             <p>Размер: @Model.Options.SizeStr</p>
             
 
-            @foreach (var p in Model.PersonInfos)
+            @foreach (var p in Model.TemplateData.PersonInfos)
             {
                 var img = Registry.Current.Images.Find(p.ImageId);
                 <div class="mt-2 text-center">

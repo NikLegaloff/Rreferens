@@ -56,15 +56,16 @@
             
             <td>
                 @("x" + order.Persons) @order.Type.ToString().Substring(0,4) @order.Options.SizeStr
-                <div>@(order.PersonInfos==null ? "Нет": order.PersonInfos.Length)  фото</div>
+                <div>@(order.TemplateData.PersonInfos==null ? "Нет": order.TemplateData.PersonInfos.Length)  фото</div>
             </td>
             <td class="d-none d-md-block">
                 @order.Contact?.Name @order.Contact?.Phone<br />
                 @order.Contact?.Email
             </td>
             <td class="text-end">
-                <a class="btn btn-primary mt-1" href="/Admin/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a  class="btn btn-primary mt-1" href="/Wiz/Step1/@order.Id"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-sm btn-primary mt-1" href="/Admin/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a class="btn btn-sm btn-primary mt-1" href="/Wiz/Step1/@order.Id"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-sm btn-danger mt-1" onclick="return confirm('Удалить заказ? Действие нельзя будет отменить')" href="/Admin/OrderDelete/@order.Id"><i class="fa fa-times"></i></a>
         </tr>
     }
 </table>

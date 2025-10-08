@@ -32,19 +32,24 @@ public class Order : DomainObject
 
     public Contact? Contact { get; set; }
     public string? Comment { get; set; }
-    
-    public OrderTemplateData? TemplateData { get; set; }
-    
 
-    public Guid? TemplateId{ get; set; }
+    public Guid? TemplateId { get; set; }
+    public OrderTemplateData TemplateData { get; set; } = new ();
+    
 
     public Guid[]? PortraitImages{ get; set; }
-
-
-
-
     public Guid[]? ExampleImages { get; set; }
+    
     public OrderOptions Options { get; set; } = new();
+
+    public override void OnDelete()
+    {
+        if (PortraitImages != null) foreach (var imgId in PortraitImages) Registry.Current.Images.Delete(imgId);
+        if (StoreFormImage != null) Registry.Current.Images.Delete(StoreFormImage.Value);
+        if (ExampleImages != null) foreach (var imgId in ExampleImages) Registry.Current.Images.Delete(imgId);
+
+        base.OnDelete();
+    }
 }
 
 
