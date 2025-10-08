@@ -13,7 +13,7 @@
 {
     <h4>Детали заказа</h4>
     <div class="row">
-    <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
+    <div class="mt-2 col-xxl-4 col-lg-6 col-sm-8">
         <input type="hidden" name="id" class="form-control" value="@Model.Id"/>
         <h5>Свои примеры</h5>
         <div>Загрузите ваши фотографии или фото из сети с примерами которые вам нравятся.</div>
@@ -29,9 +29,9 @@
                 <textarea type="text" class="form-control" style="height: 6rem" name="data.Comment">@Model.Comment</textarea>
         </div>
 
-        <div class="mt-4">
-            <a class="btn btn-primary" href="/Wiz/Step3/?orderid=@Model.Id">Назад</a>
-            <input type="submit" class="btn btn-primary" value="Дальше"/>
+        <div class="mt-4 row">
+                <div class="col-4"><a class="btn btn-secondary w-100" href="/Wiz/Step4/@Model.Id">Назад</a></div>
+                <div class="col-8"><input type="submit" class="btn btn-primary w-100" value="Дальше" /></div>
         </div>
     </div>
     </div>

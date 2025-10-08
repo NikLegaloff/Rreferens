@@ -13,18 +13,21 @@
     }
 </style>
 <div class="row mt-4">
-    <div class="col-lg-8">
+    <div class="col-lg-8 mb-2">
         <div id="pMain">
             
         </div>
     </div>
 
     <div class="col-lg-4">
-        <h4>Редактирование</h4>
-        <div id="pEditorPersons">
+      <div id="pEditorPersons">
 
         </div>
-        <div class="mt-4"><a class="btn btn-sm btn-primary w-100" href="/Wiz/Step5/@Model.Id">Продолжить</a></div>
+        <div class="row mt-4">
+            <div class="col-4"><a class="btn btn-secondary  w-100" href="/Wiz/Step1/@Model.Id">Назад</a></div>
+            <div class="col-8"><a class="btn btn-primary w-100" href="javascript:Save()">Продолжить</a></div>
+            
+        </div>
     </div>
 
 </div>
@@ -41,31 +44,67 @@
             Init();
         });
 
+        function Save() {
+            // save template to server to /Wiz/Step4Save
+            
+            $.ajax({
+                type: "POST",
+                url: "/Wiz/Step4Save",
+                data: { id: orderId, json: JSON.stringify(template) },
+                success: function(response) {
+                    window.location = "/Wiz/Step5/" + orderId;
+                },
+                error: function(xhr, status, error) {
+                    alert("Ошибка сохранения данных");
+                }
+            });
+            
+        }
+
         function Init() {
             px = document.getElementById("pMain").clientWidth / 1000;
-            DrawEditor(template);
+            DrawEditor();
             Draw(template);
         }
 
-        // COMMON CODE
+// COMMON CODE
         var px = 0;
 
-        function DrawEditor(m) {
-            for (var i = 0; i <  m.PersonInfos.length; i++) {
-                var pi =  m.PersonInfos[i];
-                var html = "<div class='mb-2' id='person" + i + "'>";
-                if(m.PersonInfos.length>1) html += "<div><b>Персона " + (i + 1) + "</b></div>";
-
-                html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='form-control' value='" + pi.F + "'/></div>";
-                html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='form-control' value='" + pi.I + "'/></div>";
-                html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='form-control' value='" + pi.O + "'/></div>";
+        function DrawEditor() {
+            var html = "";
+            for (var i = 0; i < template.PersonInfos.length; i++) {
+                var pi = template.PersonInfos[i];
+                html += "<div class='mb-2' id='person" + i + "'>";
+                html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F + "'/></div>";
+                html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
+                html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
+                html += "<div class='mt-1'>Годы жизни";
                 html += "<div class='row'>";
-                html += "<div class='col-6 mt-1'>Дата рождения<input type='text' id='p" + i + "b' class='form-control' value='" + pi.Birth + "'/></div>";
-                html += "<div class='col-6 mt-1'>Дата смерти<input type='text' id='p" + i + "d' class='form-control' value='" + pi.Dead + "'/></div>";
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi form-control' value='" + pi.Birth + "'/></div>";
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
                 html += "</div>";
                 html += "</div>";
-                $("#pEditorPersons").html(html);
+                html += "</div>";
             }
+            html += "<div class='mt-2'>Эпитафия<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
+
+            $("#pEditorPersons").html(html);
+            // on change fields with class pi call Draw Editor
+            $(".pi").on("input",
+                function() {
+                    for (var i = 0; i < template.PersonInfos.length; i++) {
+                        var pi = template.PersonInfos[i];
+                        pi.F = $("#p" + i + "f").val();
+                        pi.I = $("#p" + i + "i").val();
+                        pi.O = $("#p" + i + "o").val();
+                        pi.Birth = $("#p" + i + "b").val();
+                        pi.Dead = $("#p" + i + "d").val();
+                    }
+                    template.Epitaph = $("#epitaph").val();
+                    Draw(template);
+                });
+
+
         }
 
         function Draw(m) {
@@ -87,7 +126,6 @@
         }
 
         function FillTemplate(t, pis, epitaph) {
-            // console.log(pis);
             for (var i = 0; i < pis.length; i++) {
                 var pi = pis[i];
                 t.Portraits[i].ImageId = pi.ImageId;
@@ -99,12 +137,10 @@
                     ttx.Text = ttx.Text.replace("{отчество" + (i + 1) + "}", pi.O);
                     ttx.Text = ttx.Text.replace("{датар" + (i + 1) + "}", pi.Birth);
                     ttx.Text = ttx.Text.replace("{датас" + (i + 1) + "}", pi.Dead);
-                    ttx.Text = ttx.Text.replace("{эпитафия}", epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
+                    ttx.Text = ttx.Text.replace("{эпитафия}", epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
                     console.log(ttx.Text);
                 }
             }
-            // console.log(t);
-
         }
 
         function GetURL(id) { return "/Images/GetImage/" + id; };

@@ -20,6 +20,12 @@ public static class Helper
         return new Guid(hasher.ComputeHash(Encoding.Default.GetBytes(input)));
     }
 
+    public static T? ToSubj<T>(this string json)
+    {
+        return JsonConvert.DeserializeObject<T>(json);
+    }
+
+
     public static string? ToMinJSON<T>(this T? subj, bool typeNameHandle = false, bool ignoreDefaults = true)
     {
         if (subj == null) return null;

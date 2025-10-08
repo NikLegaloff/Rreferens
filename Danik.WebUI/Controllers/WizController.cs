@@ -1,5 +1,6 @@
 using Danik.WebUI.Code;
 using Danik.WebUI.Code.Domain;
+using Danik.WebUI.Code.ORM;
 using Danik.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +57,16 @@ public class WizController : AppController
             if (template == null) throw new BusinessException("No template for this type and persons count");
             order.TemplateId = template.Id;
             order.TemplateData.Template=template.Data;
+        }
+
+        if (order.TemplateData.PersonInfos == null || order.TemplateData.PersonInfos.Length != count)
+        {
+            var infos = new PersonInfo[count];
+            for (int i = 0; i < count; i++)
+            {
+                infos[i] = order.TemplateData.PersonInfos!=null && i<order.TemplateData.PersonInfos.Length ? order.TemplateData.PersonInfos[i] : new PersonInfo();
+            }
+            order.TemplateData.PersonInfos = infos;
         }
 
         if (ownFormFile is { Length: > 0 })
@@ -139,7 +150,7 @@ public class WizController : AppController
     {
         var order = Registry.Current.Orders.Find(id);
         if (order == null) throw new Exception("Order not found ");
-       // if (order.TemplateData.Template == null)
+        if (order.TemplateData.Template == null)
         {
             var template = Registry.Current.Templates.SelectFor(order).FirstOrDefault();
             order.TemplateData.Template = template?.Data;
@@ -148,6 +159,19 @@ public class WizController : AppController
         }
         return View(order);
     }
+
+    [HttpPost]
+    public IActionResult Step4Save(Guid id, string json)
+    {
+        var data = json.ToSubj<OrderTemplateData>();
+        var order = Registry.Current.Orders.Find(id);
+        if (order == null) throw new Exception("Order not found ");
+        if (data == null) throw new Exception("Data is null");
+        order.TemplateData = data;
+        Registry.Current.Orders.Save(order);
+        return RedirectToAction("Step5", new { id });
+    }
+
     // -------------- STEP 5 ----------------
     [HttpGet]
     public IActionResult Step5(Guid id)
