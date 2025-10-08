@@ -25,8 +25,7 @@
         </div>
         <div class="row mt-4">
             <div class="col-4"><a class="btn btn-secondary  w-100" href="/Wiz/Step1/@Model.Id">Назад</a></div>
-            <div class="col-8"><a class="btn btn-primary w-100" href="javascript:Save()">Продолжить</a></div>
-            
+            <div class="col-8"><a class="btn btn-primary w-100" href="javascript:Save()">Дальше</a></div>
         </div>
     </div>
 
@@ -109,11 +108,11 @@
 
         function Draw(m) {
             var html = "";
-
             var template = structuredClone(m.Template);
             FillTemplate(template, m.PersonInfos, m.Epitaph);
+            console.log(template);
             template.Portraits.forEach(function(o, i) {
-                html += AddLayer(o, "<img src='" + GetURL(o.ImageId) + "' class='Portrait'>");
+                html += AddLayer(o, "<img src='" + GetURL(m.PersonInfos[i].ImageId) + "' class='Portrait'>");
             });
 
             template.Texts.forEach(function(o, i) {
@@ -128,17 +127,15 @@
         function FillTemplate(t, pis, epitaph) {
             for (var i = 0; i < pis.length; i++) {
                 var pi = pis[i];
-                t.Portraits[i].ImageId = pi.ImageId;
+                //t.Portraits[i].ImageId = pi.ImageId;
                 for (var j = 0; j < t.Texts.length; j++) {
                     var ttx = t.Texts[j];
-                    console.log(ttx.Text);
                     ttx.Text = ttx.Text.replace("{фамилия" + (i + 1) + "}", pi.F);
                     ttx.Text = ttx.Text.replace("{имя" + (i + 1) + "}", pi.I);
                     ttx.Text = ttx.Text.replace("{отчество" + (i + 1) + "}", pi.O);
                     ttx.Text = ttx.Text.replace("{датар" + (i + 1) + "}", pi.Birth);
                     ttx.Text = ttx.Text.replace("{датас" + (i + 1) + "}", pi.Dead);
                     ttx.Text = ttx.Text.replace("{эпитафия}", epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
-                    console.log(ttx.Text);
                 }
             }
         }

@@ -23,7 +23,7 @@
         </div>
     }
     <div class="row">
-        <div class="mt-2 col-xxl-3 col-lg-4 col-sm-6">
+        <div class="mt-2 col-xxl-4 col-lg-6 col-sm-8">
             <h4>Заказ #@Model.Number</h4>
             <p>Ориентация: @(Model.Type)</p>
             <p>Размер: @Model.Options.SizeStr</p>
@@ -56,10 +56,9 @@
             <p>Комментарий<br />@Model.Comment</p>
             <input type="hidden" name="id" class="form-control" value="@Model.Id"/>
 
-            <div class="mt-4">
-                <a class="btn btn-secondary" href="/Wiz/Step5/Model.Id">Назад</a>
-                <a class="btn btn-primary" href="/Wiz/DoConfirm/@Model.Id">Всё верно, подтверждаю заказ</a>
-                
+            <div class="mt-4 row">
+                <div class="col-4"><a class="btn btn-secondary w-100" href="/Wiz/Step5/@Model.Id">Назад</a></div>
+                <div class="col-8"><a class="btn btn-primary w-100" href="/Wiz/DoConfirm/@Model.Id">Всё верно, оформляем</a></div>
             </div>
         </div>
     </div>

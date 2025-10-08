@@ -38,7 +38,7 @@ public class WizController : AppController
                 Type = type, 
                 Date = DateTime.Now, 
                 Status = OrderStatus.Создаётся,
-                Options = new OrderOptions()
+                Options = new OrderOptions(),
             };
         else
             order = Registry.Current.Orders.Find(id);
@@ -58,13 +58,21 @@ public class WizController : AppController
             order.TemplateId = template.Id;
             order.TemplateData.Template=template.Data;
         }
-
+        
         if (order.TemplateData.PersonInfos == null || order.TemplateData.PersonInfos.Length != count)
         {
             var infos = new PersonInfo[count];
             for (int i = 0; i < count; i++)
             {
-                infos[i] = order.TemplateData.PersonInfos!=null && i<order.TemplateData.PersonInfos.Length ? order.TemplateData.PersonInfos[i] : new PersonInfo();
+                infos[i] = order.TemplateData.PersonInfos!=null && i<order.TemplateData.PersonInfos.Length ? order.TemplateData.PersonInfos[i] : 
+                    new PersonInfo
+                    {
+                        F = "",
+                        I = "",
+                        O = "",
+                        Birth = "",
+                        Dead = "",
+                    };
             }
             order.TemplateData.PersonInfos = infos;
         }
@@ -92,11 +100,16 @@ public class WizController : AppController
             if(order.PortraitImages!=null) foreach (var imId in order.PortraitImages) Registry.Current.Images.Delete(imId);
                 
             order.PortraitImages = images.ToArray();
+            for (int i = 0; i < order.PortraitImages.Length && i < count; i++)
+            {
+                order.TemplateData.PersonInfos[i].ImageId = order.PortraitImages[i];
+            }
+
         }
 
         Registry.Current.Orders.Save(order);
 
-        return RedirectToAction("Step3",new {order.Id });
+        return RedirectToAction("Step4",new {order.Id });
         // return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
     }
 

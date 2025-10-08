@@ -56,7 +56,7 @@ public class Order : DomainObject
 public class OrderTemplateData
 {
     public PersonInfo[]? PersonInfos { get; set; }
-    public string? Epitaph { get; set; }
+    public string Epitaph { get; set; } = "";
     public TemplateData? Template { get; set; }
 
 }
