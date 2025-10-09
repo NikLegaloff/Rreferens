@@ -7,7 +7,7 @@
     :root{--handle-size:15px}
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;margin:16px;background:#f7f7f7;color:#111}
     .wrap{max-width:900px;margin:0 auto}
-    .stage{position:relative;display:inline-block;touch-action:none;user-select:none;border-radius:6px;overflow:hidden;background:#222}
+    .stage{position:relative;display:inline-block;touch-action:none;user-select:none;border-radius:6px;overflow:hidden;}
     img.img-to-crop{display:block;max-width:75%;height:auto;width:100%;-webkit-user-drag:none}
 
 
@@ -43,26 +43,27 @@
     @@media (max-width:600px){:root{--handle-size:22px}}
 </style>
 
-<div class="wrap">
-    <h2>Выделение портрета</h2>
-    <p>Перетащите рамку чтобы переместить, тащите за углы чтобы изменить размер.</p>
+<div class="row">
+    <div class="col-xxl-6 col-lg-8 col-sm-12">
+        <h2>Выделение портрета</h2>
+        <p>Перетащите рамку чтобы переместить, тащите за углы чтобы изменить размер.</p>
 
-    <div id="stage" class="stage" style="margin: 0 auto;">
-        <img id="photo" class="img-to-crop" src="@Model.ImageUrl" alt="photo" crossorigin="anonymous">
+        <div id="stage" class="stage" style="margin: 0 auto;">
+            <img id="photo" class="img-to-crop" src="@Model.Image.URL" alt="photo" crossorigin="anonymous">
+        </div>
+
+
+        <div class="controls">
+            <button class="btn btn-secondary" id="btn-reset">Сбросить</button>
+            
+            <button class="btn btn-secondary d-none" id="btn-rot-left">⟲ Повернуть -90°</button>
+            <button class="btn btn-secondary d-none" id="btn-rot-right">⟳ Повернуть +90°</button>
+            <!--
+            <a class="btn btn-primary" id="btn-crop" href="/Wiz/Step3/">Дальше</a>
+            -->
+            <button class="btn btn-primary" id="btn-crop">Дальше</button>
+        </div>
     </div>
-
-
-    <div class="controls">
-        <button class="btn btn-secondary" id="btn-reset">Сбросить</button>
-        <button class="btn btn-secondary" id="btn-rot-left">⟲ Повернуть -90°</button>
-        <button class="btn btn-secondary" id="btn-rot-right">⟳ Повернуть +90°</button>
-        <a class="btn btn-primary" id="btn-crop" href="/Wiz/Step3/">Дальше</a>
-        
-        <!--<button class="btn btn-primary" id="btn-crop">Дальше</button>-->
-    </div>
-
-
-    <div class="preview" id="previewArea"></div>
 </div>
 
 @section Scripts
@@ -73,7 +74,6 @@
           const stage = document.getElementById('stage');
           const btnCrop = document.getElementById('btn-crop');
           const btnReset = document.getElementById('btn-reset');
-          const previewArea = document.getElementById('previewArea');
           const btnRotLeft = document.getElementById('btn-rot-left');
           const btnRotRight = document.getElementById('btn-rot-right');
 
@@ -256,28 +256,18 @@
               const sw = selRect.width * scaleX;
               const sh = selRect.height * scaleY;
 
-              const canvas = document.createElement('canvas');
-              canvas.width = Math.round(sw);
-              canvas.height = Math.round(sh);
-              const ctx = canvas.getContext('2d');
-
-              ctx.save();
-              ctx.translate(canvas.width/2, canvas.height/2);
-              ctx.rotate(rotation * Math.PI/180);
-              ctx.translate(-canvas.width/2, -canvas.height/2);
-              ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-              ctx.restore();
-
-              previewArea.innerHTML = '';
-              const outImg = document.createElement('img');
-              outImg.style.maxWidth = '100%';
-              outImg.src = canvas.toDataURL('image/png');
-              previewArea.appendChild(outImg);
-              const a = document.createElement('a');
-              a.href = outImg.src; a.download = 'portrait.png';
-              a.textContent = 'Скачать кадр';
-              a.style.display = 'inline-block'; a.style.marginLeft = '12px';
-              previewArea.appendChild(a);
+              // send coordinates to server /Wiz/Step3 using $.ajax
+                $.ajax({
+                    type: "POST",
+                    url: "/Wiz/Step3/",
+                    data: { id: '@Model.Order.Id', imageId:'@Model.Image.Id', x: Math.round(sx), y: Math.round(sy), w: Math.round(sw), h: Math.round(sh) },
+                    success: function(response) {
+                        window.location = response;
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Ошибка сохранения данных");
+                    }
+                });
           });
 
           btnReset.addEventListener('click', ()=>{

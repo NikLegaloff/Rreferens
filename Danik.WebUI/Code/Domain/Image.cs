@@ -9,13 +9,14 @@ namespace Danik.WebUI.Code.Domain;
 public enum ImageFolder
 {
     Загруженные_фото, Формы_камней, Клипарт_верт, Пользовательские_формы_камней, Фоны_шаблонов,
-    Клипарт_гориз
+    Клипарт_гориз, Служебные, Портреты
 }
 public class Image : DomainObject
 {
-    public static ImageFolder[] Editable => [ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз];
+    public static ImageFolder[] Editable => [ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз,ImageFolder.Служебные];
     public static string GetURL(Guid id) => $"/Images/GetImage/{id}";
     public static string GetTmb(Guid id) => $"/Images/GetTmb/{id}";
+    public static Guid MaskImageId = new Guid("c312e8f6-78b1-4c67-b964-cffbc27b3f23");
 
     public required ImageFolder Folder { get; set; }
     public required DateTime Date { get; set; }

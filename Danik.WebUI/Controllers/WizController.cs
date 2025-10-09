@@ -3,6 +3,10 @@ using Danik.WebUI.Code.Domain;
 using Danik.WebUI.Code.ORM;
 using Danik.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using Image = Danik.WebUI.Code.Domain.Image;
 
 
 namespace Danik.WebUI.Controllers;
@@ -109,8 +113,8 @@ public class WizController : AppController
 
         Registry.Current.Orders.Save(order);
 
-        return RedirectToAction("Step4",new {order.Id });
-        // return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
+        //return RedirectToAction("Step4",new {order.Id });
+         return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
     }
 
     // -------------- STEP 2 ----------------
@@ -122,19 +126,55 @@ public class WizController : AppController
         if (image == null) throw new Exception("Image not found ");
         if (order== null) throw new Exception("Order not found ");
 
-        return View(new WizStep2(order,imageId, image.URL));
+        return View(new WizStep2(order,image));
     }
 
     
     [HttpPost]
-    public IActionResult Step2(Guid id, Guid imageId, int x, int y, int w, int h, int r)
+    public IActionResult Step2(Guid id, Guid imageId, int x, int y, int w, int h)
     {
         var order = Registry.Current.Orders.Find(id);
         var image = Registry.Current.Images.Find(imageId);
         if (image == null) throw new Exception("Image not found ");
         if (order == null) throw new Exception("Order not found ");
+        if (order.PortraitImages == null) throw new Exception("Order has no images");
+        var list = order.PortraitImages.ToList();
+        var index = list.IndexOf(id);
 
-        return RedirectToAction("Step3", new { order.Id});
+        using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(image.Path);
+        img.Mutate(ctx => ctx.Crop(new Rectangle(x, y, w, h)));
+        // resize to 600x800 
+        img.Mutate(ctx => ctx.Resize(new ResizeOptions
+        {
+            Size = new Size(600, 800),
+            Mode = ResizeMode.Max
+        }));
+        var alphai = Registry.Current.Images.Find(Image.MaskImageId);
+        if (alphai != null)
+        {
+            using var mask = SixLabors.ImageSharp.Image.Load<L8>(alphai.Path);
+            img.Mutate(ctx =>
+            {
+                for (int y = 0; y < img.Height; y++)
+                {
+                    for (int x = 0; x < img.Width; x++)
+                    {
+                        var pixel = img[x, y];
+                        var maskPixel = mask[x, y];
+                        pixel.A = maskPixel.PackedValue;
+                        img[x, y] = pixel;
+                    }
+                }
+            });
+        }
+        
+        using var ms = new MemoryStream();
+        img.SaveAsJpeg(ms);
+        var pid = Image.Import(ms.ToArray(),"Заказ №" + order + "-" + (index+1) + ".jpg",ImageFolder.Портреты);
+        order.TemplateData.PersonInfos[index].ImageId = pid;
+
+        if (index+1==list.Count) return RedirectToAction("Step4", new { order.Id});
+        return RedirectToAction("Step2", new { orderId = order.Id, imageId = list[index + 1] });
     }
 
     // -------------- STEP 3 ----------------
