@@ -1,0 +1,64 @@
+﻿
+@using Danik.WebUI.Code.Domain
+@using Danik.WebUI.Code.ORM
+@model Template
+@{
+    ViewData["Title"] = "Шаблон - редактирование";
+    PersonInfo[] personInfos = new PersonInfo[Model.Persons];
+    for (int i = 0; i < Model.Persons; i++)
+        personInfos[i] = new PersonInfo()
+        {
+            ImageId = new Guid("c36bbb02-ec76-465e-8a8b-0f1ea3af69ee"),
+            F = "Steve",
+            I = "Jobs",
+            O = "Paul",
+            Birth = "11/05/1955",
+            Dead= "12/02/2011"
+        };
+}
+
+<style>
+
+    </style>
+<h3 class="mt-2 text-center">Шаблон @Model.Type x@(Model.Persons)</h3>
+<div class="row mt-4">
+    <div class="col-6">
+        <div id="pMain">
+
+        </div>
+    </div>
+    <div class="col-6">
+        @using (Html.BeginForm("TemplateSave", "Admin", FormMethod.Get))
+        {
+            <input type="hidden" name="id" value="@Model.Id" />
+            <textarea id="tb" onkeyup="Preview()" name="data" rows="25" class="form-control form-control-sm">@Html.Raw(Model.Data.ToJsonMax())</textarea>
+            <input type="submit" value="Сохранить" class="btn btn-primary w-100 mt-4"/>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            Init();
+        });
+        var tt = {
+            "Template": @Html.Raw(Model.Data.ToJsonMin()),
+            "PersonInfos": @Html.Raw(personInfos.ToJsonMin()),
+            "Epitaph": "Blessed are the pure in heart,\r\nfor they shall see God"
+        };
+        var timer = 0;
+        function Preview() {
+            tt.Template = JSON.parse($("#tb").val());
+            if (timer > 0) clearTimeout(timer);
+            timer = setTimeout("Draw(tt);", 300);
+        }
+
+        function Init() {
+            Draw(tt);
+            $(window).on("resize", function() { Draw(tt); });
+        }
+
+    </script>
+}

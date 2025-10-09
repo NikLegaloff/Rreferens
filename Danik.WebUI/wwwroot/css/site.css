@@ -29,3 +29,15 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+
+.Portrait {
+    width: 100%;
+    filter: grayscale(100%);
+}
+
+.Layer {
+    transform: translate(-50%,-50%);
+    position: absolute;
+    color: #fff;
+}
