@@ -57,12 +57,14 @@ public class Image : DomainObject
         };
         Registry.Current.Images.Save(img);
         img.SaveImageData(data);
+        
 
-        SixLabors.ImageSharp.Image.Load(data).Clone(ctx => ctx.Resize(new ResizeOptions
+        var clone = SixLabors.ImageSharp.Image.Load(data).Clone(ctx => ctx.Resize(new ResizeOptions
         {
             Size = new Size(200, 200),
             Mode = ResizeMode.Max
-        })).SaveAsJpeg(img.TmbPath);
+        }));
+        clone.SaveAsJpeg(img.TmbPath);
         return img.Id;
     }
 

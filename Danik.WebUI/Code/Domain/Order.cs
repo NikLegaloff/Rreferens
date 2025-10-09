@@ -47,6 +47,7 @@ public class Order : DomainObject
         if (PortraitImages != null) foreach (var imgId in PortraitImages) Registry.Current.Images.Delete(imgId);
         if (StoreFormImage != null) Registry.Current.Images.Delete(StoreFormImage.Value);
         if (ExampleImages != null) foreach (var imgId in ExampleImages) Registry.Current.Images.Delete(imgId);
+        if (TemplateData?.PersonInfos != null) foreach (var imgId in TemplateData?.PersonInfos) Registry.Current.Images.Delete(imgId.ImageId);
 
         base.OnDelete();
     }

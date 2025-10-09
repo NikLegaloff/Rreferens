@@ -104,17 +104,14 @@ public class WizController : AppController
             if(order.PortraitImages!=null) foreach (var imId in order.PortraitImages) Registry.Current.Images.Delete(imId);
                 
             order.PortraitImages = images.ToArray();
-            for (int i = 0; i < order.PortraitImages.Length && i < count; i++)
-            {
-                order.TemplateData.PersonInfos[i].ImageId = order.PortraitImages[i];
-            }
+
 
         }
 
         Registry.Current.Orders.Save(order);
 
         //return RedirectToAction("Step4",new {order.Id });
-         return RedirectToAction("Step2",new {orderId = order.Id, imageId = order.PortraitImages[0] });
+         return RedirectToAction("Step2",new {order.Id, imageId = order.PortraitImages[0] });
     }
 
     // -------------- STEP 2 ----------------
@@ -139,7 +136,7 @@ public class WizController : AppController
         if (order == null) throw new Exception("Order not found ");
         if (order.PortraitImages == null) throw new Exception("Order has no images");
         var list = order.PortraitImages.ToList();
-        var index = list.IndexOf(id);
+        var index = list.IndexOf(imageId);
 
         using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(image.Path);
         img.Mutate(ctx => ctx.Crop(new Rectangle(x, y, w, h)));
@@ -149,15 +146,15 @@ public class WizController : AppController
             Size = new Size(600, 800),
             Mode = ResizeMode.Max
         }));
-        var alphai = Registry.Current.Images.Find(Image.MaskImageId);
-        if (alphai != null)
+        var aImage = Registry.Current.Images.Find(Image.MaskImageId);
+        if (aImage != null)
         {
-            using var mask = SixLabors.ImageSharp.Image.Load<L8>(alphai.Path);
+            using var mask = SixLabors.ImageSharp.Image.Load<L8>(aImage.Path);
             img.Mutate(ctx =>
             {
-                for (int y = 0; y < img.Height; y++)
+                for (var y = 0; y < img.Height; y++)
                 {
-                    for (int x = 0; x < img.Width; x++)
+                    for (var x = 0; x < img.Width; x++)
                     {
                         var pixel = img[x, y];
                         var maskPixel = mask[x, y];
@@ -169,12 +166,15 @@ public class WizController : AppController
         }
         
         using var ms = new MemoryStream();
-        img.SaveAsJpeg(ms);
-        var pid = Image.Import(ms.ToArray(),"Заказ №" + order + "-" + (index+1) + ".jpg",ImageFolder.Портреты);
+        img.SaveAsPng(ms);
+        var pid = Image.Import(ms.ToArray(),"Заказ №" + order.Number + "-" + (index+1) + ".png",ImageFolder.Портреты);
+        if (order.TemplateData.PersonInfos[index].ImageId!=Guid.Empty) Registry.Current.Images.Delete(order.TemplateData.PersonInfos[index].ImageId);
         order.TemplateData.PersonInfos[index].ImageId = pid;
+        Registry.Current.Orders.Save(order);
 
-        if (index+1==list.Count) return RedirectToAction("Step4", new { order.Id});
-        return RedirectToAction("Step2", new { orderId = order.Id, imageId = list[index + 1] });
+        if (index+1==list.Count) return Json("/Wiz/Step4/"+ order.Id);
+        return Json("/Wiz/Step2/" + order.Id + "?imageId=" + list[index + 1]);
+
     }
 
     // -------------- STEP 3 ----------------
