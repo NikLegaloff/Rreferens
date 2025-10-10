@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="col-6">
-        @using (Html.BeginForm("TemplateSave", "Admin", FormMethod.Get))
+        @using (Html.BeginForm("TemplateSave", "Admin", FormMethod.Post))
         {
             <input type="hidden" name="id" value="@Model.Id" />
             <textarea id="tb" onkeyup="Preview()" name="data" rows="25" class="form-control form-control-sm">@Html.Raw(Model.Data.ToJsonMax())</textarea>
