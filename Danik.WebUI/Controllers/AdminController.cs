@@ -92,7 +92,9 @@ public class AdminController : AdmController
 
     public IActionResult Templates()
     {
-        return View(Registry.Current.Templates.SelectAll());
+        var all = Registry.Current.Templates.SelectAll().ToList();
+        all.Sort();
+        return View(all.ToArray());
     }
 
     public IActionResult TemplateBgImage()

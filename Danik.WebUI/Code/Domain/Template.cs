@@ -2,12 +2,20 @@
 
 namespace Danik.WebUI.Code.Domain;
 
-public class Template : DomainObject
+public class Template : DomainObject, IComparable<Template>
 {
     public StoneType Type{ get; set; }
     public int Persons{ get; set; }
     public TemplateData Data { get; set; }
 
+    public int CompareTo(Template? other)
+    {
+        if (ReferenceEquals(this, other)) return 0;
+        if (other is null) return 1;
+        var typeComparison = Type.CompareTo(other.Type);
+        if (typeComparison != 0) return typeComparison;
+        return Persons.CompareTo(other.Persons);
+    }
 }
 
 public class TemplateData
