@@ -18,6 +18,7 @@ public class AdminController : AdmController
 
     public IActionResult TemplateCreate(StoneType type,int persons)
     {
+        if (type == StoneType.Сплит && persons == 1) throw new BusinessException("Не катит :)");
         var template = Registry.Current.Templates.SelectAll().FirstOrDefault(t=>t.Type==type && t.Persons==persons);
         if (template == null)
         {
@@ -72,7 +73,7 @@ public class AdminController : AdmController
                 {
                     Portraits = pp.ToArray(), 
                     Texts = tt.ToArray(),
-                    BgImageId = Registry.Current.TemplateBgImages.Get(type, persons).Id,
+                    BgImageId = Registry.Current.TemplateBgImages.Get(type, persons).ImageId,
                     Images =
                     [
                         new TemplateImage

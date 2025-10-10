@@ -10,16 +10,27 @@
     </style>
 @using (Html.BeginForm("TemplateCreate", "Admin", FormMethod.Get))
 {
-    <div class="alert alert-light" role="alert">
+    <div class="alert alert-light mt-4" role="alert">
         <div class="row">
             <div class="col-auto">
-                
+                <select name="ензу" class="form-select">
+                    //StoneTypes enum
+                    @foreach (var s in Enum.GetNames(typeof(StoneType)))
+                    {
+                        var st = Enum.Parse<StoneType>(s);
+                        <!option value="@((int)st)">@st</!option>
+                    }
+                </select>
             </div>
             <div class="col-auto">
-                
+                <select name="persons" class="form-select">
+                    <!option value="1">1</!option>
+                    <!option value="2">2</!option>
+                    <!option value="3">3</!option>
+                </select>
             </div>
             <div class="col-auto">
-                
+                <input type="submit" value="Создать/редактировать" class="btn btn-primary"/>
             </div>
         </div>
     </div>
