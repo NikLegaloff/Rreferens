@@ -2,8 +2,10 @@
 
 namespace Danik.WebUI.Code.Domain;
 
+public enum Lang{Ru,Md}
 public class Epitaph : DomainObject, IComparable<Epitaph>
 {
+    public required Lang Lang { get; set; }
     public  int? Persons{ get; set; }
     public  required string Text{ get; set; }
 
@@ -11,8 +13,10 @@ public class Epitaph : DomainObject, IComparable<Epitaph>
     {
         if (ReferenceEquals(this, other)) return 0;
         if (other is null) return 1;
-        var personsComparison = Nullable.Compare(Persons, other.Persons);
-        if (personsComparison != 0) return personsComparison;
+        var res = Lang.CompareTo(other.Lang);
+        if (res != 0) return res;
+         res = Nullable.Compare(Persons, other.Persons);
+        if (res != 0) return res;
         return string.Compare(Text, other.Text, StringComparison.Ordinal);
     }
 }

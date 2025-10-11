@@ -174,9 +174,9 @@ public class AdminController : AdmController
         return RedirectToAction("Epitaphs");
     }
 
-    public IActionResult EpitaphAdd(int? persons,string text)
+    public IActionResult EpitaphAdd(int? persons,string text, Lang lang)
     {
-        var e = new Epitaph() { Text = text, Persons = persons };
+        var e = new Epitaph() { Text = text, Persons = persons,Lang = lang};
         Registry.Current.Epitaphs.Save(e);
         return RedirectToAction("Epitaphs");
     }
