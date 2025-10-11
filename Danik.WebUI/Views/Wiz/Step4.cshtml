@@ -1,11 +1,14 @@
-﻿@using Danik.WebUI.Code.ORM
+﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.ORM
 @model Danik.WebUI.Code.Domain.Order
 @{
     ViewData["Title"] = "Home page";
+    var epp = Registry.Current.Epitaphs.SelectAll().Where(e=>e.IsOkFor(Model)).ToArray();
+    int i = 0;
 }
 
 <style>
-
+    
 </style>
 <div class="row ">
     <div class="col-md-6 order-2  order-md-1 mt-4">
@@ -23,21 +26,45 @@
 
         </div>
     </div>
-
-
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Нажмите на эпитафию</h1>
+                <button type="button" id="btnCloseSF" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @foreach(var e in epp)
+                {
+                    <div class="mt-1">
+                        <pre id="ep@i" style="cursor: pointer;" class="text-primary"  onclick="SetEp($(this).text())">@Html.Raw(e.Text)</pre>
+                    </div>
+                    i++;
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts
 {
     <script>
+
         var template = @Html.Raw(Model.TemplateData.ToJsonMin());
         var orderId = '@Html.Raw(Model.Id)';
 
         $(document).ready(function() {
             Init();
         });
+
+        function SetEp(txt) {
+            $("#epitaph").val(txt);
+            $("#btnCloseSF").click();
+        }
+
         function Init() {
             DrawEditor();
             Draw(template);
@@ -46,7 +73,7 @@
 
         function Save() {
             // save template to server to /Wiz/Step4Save
-            
+
             $.ajax({
                 type: "POST",
                 url: "/Wiz/Step4Save",
@@ -58,45 +85,45 @@
                     alert("Ошибка сохранения данных");
                 }
             });
-            
+
         }
 
 
+        function DrawEditor() {
+            var html = "";
+            for (var i = 0; i < template.PersonInfos.length; i++) {
+                var pi = template.PersonInfos[i];
+                html += "<div class='mb-3' id='person" + i + "'>";
+                html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F + "'/></div>";
+                html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
+                html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
+                html += "<div class='mt-1'>Годы жизни";
+                html += "<div class='row'>";
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi form-control' value='" + pi.Birth + "'/></div>";
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+            }
+                    html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
+            html+="<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
 
-                    function DrawEditor() {
-                    var html = "";
+            $("#pEditorPersons").html(html);
+            // on change fields with class pi call Draw Editor
+            $(".pi").on("input",
+                function() {
                     for (var i = 0; i < template.PersonInfos.length; i++) {
                         var pi = template.PersonInfos[i];
-                        html += "<div class='mb-2' id='person" + i + "'>";
-                        html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F + "'/></div>";
-                        html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
-                        html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
-                        html += "<div class='mt-1'>Годы жизни";
-                        html += "<div class='row'>";
-                        html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi form-control' value='" + pi.Birth + "'/></div>";
-                        html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
+                        pi.F = $("#p" + i + "f").val();
+                        pi.I = $("#p" + i + "i").val();
+                        pi.O = $("#p" + i + "o").val();
+                        pi.Birth = $("#p" + i + "b").val();
+                        pi.Dead = $("#p" + i + "d").val();
                     }
-                    html += "<div class='mt-2'>Эпитафия<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
-
-                    $("#pEditorPersons").html(html);
-                    // on change fields with class pi call Draw Editor
-                    $(".pi").on("input",
-                        function() {
-                            for (var i = 0; i < template.PersonInfos.length; i++) {
-                                var pi = template.PersonInfos[i];
-                                pi.F = $("#p" + i + "f").val();
-                                pi.I = $("#p" + i + "i").val();
-                                pi.O = $("#p" + i + "o").val();
-                                pi.Birth = $("#p" + i + "b").val();
-                                pi.Dead = $("#p" + i + "d").val();
-                            }
-                            template.Epitaph = $("#epitaph").val();
-                            Draw(template);
-                        });
-                }
+                    template.Epitaph = $("#epitaph").val();
+                    Draw(template);
+                });
+        }
 
 // COMMON CODE
 

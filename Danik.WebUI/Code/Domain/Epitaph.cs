@@ -19,4 +19,11 @@ public class Epitaph : DomainObject, IComparable<Epitaph>
         if (res != 0) return res;
         return string.Compare(Text, other.Text, StringComparison.Ordinal);
     }
+
+    public bool IsOkFor(Order order)
+    {
+        if (order.Lang != Lang) return false;
+        if (Persons == null) return true;
+        return order.Persons == 1 ? Persons.Value == 1 : Persons.Value > 1;
+    }
 }

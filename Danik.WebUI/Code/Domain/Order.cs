@@ -19,6 +19,7 @@ public enum OrderStatus
 public class Order : DomainObject
 {
     public Guid? UserId{ get; set; }
+    public Lang Lang{ get; set; }
 
     public required string Number{ get; set; }
     public OrderStatus Status { get; set; }=OrderStatus.Создаётся;

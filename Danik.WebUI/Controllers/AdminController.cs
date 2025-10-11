@@ -165,7 +165,9 @@ public class AdminController : AdmController
 
     public IActionResult Epitaphs()
     {
-        return View(Registry.Current.Epitaphs.SelectAll());
+        var selectAll = Registry.Current.Epitaphs.SelectAll().ToList();
+        selectAll.Sort();
+        return View(selectAll.ToArray());
     }
 
     public IActionResult EpitaphDelete(Guid id)
