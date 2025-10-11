@@ -241,7 +241,7 @@ public class WizController : AppController
 
         order.Contact = data.Contact;
         order.Comment = data.Comment;
-        order.Options = data.Options;
+        //order.Options = data.Options;
 
         var images = new List<Guid>();
         foreach (var file in Request.Form.Files)

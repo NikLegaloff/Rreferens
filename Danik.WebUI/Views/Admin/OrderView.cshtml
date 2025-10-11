@@ -99,7 +99,7 @@
             <tbody>
             @foreach (var p in Model.TemplateData.PersonInfos)
             {
-                var img = Registry.Current.Images.Find(p.ImageId);
+                var img = Registry.Current.Images.Find(p.ImageId) ?? new Image(){Date = DateTime.Now,Folder = ImageFolder.Портреты,Name = ""};
                 <tr>
                     <td><a href="@img.URL"><img src="@img.TMB"/></a></td>
                     <td>
