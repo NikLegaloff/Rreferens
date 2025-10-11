@@ -55,12 +55,12 @@
             }
             
             <td>
-                @("x" + order.Persons) @order.Type.ToString().Substring(0,4) @order.Options.SizeStr
-                <div>@(order.TemplateData.PersonInfos==null ? "Нет": order.TemplateData.PersonInfos.Length)  фото</div>
+                @order.Type @("x" + order.Persons)
+                <div class="fst-italic">@order.Comment</div>
             </td>
             <td class="d-none d-md-block">
-                @order.Contact?.Name @order.Contact?.Phone<br />
-                @order.Contact?.Email
+                @order.Contact?.Name @order.Contact?.Phone
+                <br>@order.Contact?.Email @Html.Raw("&nbsp;")
             </td>
             <td class="text-end">
                 <a class="btn btn-sm btn-primary mt-1" href="/Admin/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>
