@@ -17,6 +17,7 @@ namespace Danik.WebUI.Code
             Templates = new TemplateDataProvider(config);
             Users = new DataProvider<User>(config);
             Orders = new DataProvider<Order>(config);
+            Epitaphs = new DataProvider<Epitaph>(config);
             TemplateBgImages = new TemplateBgImageDataProvider(config);
 
             StoneForms = new StoneFormDataProvider(config);
@@ -25,6 +26,7 @@ namespace Danik.WebUI.Code
 
         public DataProvider<Image> Images { get; }
         public DataProvider<Order> Orders { get; }
+        public DataProvider<Epitaph> Epitaphs { get; }
         public TemplateDataProvider Templates { get; set; }
         public DataProvider<User> Users { get; set; }
         public TemplateBgImageDataProvider TemplateBgImages { get; set; }

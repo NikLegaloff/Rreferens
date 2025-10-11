@@ -162,5 +162,23 @@ public class AdminController : AdmController
         Registry.Current.Templates.Save(template);
         return RedirectToAction("Templates");
     }
+
+    public IActionResult Epitaphs()
+    {
+        return View(Registry.Current.Epitaphs.SelectAll());
+    }
+
+    public IActionResult EpitaphDelete(Guid id)
+    {
+        Registry.Current.Epitaphs.Delete(id);
+        return RedirectToAction("Epitaphs");
+    }
+
+    public IActionResult EpitaphAdd(int? persons,string text)
+    {
+        var e = new Epitaph() { Text = text, Persons = persons };
+        Registry.Current.Epitaphs.Save(e);
+        return RedirectToAction("Epitaphs");
+    }
 }
 
