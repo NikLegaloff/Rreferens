@@ -62,6 +62,8 @@
 
         function SetEp(txt) {
             $("#epitaph").val(txt);
+            template.Epitaph = $("#epitaph").val();
+            Draw(template);
             $("#btnCloseSF").click();
         }
 
