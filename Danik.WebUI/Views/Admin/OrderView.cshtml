@@ -1,5 +1,6 @@
 ﻿@using Danik.WebUI.Code
 @using Danik.WebUI.Code.Domain
+@using Danik.WebUI.Code.ORM
 @model Danik.WebUI.Code.Domain.Order
 @{
     ViewData["Title"] = "Просмотр заказа";
@@ -9,7 +10,6 @@
 
 <div class="row">
     <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
-
         <div class="row">
             <div class="col-4">
                 <label>Номер заказа:</label>
@@ -80,46 +80,35 @@
             <label>Комментарий:</label>
             <textarea readonly class="form-control">@Model.Comment</textarea>
         </div>
+        <h4 class="mt-3">Камень</h4>
 
-    </div>
-</div>
-
-<div class="mt-3">
-    <h4>Персоны</h4>
+        <div class="mt-2" id="pMain"></div>
+        <h4 class="mt-3">Персоны</h4>
+<div class="row">
+    
     @if (Model.TemplateData.PersonInfos != null && Model.TemplateData.PersonInfos.Length > 0)
     {
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Фото</th>
-                <th>ФИО / Даты</th>
-                <th>Комментарий</th>
-            </tr>
-            </thead>
-            <tbody>
+
             @foreach (var p in Model.TemplateData.PersonInfos)
             {
                 var img = Registry.Current.Images.Find(p.ImageId) ?? new Image(){Date = DateTime.Now,Folder = ImageFolder.Портреты,Name = ""};
-                <tr>
-                    <td><a href="@img.URL"><img src="@img.TMB"/></a></td>
-                    <td>
+                <div class="mt-3 col text-center">
+                    <div><a href="@img.URL"><img src="@img.TMB" style="width: 100%;"/></a></div>
+                    <div class="mt-2">
                         @p.F @p.I @p.O
                         <div class="mt-2">@p.Birth - @p.Dead</div>
-                    </td>
-                    
-                    <td>@p.Comment</td>
-                </tr>
+                    </div>
+                    <div class="fst-italic">@p.Comment</div>
+                </div>
             }
-            </tbody>
-        </table>
+
     }
     else
     {
         <span>Нет</span>
     }
 </div>
-<div class="row">
-    <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
+
 
 
         <div class="mt-3">
@@ -149,5 +138,10 @@
 @section Scripts
 {
     <script>
+        var tt = @Html.Raw(Model.TemplateData.ToMinJSON());
+        $(document).ready(function() {
+            Draw(tt);
+            $(window).on("resize", function() { Draw(tt); });
+        });
     </script>
 }
