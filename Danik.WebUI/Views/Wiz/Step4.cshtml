@@ -53,16 +53,23 @@
 {
     <script>
 
-        var template = @Html.Raw(Model.TemplateData.ToJsonMin());
+        var template = @Html.Raw(Model.TemplateData.ToJsonJS());
         var orderId = '@Html.Raw(Model.Id)';
+        var singleEpitaph = @Html.Raw(Model.TemplateData.Template.SingleEpitaph.ToString().ToLower());
+        var curEp="";
 
         $(document).ready(function() {
             Init();
         });
 
         function SetEp(txt) {
-            $("#epitaph").val(txt);
-            template.Epitaph = $("#epitaph").val();
+                    console.log(curEp);
+            $("#epitaph" + curEp).val(txt);
+            if (curEp === "") template.Epitaph = txt;
+            else {
+                console.log(template.PersonInfos[curEp*1]);
+                template.PersonInfos[curEp*1].Epitaph = txt;
+            }
             Draw(template);
             $("#btnCloseSF").click();
         }
@@ -103,13 +110,19 @@
                 html += "<div class='row'>";
                 html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi form-control' value='" + pi.Birth + "'/></div>";
                 html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
+                if (!singleEpitaph) {
+                    html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\"  onclick='curEp=" + i +"' data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
+                    html += "<textarea id='epitaph" + i + "' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
+                }
+
                 html += "</div>";
                 html += "</div>";
                 html += "</div>";
             }
-                    html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
-            html+="<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
-
+            if (singleEpitaph) {
+                html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
+                html += "<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
+            }
             $("#pEditorPersons").html(html);
             // on change fields with class pi call Draw Editor
             $(".pi").on("input",
@@ -121,6 +134,7 @@
                         pi.O = $("#p" + i + "o").val();
                         pi.Birth = $("#p" + i + "b").val();
                         pi.Dead = $("#p" + i + "d").val();
+                        pi.Epitaph = $("#epitaph" + i).val();
                     }
                     template.Epitaph = $("#epitaph").val();
                     Draw(template);

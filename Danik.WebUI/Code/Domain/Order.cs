@@ -78,7 +78,9 @@ public class PersonInfo
     public string Birth{ get; set; }
     public string Dead{ get; set; }
 
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
+    public string Epitaph { get; set; } = "";
+
 
 }
 public class OrderOptions

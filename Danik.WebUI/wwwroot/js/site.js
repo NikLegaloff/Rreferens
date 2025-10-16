@@ -21,6 +21,8 @@ function Draw(m) {
 }
 
 function FillTemplate(t, pis, epitaph) {
+    var se = t.SingleEpitaph;
+    console.log(t);
     for (var i = 0; i < pis.length; i++) {
         var pi = pis[i];
         //t.Portraits[i].ImageId = pi.ImageId;
@@ -31,7 +33,12 @@ function FillTemplate(t, pis, epitaph) {
             ttx.Text = ttx.Text.replace("{отчество" + (i + 1) + "}", pi.O);
             ttx.Text = ttx.Text.replace("{датар" + (i + 1) + "}", pi.Birth);
             ttx.Text = ttx.Text.replace("{датас" + (i + 1) + "}", pi.Dead);
-            ttx.Text = ttx.Text.replace("{эпитафия}", epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
+            if (se)
+                ttx.Text = ttx.Text.replace("{эпитафия}",
+                    epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
+            else {
+                ttx.Text = ttx.Text.replace("{эпитафия" + (i + 1) + "}", pi.Epitaph.replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>").replace('\n', "<br/>"));
+            }
         }
     }
 }

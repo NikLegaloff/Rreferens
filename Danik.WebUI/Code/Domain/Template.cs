@@ -1,4 +1,5 @@
 ﻿using Danik.WebUI.Code.ORM;
+using Newtonsoft.Json;
 
 namespace Danik.WebUI.Code.Domain;
 
@@ -20,6 +21,12 @@ public class Template : DomainObject, IComparable<Template>
 
 public class TemplateData
 {
+    [JsonRequired]
+    public bool SingleEpitaph
+    {
+        get { return Texts.Any(t => t.Text.Contains("{эпитафия}")); }
+    }
+
     public Guid BgImageId { get; set; }
     public required TemplatePortrait[] Portraits { get; set; }
     public TemplateImage[]? Images { get; set; }
