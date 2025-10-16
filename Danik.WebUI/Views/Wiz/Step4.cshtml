@@ -112,7 +112,7 @@
                 html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
                 if (!singleEpitaph) {
                     html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\"  onclick='curEp=" + i +"' data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
-                    html += "<textarea id='epitaph" + i + "' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
+                            html += "<textarea id='epitaph" + i + "' rows='6' class='pi form-control'>" + pi.Epitaph + "</textarea></div>";
                 }
 
                 html += "</div>";
