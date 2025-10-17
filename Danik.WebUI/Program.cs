@@ -48,6 +48,7 @@ app.UseExceptionHandler(exceptionHandlerApp =>
                     break;
                 }
             default:
+                if(lastError!=null) Env.Current.LogError(lastError);
                 context.Response.WriteAsync("<pre>" + lastError + "</pre>");
                 context.Response.StatusCode = 500;
                 break;

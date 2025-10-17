@@ -18,6 +18,14 @@ public class Env
             return "";
         }
     }
+
+    public void LogError(Exception lastError)
+    {
+        var errPath = DataBasePath + "Errors\\";
+        if (!Directory.Exists(errPath)) Directory.CreateDirectory(errPath);
+        var fileName = errPath + DateTime.Now.ToString("yyyyMMdd_HHmmss_fff") + ".log";
+        File.WriteAllText(fileName, lastError.ToString());
+    }
 }
 
 public static class EncryptionHelper
