@@ -56,7 +56,7 @@
         var template = @Html.Raw(Model.TemplateData.ToJsonJS());
         var orderId = '@Html.Raw(Model.Id)';
         var singleEpitaph = @Html.Raw(Model.TemplateData.Template.SingleEpitaph.ToString().ToLower());
-        var curEp="";
+        var curEp = "";
 
         $(document).ready(function() {
             Init();
@@ -97,19 +97,20 @@
 
         }
 
-
+        
         function DrawEditor() {
             var html = "";
             for (var i = 0; i < template.PersonInfos.length; i++) {
                 var pi = template.PersonInfos[i];
                 html += "<div class='mb-3' id='person" + i + "'>";
-                html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F + "'/></div>";
+                        html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F.toUpperCase() + "'/></div>";
                 html += "<div class='mt-1'>Имя<input type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
                 html += "<div class='mt-1'>Отчество<input type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
                 html += "<div class='mt-1'>Годы жизни";
                 html += "<div class='row'>";
-                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi form-control' value='" + pi.Birth + "'/></div>";
-                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi form-control' value='" + pi.Dead + "'/></div>";
+                // Use date-mask class, placeholder and pattern to enforce DD/MM/YYYY
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi date-mask form-control' placeholder='DD/MM/YYYY' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Birth + "'/></div>";
+                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi date-mask form-control' placeholder='DD/MM/YYYY' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Dead + "'/></div>";
                 if (!singleEpitaph) {
                     html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\"  onclick='curEp=" + i +"' data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
                             html += "<textarea id='epitaph" + i + "' rows='6' class='pi form-control'>" + pi.Epitaph + "</textarea></div>";
@@ -139,6 +140,46 @@
                     template.Epitaph = $("#epitaph").val();
                     Draw(template);
                 });
+
+            // attach mask and validation for date inputs
+            function applyDateMask(el) {
+                // on input, allow only digits and insert slashes after DD and MM
+                el.on('input', function () {
+                    var v = $(this).val();
+                    // keep digits only
+                    var digits = v.replace(/\D/g, '').slice(0,8);
+                    var out = '';
+                    if (digits.length >= 2) {
+                        out += digits.substr(0,2);
+                        if (digits.length >= 3) {
+                            out += '/'+digits.substr(2,2);
+                            if (digits.length > 4) {
+                                out += '/'+digits.substr(4);
+                            }
+                        }
+                    } else {
+                        out = digits;
+                    }
+                    $(this).val(out);
+                    // simple live validation class
+                    var re = /^\d{2}\/\d{2}\/\d{4}$/;
+                    if (out.length === 10 && !re.test(out)) {
+                        $(this).addClass('is-invalid');
+                    } else {
+                        $(this).removeClass('is-invalid');
+                    }
+                });
+
+                // on blur, validate full pattern
+                el.on('blur', function () {
+                    var re = /^\d{2}\/\d{2}\/\d{4}$/;
+                    if ($(this).val().length === 0) { $(this).removeClass('is-invalid'); return; }
+                    if (!re.test($(this).val())) $(this).addClass('is-invalid'); else $(this).removeClass('is-invalid');
+                });
+            }
+
+            // apply to each date-mask element
+            $(".date-mask").each(function() { applyDateMask($(this)); });
         }
 
 // COMMON CODE

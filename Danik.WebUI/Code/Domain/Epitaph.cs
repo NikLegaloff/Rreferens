@@ -2,7 +2,7 @@
 
 namespace Danik.WebUI.Code.Domain;
 
-public enum Lang{Ru,Md}
+public enum Lang{Ru,Ro}
 public class Epitaph : DomainObject, IComparable<Epitaph>
 {
     public required Lang Lang { get; set; }

@@ -28,7 +28,7 @@ function FillTemplate(t, pis, epitaph) {
         //t.Portraits[i].ImageId = pi.ImageId;
         for (var j = 0; j < t.Texts.length; j++) {
             var ttx = t.Texts[j];
-            ttx.Text = ttx.Text.replace("{фамилия" + (i + 1) + "}", pi.F);
+            ttx.Text = ttx.Text.replace("{фамилия" + (i + 1) + "}", pi.F.toUpperCase());
             ttx.Text = ttx.Text.replace("{имя" + (i + 1) + "}", pi.I);
             ttx.Text = ttx.Text.replace("{отчество" + (i + 1) + "}", pi.O);
             ttx.Text = ttx.Text.replace("{датар" + (i + 1) + "}", pi.Birth);
