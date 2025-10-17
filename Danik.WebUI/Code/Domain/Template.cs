@@ -21,7 +21,6 @@ public class Template : DomainObject, IComparable<Template>
 
 public class TemplateData
 {
-    [JsonRequired]
     public bool SingleEpitaph
     {
         get { return Texts.Any(t => t.Text.Contains("{эпитафия}")); }
