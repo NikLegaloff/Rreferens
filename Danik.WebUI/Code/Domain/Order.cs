@@ -18,7 +18,7 @@ public enum OrderStatus
 
 public class Order : DomainObject
 {
-    public Guid? UserId{ get; set; }
+    public Guid PartnerId{ get; set; }
     public Lang Lang{ get; set; }
 
     public required string Number{ get; set; }

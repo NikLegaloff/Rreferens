@@ -112,10 +112,11 @@ public class AdminController : AdmController
         return View(Registry.Current.Orders.Find(id));
     }
 
-    public IActionResult Index(OrderStatus? status=null, string? q=null)
+    public IActionResult Index(OrderStatus? status=null, string? q=null, Guid? partnerId=null)
     {
         var selectAll = Registry.Current.Orders.SelectAll().ToList();
         if (status != null) selectAll = selectAll.Where(o => o.Status == status).ToList();
+        if (partnerId!= null) selectAll = selectAll.Where(o => o.PartnerId== partnerId).ToList();
         if (!string.IsNullOrWhiteSpace(q))
         {
             selectAll = selectAll.Where(o => o.Number==q 
@@ -125,7 +126,7 @@ public class AdminController : AdmController
                                              ).ToList();
         }
         selectAll.Sort((a, b) => b.Number.CompareTo(a.Number));
-        return View(new OrdersList(selectAll.ToArray(),status??OrderStatus.Создан, q));
+        return View(new OrdersList(selectAll.ToArray(),status, q,partnerId));
     }
 
     public IActionResult Gallery(string? action=null, Guid[]? img=null, ImageFolder folder = ImageFolder.Загруженные_фото)

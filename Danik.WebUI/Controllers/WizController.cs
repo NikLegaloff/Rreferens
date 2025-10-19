@@ -42,6 +42,7 @@ public class WizController : AppController
                 Date = DateTime.Now, 
                 Status = OrderStatus.Создаётся,
                 Options = new OrderOptions(),
+                PartnerId=Registry.Current.Partners.SelectAll().FirstOrDefault(p=>p.Alias==Alias)?.Id ?? Guid.Empty,
             };
         else
             order = Registry.Current.Orders.Find(id);

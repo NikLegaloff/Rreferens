@@ -1,4 +1,5 @@
-﻿@using Danik.WebUI.Code.Domain
+﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.Domain
 @model OrdersList
 @{
     ViewData["Title"] = "Home page";
@@ -11,12 +12,12 @@
 {
     <div class="alert alert-light" role="alert">
         <div class="row">
-            <div class="col-auto">
+            <div class="col-auto mb-2">
                 <input type="text" placeholder="№ заказа, телефон, почта или имя" value="@Model.Q" name="q" class="form-control w-100"/>
             </div>
-            <div class="col-auto">
+            <div class="col-auto mb-2">
                 <select name="status" class="form-select">
-                    <!option value="">Все статусы</!option>
+                    <!option value="" @(Model.Status == null ? "selected" : "") >Все статусы</!option>
                     @foreach (var s in Enum.GetNames(typeof(OrderStatus)))
                     {
                         var st = Enum.Parse<OrderStatus>(s);
@@ -24,7 +25,16 @@
                     }
                 </select>
             </div>
-            <div class="col-auto">
+            <div class="col-auto mb-2">
+                <select name="PartnerId" class="form-select">
+                    <!option value="">Любой партнёр</!option>
+                    @foreach (var p in Registry.Current.Partners.SelectAll())
+                    {
+                        <!option @(Model.PartnerId == p.Id ? "selected" : "") value="@(p.Id)">@p.Name</!option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto mb-2">
                 <button type="submit" class="btn btn-primary w-100"><i class="fa fa-magnifying-glass"></i></button>
             </div>
         </div>
@@ -33,6 +43,11 @@
 <table class="table">
     <tr>
         <th>№, дата</th>
+        @if (Model.PartnerId == null)
+        {
+            <th>Партнёр</th>
+        }
+        
         @if (Model.Status == null)
         {
             <th>Статус</th>
@@ -49,10 +64,15 @@
                 <b>№@order.Number</b>
                 <div>@order.Date.ToString("dd.MM.yyyy HH:mm")</div>
             </td>
+            @if (Model.PartnerId == null)
+            {
+                <td>@Registry.Current.Partners.Find(order.PartnerId).Name</td>
+            }
             @if (Model.Status == null)
             {
                 <td>@order.Status</td>
             }
+            
             
             <td>
                 @order.Type @("x" + order.Persons)
