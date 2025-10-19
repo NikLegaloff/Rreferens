@@ -4,6 +4,7 @@ using Danik.WebUI.Code.ORM;
 using Danik.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Xml.Linq;
 
 namespace Danik.WebUI.Controllers;
 
@@ -179,6 +180,52 @@ public class AdminController : AdmController
         var e = new Epitaph() { Text = text, Persons = persons,Lang = lang};
         Registry.Current.Epitaphs.Save(e);
         return RedirectToAction("Epitaphs");
+    }
+
+    public IActionResult Partner()
+    {
+        return View(Registry.Current.Partners.SelectAll());
+    }
+    public IActionResult DeleteUser(Guid userId)
+    {
+        var u = Registry.Current.Users.Find(userId);
+        if (u == null) return NotFound();
+        if (u.IsAdmin) throw new BusinessException("Can not delete admin");
+        Registry.Current.Users.Delete(userId);
+        return RedirectToAction("Partner","Admin");
+    }
+
+    public IActionResult UserEdit(Guid? pid, Guid? id)
+    {
+        var user = id == null ? new User{ Name = "",Email = "",IsAdmin = false,Password = Guid.Empty,PartnerId = pid.Value} : Registry.Current.Users.Find(id.Value);
+        return View(user);
+    }
+    public IActionResult PartnerEdit(Guid? id)
+    {
+        var partner = id == null ? new Partner { Name = "", Alias = "p" + Registry.Current.Partners.Count()} : Registry.Current.Partners.Find(id.Value);
+        return View(partner);
+    }
+
+    public IActionResult SaveUser(Guid id, string name, string email, string? password, Guid partnerId)
+    {
+        var user = id == Guid.Empty ? 
+            new User{ Name = name, Email = email,IsAdmin = false,Password = password.MD5(),PartnerId = partnerId} : 
+            Registry.Current.Users.Find(id);
+        if (user == null) return NotFound();
+        user.Name = name;
+        user.Email = email;
+        user.PartnerId=partnerId;
+        if(password!=null) user.Password = password.MD5();
+        Registry.Current.Users.Save(user);
+        return RedirectToAction("Partner");
+    }
+    public IActionResult SavePartner(Guid id, string name, string alias)
+    {
+        var partner = id==Guid.Empty ? new Partner{Name = name,Alias = alias} : Registry.Current.Partners.Find(id);
+        if (partner == null) return NotFound();
+        partner.Name = name;
+        Registry.Current.Partners.Save(partner);
+        return RedirectToAction("Partner");
     }
 }
 

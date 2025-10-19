@@ -50,7 +50,7 @@ public class DataProvider<T> where T : DomainObject
     }
 
 
-    public int GetAllCount() => Directory.GetFiles(BasePath).Length;
+    public int Count() => Directory.GetFiles(BasePath).Length;
 
     public T[] SelectAll()
     {

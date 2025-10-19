@@ -7,11 +7,11 @@ namespace Danik.WebUI.Controllers
 {
     public class HomeController : AppController
     {
-        public IActionResult Index(string? alias)
+        public IActionResult Index(string? p)
         {
-            if (!string.IsNullOrWhiteSpace(alias))
+            if (!string.IsNullOrWhiteSpace(p))
             {
-                Alias = alias;
+                Alias = p;
                 return RedirectToAction("Index");
             }
             var gi = Registry.Current.GalleryImages.SelectAll().Where(g => g.Alias == Alias).OrderBy(g => g.Sort).ToArray();

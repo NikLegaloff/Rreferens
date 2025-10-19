@@ -1,0 +1,64 @@
+﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.Domain
+@using Microsoft.AspNetCore.Http.Extensions
+@model Partner[]
+@{
+    ViewData["Title"] = "Partners";
+    var allusers = Registry.Current.Users.SelectAll();
+}
+
+<style>
+
+    </style>
+    <div class="alert alert-light" role="alert">
+        <div class="text-end">
+            <a href="/Admin/PartnerEdit/">Добавить партнёра</a>
+        </div>
+    </div>
+<table class="table">
+    <tr>
+        <th>Партнёр</th>
+        <th>Пользователи</th>
+    </tr>
+    @foreach (var p in Model)
+    {
+        var users = allusers.Where(u => u.PartnerId == p.Id).ToArray();
+        <tr>
+            <td>
+                <b>@p.Name</b>
+                <div>
+                    @{
+                        var displayUrl = Context.Request.GetDisplayUrl().TrimEnd('/').Replace("Admin/Partner", "?p=");
+                    }
+                    <a href="@(displayUrl + p.Alias)">@displayUrl<b>@p.Alias</b></a>
+                </div>
+            </td>
+            <td>
+                <table class="table">
+                    @foreach (var u in users)
+                    {
+                        <tr>
+                            <td>@u.Email @if (u.IsAdmin) { <span class="badge bg-primary">Админ</span> }</td>
+                            <td>@u.Name</td>
+                            <td>@u.LastLogin</td>
+                            <td>
+                                @if(!u.IsAdmin) using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post))
+                                {
+                                    @Html.Hidden("userId", u.Id)
+                                    <input type="submit" onclick="return confirm('Удалить?') && confirm('Точно?')" class="btn btn-danger btn-sm" value="Удалить"/>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div class="my-2"><a href="/Admin/UserEdit/?pid=@p.Id">Добавить пользователя</a></div>
+            </td>
+        </tr>
+    }
+</table>
+
+@section Scripts
+{
+    <script>
+    </script>
+}

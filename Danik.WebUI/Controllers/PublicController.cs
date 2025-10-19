@@ -25,6 +25,8 @@ public class PublicController : AppController
         var user = Registry.Current.Users.SelectAll().FirstOrDefault(u => u.Email.ToLower() == email.ToLower() && u.Password == pwd);
         if (user!=null)
         {
+            user.LastLogin=DateTime.Now;
+            Registry.Current.Users.Save(user);
             PutInSession("User", user);
             if (user.IsAdmin)
             {

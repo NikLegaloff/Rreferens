@@ -1,0 +1,39 @@
+﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.Domain
+@model Partner
+@{
+    ViewData["Title"] = "Partner";
+    
+}
+
+<style>
+</style>
+<!-- Edit partner form-->
+<div class="my-5">
+    @using (Html.BeginForm("SavePartner", "Admin", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.Id)
+        <div class="mb-3 row">
+            <label for="Name" class="col-sm-2 col-form-label">Название партнёра</label>
+            <div class="col-sm-10">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", id = "Name" })
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Alias" class="col-sm-2 col-form-label">Псевдоним</label>
+            <div class="col-sm-10">
+                <input type="text" name="Alias" value="@Model.Alias" class="form-control" id="Alias" @(Model.Id==Guid.Empty ? "":"disabled=disabled")/>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-10 offset-sm-2">
+                <input type="submit" class="btn btn-primary" value="Сохранить"/>
+            </div>
+        </div>
+}
+</div>
+@section Scripts
+{
+    <script>
+    </script>
+}

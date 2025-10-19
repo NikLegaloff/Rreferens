@@ -10,7 +10,8 @@ public class Partner : DomainObject
 }
 public class User : DomainObject
 {
-    public Guid PartnerId{ get; set; }
+    public DateTime? LastLogin{ get; set; }
+    public required Guid PartnerId { get; set; }
     public required string Email { get; set; }
     public required Guid Password { get; set; }
     public required string Name { get; set; }
