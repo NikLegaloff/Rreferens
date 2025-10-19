@@ -21,9 +21,7 @@ public class WizController : AppController
             order = Registry.Current.Orders.Find(id.Value);
         else
         {
-            var stoneForms = Registry.Current.StoneForms.SelectAll().ToList();
-            stoneForms.Sort();
-            order = new Order()
+            order = new Order
             {
                 Number = "", Persons = 1, Type = StoneType.Вертикальный,
                 Options = new OrderOptions { Size = 40 }
@@ -31,6 +29,7 @@ public class WizController : AppController
         }
         return View(order);
     }
+
     [HttpPost]
     public IActionResult Step1(Guid id, StoneType type,int count, int ddlSize, IFormFile? ownFormFile,IFormFile[]? personFile, Guid? stoneFormId)
     {

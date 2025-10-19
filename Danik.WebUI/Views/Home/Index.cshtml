@@ -1,62 +1,93 @@
-﻿@{
+﻿@model StartPageModel
+@{
     ViewData["Title"] = "Home page";
+    int i = 0;
 }
 
-<style>
 
-    .myText {
-        position: absolute;
-        z-index: 3;
-        transform: translateX(-50%);
-        color: #fff;
-    }
-</style>
-<div class="row">
+<div class="my-2">
 
-    <div class="col-md-4">
-        <div class="mb-2">
-            1. Выберите фото, вертикальная ориентация, желательно с белым фоном
-            <input type="file" id="tbFile" class="form-control form-control-sm" />
+    <!-- Галерея работ -->
+    <section id="gallery" class="mb-5">
+        
+        <div class="position-relative">
+
+
+        <!-- Контейнер с фото -->
+        <div class="gallery-container d-flex overflow-auto px-2" style="scroll-behavior: smooth;">
+            @foreach (var g in Model.Images)
+            {
+                <img id="img@(i)" src="@g.URL" class="img-fluid rounded m-2 shadow-sm" style="max-height: 50vh;">
+                i++;
+            }
         </div>
-        <div class="mb-2">
-            2. Имя
-            <input type="text" id="tb1" onkeyup="TextChanged()" onchange="TextChanged()" class="form-control form-control-sm" value="Steve Jobs" />
+
         </div>
-        <div class="mb-2">
-            3. Годы жизни
-            <input type="text" id="tb2" onkeyup="TextChanged()" onchange="TextChanged()" class="form-control form-control-sm" value="1959-2009" />
-        </div>
-        <div class="mb-2">
-            4. Надпись
-            <textarea id="tb3" onkeyup="TextChanged()" onchange="TextChanged()" class="form-control form-control-sm">Из жизни ты ушел мгновенно, а боль осталась навсегда.</textarea>
-        </div>
-        <div class="mb-2">
-            5. Размер фото
-            <input type="range" min="-200" style="width: 100%" max="200" value="0" class="form-range>" id="tbMainS" onchange="SetMainImage()" oninput="SetMainImage()" />
-        </div>
-        <div class="mb-2">
-            6. Положение фото
-            <div class="row">
-                <div class="col"><input type="range" min="-200" style="width: 100%" max="200" value="0" class="form-range>" id="tbMainX" onchange="SetMainImage()" oninput="SetMainImage()" /></div>
-                <div class="col"><input type="range" min="-200" style="width: 100%" max="200" value="0" class="form-range>" id="tbMainY" onchange="SetMainImage()" oninput="SetMainImage()" /></div>
+
+    </section>
+    <section id="orderLink" class="text-center mb-5">
+        <a href="/Wiz/Step1/" class="btn btn-success btn-lg px-5 py-3 fs-4 shadow">
+            Перейти к оформлению заказа
+        </a>
+    </section>
+
+
+    <div class="row">
+
+    <!-- Информация о доставке -->
+    <section id="delivery" class="mb-5 col-xxl-4 col-xl-6">
+        <h2 class="text-center mb-3">Доставка</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="mb-0">
+                    Мы осуществляем доставку памятников по всему региону.
+                    Доставка по городу — <strong>бесплатно</strong>, за пределы — по индивидуальному тарифу.
+                    Возможен монтаж на месте нашими специалистами.
+                </p>
             </div>
-            
-            
         </div>
+    </section>
 
-        <div class="mb-2"><input type="submit" class="btn btn-sm btn-primary w-100" value="OK" /></div>
-    </div>
-    <div class="col-md-8">
-        <div id="pMain" style="">
-            <div id="divText1" style="font-weight: bold" class="myText">Steve Jobs</div>
-            <div id="divText2" class="myText">1959-2009</div>
-            <div id="divText3" style="text-align: center; line-height:100%" class="myText"></div>
-
-            <div id="pMain" style="position: absolute; z-index: -1; overflow: hidden"><img style="filter: grayscale(100%);transform: translateX(-50%);" id="imgMain" src="~/img/1.png" /></div>
-            <div><img src="~/img/main.png" id="imgFrame" style="width: 100%; z-index: 5" /></div>
+    <!-- Сроки изготовления -->
+        <section id="timing" class="mb-5 col-xxl-4 col-xl-6">
+        <h2 class="text-center mb-3">Сроки изготовления</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Стандартные модели — от <strong>7 до 14 дней</strong></li>
+                    <li class="list-group-item">Индивидуальные заказы — до <strong>30 дней</strong></li>
+                    <li class="list-group-item">Срочное изготовление — по договорённости</li>
+                </ul>
+            </div>
         </div>
+    </section>
+
+    <!-- Контактная информация -->
+        <section id="contacts" class="mb-5 col-xxl-4 col-xl-6">
+        <h2 class="text-center mb-3">Контакты</h2>
+        <div class="justify-content-center">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p><strong>Адрес:</strong> г. Москва, ул. Примерная, д. 10</p>
+                        <p><strong>Телефон:</strong> <a href="tel:+74951234567">+7 (495) 123-45-67</a></p>
+                        <p><strong>Email:</strong> <a href="mailto:info@pamyatnik.ru">info@pamyatnik.ru</a></p>
+                        <p>
+                            <strong>Режим работы:</strong><br>
+                            Пн–Сб: 9:00–19:00<br>
+                            Вс: по предварительной записи
+                        </p>
+                    </div>
+                </div>
+        </div>
+    </section>
     </div>
 
+    <!-- Кнопка оформления заказа -->
+    <section id="orderLink" class="text-center mb-5">
+        <a href="/Wiz/Step1/" class="btn btn-success btn-lg px-5 py-3 fs-4 shadow">
+            Перейти к оформлению заказа
+        </a>
+    </section>
 </div>
 
 
@@ -64,66 +95,63 @@
 @section Scripts
 {
     <script>
-                var px = 0;
+        var img = document.querySelector('img');
 
-                function TextChanged() {
-                    $("#divText1").html($("#tb1").val());
-                    $("#divText2").html($("#tb2").val());
-                    console.log($("#tb3").val().replace("\n","<br>").replace("\n","<br>").replace("\n","<br>").replace("\n","<br>").replace("\n","<br>"));
-                    $("#divText3").html($("#tb3").val().replace("\n","<br>").replace("\r","<br>"));
-                }
-                $(document).ready(function() {
-                     SetMainImage();
-                     TextChanged();
+        if (img.complete) {
+            loaded();
+        } else {
+            img.addEventListener('load', loaded);
+            img.addEventListener('error',
+                function() {
+                    alert('error');
                 });
+        }
+        function loaded() {
+            const $gallery = $('.gallery-container');
+            var scrollStep = document.getElementById("img0").clientWidth; // пикселей за шаг
+            let autoScrollInterval;
 
-                function SetMainImage() {
-                    var mainImg = document.getElementById("imgMain");
-                    var divText1 = document.getElementById("divText1");
-                    var divText2 = document.getElementById("divText2");
-                    var divText3 = document.getElementById("divText3");
+            const myDiv = document.getElementById('img0');
 
-                    px= document.getElementById("imgFrame").clientWidth/1000  ;
-                    document.getElementById("pMain").style.width= document.getElementById("imgFrame").clientWidth;
-                    document.getElementById("pMain").style.height= document.getElementById("imgFrame").clientHeight;
+            // Width including content, padding, and border
+            const offsetWidth = myDiv.offsetWidth;
 
-                    mainImg.style.width = (px * (300 + $("#tbMainS").val()*1)) + "px";
-                    mainImg.style.marginTop = (px * (65 + $("#tbMainX").val()*1))  + "px";
-                    mainImg.style.marginLeft = (px * (500 + $("#tbMainY").val()*1))  + "px";
+            // Get computed style for margins
+            const computedStyle = window.getComputedStyle(myDiv);
+            const marginLeft = parseFloat(computedStyle.marginLeft);
+            const marginRight = parseFloat(computedStyle.marginRight);
 
-                    divText1.style.marginTop = (px * 400) + "px";
-                    divText2.style.marginTop = (px * 450) + "px";
-                    divText3.style.marginTop = (px * 610) + "px";
+            // Total width including margins
+            scrollStep = offsetWidth + marginLeft + marginRight;
 
-                    divText1.style.marginLeft = (px * 500) + "px";
-                    divText2.style.marginLeft = (px * 500) + "px";
-                    divText3.style.marginLeft = (px * 500) + "px";
-                    divText3.style.width = (px * 250) + "px";
+            // Ручной скролл кнопками
+            $('.gallery-next').on('click', function() {
+                $gallery.animate({ scrollLeft: '+=' + scrollStep }, 400);
+            });
+            $('.gallery-prev').on('click', function() {
+                $gallery.animate({ scrollLeft: '-=' + scrollStep }, 400);
+            });
 
-                    divText1.style.fontSize = (px * 35) + "px";
-                    divText2.style.fontSize = (px * 24) + "px";
-                    divText3.style.fontSize = (px * 15) + "px";
+            // Автоматическая прокрутка каждые 5 секунд
+            function startAutoScroll() {
+                autoScrollInterval = setInterval(() => {
+                    const maxScroll = $gallery[0].scrollWidth - $gallery.outerWidth();
+                    let newPos = $gallery.scrollLeft() + scrollStep;
+                    if (newPos >= maxScroll) newPos = 0; // Возврат в начало
+                    $gallery.animate({ scrollLeft: newPos }, 800);
+                }, 5000);
+            }
 
+            function stopAutoScroll() {
+                clearInterval(autoScrollInterval);
+            }
 
+            // Запуск автоскролла
+            startAutoScroll();
 
-                    setTimeout("SetMainImage();", 1000);
-                }
-
-        // on change tbFile set image to imgMain
-                document.getElementById("tbFile").addEventListener("change",
-                    function(event) {
-                        $("#pMain").fadeIn(1000);
-                        var file = event.target.files[0];
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            var img = document.getElementById("imgMain");
-                            img.src = e.target.result;
-                            SetMainImage();
-
-                        };
-                        reader.readAsDataURL(file);
-
-
-                    });
+            // При наведении — пауза, при уходе — продолжить
+            $gallery.on('mouseenter', stopAutoScroll);
+            $gallery.on('mouseleave', startAutoScroll);
+        }
     </script>
 }

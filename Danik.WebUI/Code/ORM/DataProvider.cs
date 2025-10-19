@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Danik.WebUI.Code.Domain;
+using Newtonsoft.Json;
 using System.Collections.Concurrent;
 
 namespace Danik.WebUI.Code.ORM;
@@ -49,7 +50,17 @@ public class DataProvider<T> where T : DomainObject
     }
 
 
-    public T[] SelectAll() => Load(Directory.GetFiles(BasePath).Select(file => file.Split('\\').Last().ToGuid()).ToArray());
+    public int GetAllCount() => Directory.GetFiles(BasePath).Length;
+
+    public T[] SelectAll()
+    {
+        var all = Load(Directory.GetFiles(BasePath).Select(file => file.Split('\\').Last().ToGuid()).ToArray());
+        if (!typeof(T).IsSubclassOf(typeof(IComparable<T>))) return all;
+        var list = new List<T>(all);
+        list.Sort();
+        all = list.ToArray();
+        return all;
+    }
 
 
     public void Save(T subj)

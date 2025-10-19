@@ -14,24 +14,29 @@ namespace Danik.WebUI.Code
         {
             var config = new Config(Env.Current.DataBasePath);
             Images = new DataProvider<Image>(config);
+            GalleryImages = new GalleryImageDataProvider(config);
             Templates = new TemplateDataProvider(config);
             Users = new DataProvider<User>(config);
             Orders = new DataProvider<Order>(config);
             Epitaphs = new DataProvider<Epitaph>(config);
             TemplateBgImages = new TemplateBgImageDataProvider(config);
+            Partners = new DataProvider<Partner>(config);
 
             StoneForms = new StoneFormDataProvider(config);
             SystemSettings = new SystemSettingsDataProvider(config);
         }
 
         public DataProvider<Image> Images { get; }
+        
         public DataProvider<Order> Orders { get; }
         public DataProvider<Epitaph> Epitaphs { get; }
         public TemplateDataProvider Templates { get; set; }
         public DataProvider<User> Users { get; set; }
         public TemplateBgImageDataProvider TemplateBgImages { get; set; }
-
+        public DataProvider<Partner> Partners { get; set; }
+        
         public StoneFormDataProvider StoneForms { get; }
         public SystemSettingsDataProvider SystemSettings { get; }
+        public GalleryImageDataProvider GalleryImages { get; }
     }
 }

@@ -36,9 +36,13 @@
                         @if (user == null)
                         {
                             <li class="nav-item">
-                                    <a class="nav-link" href="/Public/Login/">Для партнёрв</a>
+                                    <a class="nav-link" href="/Public/Login/">Для партнёров</a>
                             </li>
-                        }
+                        } else {
+                            <li class="nav-item">
+                                    <a class="nav-link" href="/Partner/">Мой кабинет</a>
+                            </li>
+                            }
                     </ul>
                 </div>
                 @if (user != null)

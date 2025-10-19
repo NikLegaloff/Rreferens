@@ -1,0 +1,43 @@
+﻿@model Danik.WebUI.Code.Domain.GalleryImage[]
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+<div class="my-5">
+@using (Html.BeginForm("UploadGalleryImages", "Partner", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="mb-3 row">
+            <div class="col-auto"><label for="galleryImages" class="form-label">Загрузить изображения в галерею работ</label></div>
+            <div class="col-auto"><input class="form-control" type="file" id="galleryImages" name="files" multiple /></div>
+        <div class="col-auto"><input type="submit" class="btn btn-primary" value="ОКЕЙ"/></div>
+        
+        
+    </div>
+}
+</div>
+<div class="row">
+    @foreach (var g in Model)
+    {
+        <div class="col-xxl-2 col-xl-4 col-sm-6 mb-4">
+            <div class="card shadow-sm">
+                <img src="@g.TMB" class="card-img-top img-fluid rounded w-100">
+                <div class="card-body text-center">
+                    @using (Html.BeginForm("DeleteGalleryImage", "Partner", FormMethod.Post))
+                    {
+                        @Html.Hidden("imageId", g.Id)
+                        <input type="submit" class="btn btn-danger" value="Удалить"/>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+    </script>
+}

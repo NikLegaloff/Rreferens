@@ -16,6 +16,12 @@ public class AppController : Controller
         base.OnActionExecuting(context);
     }
 
+    public string Alias
+    {
+        get => GetFromSession<string>("Alias") ?? "Default";
+        set => PutInSession("Alias",value);
+    }
+
     public T? GetFromSession<T>(string key)
     {
         var value = HttpContext.Session.GetString(key);
@@ -52,6 +58,8 @@ public class PartController : AppController
         if (user == null) throw new NotAuthenticatedException();
         base.OnActionExecuting(context);
     }
+
+    public User CurrentUser => GetFromSession<User>("User")!;
 }
 public class AdmController : AppController
 {

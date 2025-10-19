@@ -11,6 +11,7 @@ public enum ImageFolder
     Загруженные_фото, Формы_камней, Клипарт_верт, Пользовательские_формы_камней, Фоны_шаблонов,
     Клипарт_гориз, Служебные, Портреты
 }
+
 public class Image : DomainObject
 {
     public static ImageFolder[] Editable => [ImageFolder.Клипарт_верт, ImageFolder.Клипарт_гориз,ImageFolder.Служебные];
@@ -32,7 +33,7 @@ public class Image : DomainObject
     //public string Path => $"{Env.Current.DataBasePath}Images\\{Id}." + Ext;
     public string Path => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0,1)}\\{Id}." + Ext;
     [JsonIgnore]
-    public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
+    public  string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id.ToString().Substring(0, 1)}\\{Id}_tmb.jpg";
     //public string TmbPath => $"{Env.Current.DataBasePath}Images\\{Id}_tmb.jpg";
 
     [JsonIgnore]

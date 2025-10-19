@@ -5,8 +5,8 @@
 @{
     ViewData["Title"] = "Home page";
     var isNew = Model.TemplateData.PersonInfos==null || Model.TemplateData.PersonInfos.Length == 0;
-    var allSf = Registry.Current.StoneForms.SelectAll().ToList();
-    allSf.Sort();
+    var allSf = Registry.Current.StoneForms.SelectAll();
+    
 }
 <style>
     .stone{  border-radius: 10px 10px 0 0; cursor: pointer; }
@@ -24,7 +24,7 @@
 @using (Html.BeginForm("Step1", "Wiz", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="hidden" name="id" value="@Model.Id"/>
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
 
             

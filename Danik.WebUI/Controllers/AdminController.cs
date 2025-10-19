@@ -92,9 +92,8 @@ public class AdminController : AdmController
 
     public IActionResult Templates()
     {
-        var all = Registry.Current.Templates.SelectAll().ToList();
-        all.Sort();
-        return View(all.ToArray());
+        var all = Registry.Current.Templates.SelectAll();
+        return View(all);
     }
 
     public IActionResult TemplateBgImage()
@@ -165,8 +164,7 @@ public class AdminController : AdmController
 
     public IActionResult Epitaphs()
     {
-        var selectAll = Registry.Current.Epitaphs.SelectAll().ToList();
-        selectAll.Sort();
+        var selectAll = Registry.Current.Epitaphs.SelectAll();
         return View(selectAll.ToArray());
     }
 
