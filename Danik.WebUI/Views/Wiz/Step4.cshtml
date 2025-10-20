@@ -1,10 +1,14 @@
 ﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.Domain
 @using Danik.WebUI.Code.ORM
 @model Danik.WebUI.Code.Domain.Order
 @{
     ViewData["Title"] = "Home page";
     var epp = Registry.Current.Epitaphs.SelectAll().Where(e=>e.IsOkFor(Model)).ToArray();
     int i = 0;
+    var allImages = Registry.Current.Images.SelectAll();
+    var vImages = allImages.Where(im => im.Folder == ImageFolder.Клипарт_верт).Select(im => im.URL).ToArray();
+    var hImages = allImages.Where(im => im.Folder == ImageFolder.Клипарт_гориз).Select(im => im.URL).ToArray();
 }
 
 <style>
@@ -58,16 +62,17 @@
         var singleEpitaph = @Html.Raw(Model.TemplateData.Template.SingleEpitaph.ToString().ToLower());
         var curEp = "";
 
+        const vImages = @(Html.Raw(vImages.ToJsonJS()));
+        const hImages = @(Html.Raw(hImages.ToJsonJS()));
+
         $(document).ready(function() {
             Init();
         });
 
         function SetEp(txt) {
-                    console.log(curEp);
             $("#epitaph" + curEp).val(txt);
             if (curEp === "") template.Epitaph = txt;
             else {
-                console.log(template.PersonInfos[curEp*1]);
                 template.PersonInfos[curEp*1].Epitaph = txt;
             }
             Draw(template);
@@ -100,6 +105,17 @@
         
         function DrawEditor() {
             var html = "";
+            
+            var images = template.Template.Images;
+            if (images.length > 0) {
+                html += "<div class='row mb-2'>";
+                for (var j = 0; j < images.length; j++) {
+                    html += "<div class='col-md-6 col-xl-4'><div id='ImageSelect" + j + "'></div></div>";
+                }
+                html += "</div>";
+
+            }
+
             for (var i = 0; i < template.PersonInfos.length; i++) {
                 var pi = template.PersonInfos[i];
                 html += "<div class='mb-3' id='person" + i + "'>";
@@ -126,7 +142,23 @@
                 html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
                 html += "<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
             }
+
+
             $("#pEditorPersons").html(html);
+
+            for (var j = 0; j < images.length; j++) {
+                var img = images[j];
+
+                    $("#ImageSelect" + j).imageSelector(
+                    img.IsVert ? vImages : hImages, {
+                    selectedUrl: "/Images/GetImage/" + images[j].ImageId,
+                    onImageSelected: function(index, url, id) {
+                        imgSelected(url, id.replace("ImageSelect","")*1);
+                    }
+                });
+            }
+
+
             // on change fields with class pi call Draw Editor
             $(".pi").on("input",
                 function() {
@@ -184,7 +216,100 @@
             $(".date-mask").each(function() { applyDateMask($(this)); });
         }
 
+            
+            function imgSelected(url, num) {
+                console.log(num);
+                template.Template.Images[num].ImageId = url.split('/').pop();
+                Draw(template);
+            }
 // COMMON CODE
+
+        (function ($) {
+            $.fn.imageSelector = function (images, options = {}) {
+                const settings = $.extend({
+                    selectedUrl: null,        // начальная картинка
+                    onImageSelected: null     // callback(index, imageUrl)
+                }, options);
+
+                return this.each(function () {
+                    const $container = $(this);
+                    let currentIndex = 0;
+
+                    // если передан selectedUrl — ищем индекс этой картинки
+                    if (settings.selectedUrl) {
+                        const foundIndex = images.indexOf(settings.selectedUrl);
+                        if (foundIndex !== -1) {
+                            currentIndex = foundIndex;
+                        }
+                    }
+
+                    // HTML шаблон
+                    const widget = $(`
+                <div class="image-selector-widget">
+                  <div class="controls">
+                        <button class="btn btn-outline-secondary prev"><i class='fa fa-arrow-left'></i></button>
+
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" style='background-color:#000;'>
+                        <img src="${images[currentIndex]}" alt="preview">
+                      </button>
+                      <ul class="dropdown-menu"></ul>
+                    </div>
+                        
+                        <button class="btn btn-outline-secondary next"><i class='fa fa-arrow-right'></i></button>
+                  </div>
+                </div>
+              `);
+
+                    $container.html(widget);
+
+                    const $dropdownMenu = $container.find(".dropdown-menu");
+                    const $dropdownButton = $container.find(".dropdown-toggle");
+
+                    // Заполняем список миниатюр
+                    images.forEach((img, i) => {
+                        const $item = $(`
+                  <li>
+                    <a class="dropdown-item" href="#" data-index="${i}">
+                      <img src="${img}" alt="thumb">
+                    </a>
+                  </li>
+                `);
+                        $dropdownMenu.append($item);
+                    });
+
+                    function updateImage(index) {
+                        currentIndex = index;
+                        $dropdownButton.find("img").attr("src", images[index]);
+                        // Вызов колбэка при выборе
+                        if (typeof settings.onImageSelected === "function") {
+                            settings.onImageSelected(index, images[index],$container[0].id);
+                        }
+                    }
+
+                    // Обработчики
+                    $dropdownMenu.on("click", ".dropdown-item", function (e) {
+                        e.preventDefault();
+                        const index = parseInt($(this).data("index"));
+                        updateImage(index);
+                    });
+
+                    $container.find(".prev").on("click", function () {
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        updateImage(currentIndex);
+                    });
+
+                    $container.find(".next").on("click", function () {
+                        currentIndex = (currentIndex + 1) % images.length;
+                        updateImage(currentIndex);
+                    });
+
+                    // Вызов события сразу при инициализации (если selectedUrl задан)
+                    //if (typeof settings.onImageSelected === "function") { settings.onImageSelected(currentIndex, images[currentIndex]); }
+                });
+            };
+        })(jQuery);
+
 
     </script>
 }

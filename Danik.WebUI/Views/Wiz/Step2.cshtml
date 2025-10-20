@@ -262,7 +262,6 @@
                     url: "/Wiz/Step2/",
                     data: { id: '@Model.Order.Id', imageId:'@Model.Image.Id', x: Math.round(sx), y: Math.round(sy), w: Math.round(sw), h: Math.round(sh) },
                     success: function(response) {
-                        console.log(response);
                         window.location = response;
                     },
                     error: function(xhr, status, error) {
