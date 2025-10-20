@@ -33,16 +33,6 @@
                             <a class="nav-link" href="#">Примеры работ</a>
                         </li>
                         
-                        @if (user == null)
-                        {
-                            <li class="nav-item">
-                                    <a class="nav-link" href="/Public/Login/">Для партнёров</a>
-                            </li>
-                        } else {
-                            <li class="nav-item">
-                                    <a class="nav-link" href="/Partner/">Мой кабинет</a>
-                            </li>
-                            }
                     </ul>
                 </div>
                 @if (user != null)
@@ -61,10 +51,18 @@
                                     <li><a class="dropdown-item" href="/Admin/Partner/">Партнёры</a></li>
                                 <li><a class="dropdown-item" href="/Admin/TemplateBgImage/">Фоны шаблонов</a></li>
                             }
-                            <li><a class="dropdown-item" href="/User/">Мой аккаунт</a></li>
+                            <li><a class="dropdown-item" href="/Partner/">Галерея работ</a></li>
+                                <li><a class="dropdown-item" href="/User/ChangePassword">Сменить пароль</a></li>
                             <li><a class="dropdown-item text-danger" href="/Public/Logout/">Выйти</a></li>
                         </ul>
                     </div>
+                }
+                else
+                {
+                    <div class="d-lg-flex justify-content-lg-end">
+                            <a class="nav-link" href="/Public/Login/">Для партнёров</a>
+                    </div>
+
                 }
             </div>
         </nav>
