@@ -39,12 +39,12 @@ public class TemplateLayer
 }
 public class TemplatePortrait : TemplateLayer
 {
-    public required string ImageId { get; set; }
+    public string? ImageId { get; set; }
 }
 
 public class TemplateImage: TemplateLayer
 {
-    public required string ImageId{ get; set; }
+    public  string? ImageId{ get; set; }
     public bool IsVert{ get; set; }
 }
 

@@ -41,3 +41,40 @@ body {
     position: absolute;
     color: #fff;
 }
+
+.image-selector-widget {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.image-selector-widget .dropdown-toggle img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.image-selector-widget .dropdown-menu img {
+    width: 80px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 8px;
+}
+
+.image-selector-widget .dropdown-item {
+    display: flex;
+    align-items: center;
+}
+
+.image-selector-widget .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.image-selector-widget button.nav-btn {
+    min-width: 100px;
+}
