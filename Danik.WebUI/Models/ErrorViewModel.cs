@@ -3,7 +3,7 @@ using Danik.WebUI.Code.Domain;
 namespace Danik.WebUI.Models
 {
     public record StartPageModel(GalleryImage[] Images);
-    public record ChangePasswordModel(string? Msg, string Type);
+    public record ChangePasswordModel(string? Msg, string Type, string Alias);
 
     
         
