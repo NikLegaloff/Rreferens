@@ -60,9 +60,9 @@ body {
         background-color: black;
     }
         .image-selector-widget .dropdown-menu img {
-            width: 100%;
-            height: 60px;
-            object-fit: cover;
+            width: 90%;
+            
+            
             border-radius: 5px;
             margin-right: 8px;
         }
