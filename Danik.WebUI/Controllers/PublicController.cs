@@ -30,10 +30,10 @@ public class PublicController : AppController
             PutInSession("User", user);
             if (user.IsAdmin)
             {
-                if (!string.IsNullOrWhiteSpace(returnUrl) && returnUrl.StartsWith("/Admin/")) return Redirect(returnUrl);
+                if (!string.IsNullOrWhiteSpace(returnUrl)) return Redirect(returnUrl);
                 return Redirect("/Admin/");
             }
-            if (!string.IsNullOrWhiteSpace(returnUrl) && returnUrl.StartsWith("/Partner/")) return Redirect(returnUrl);
+            if (!string.IsNullOrWhiteSpace(returnUrl)) return Redirect(returnUrl);
             return Redirect("/Partner/");
         }
         return RedirectToAction("Login");

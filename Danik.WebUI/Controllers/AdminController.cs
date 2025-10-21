@@ -107,10 +107,6 @@ public class AdminController : AdmController
         Registry.Current.Orders.Delete(id);
         return RedirectToAction("Index");
     }
-    public IActionResult OrderView(Guid id)
-    {
-        return View(Registry.Current.Orders.Find(id));
-    }
 
     public IActionResult Index(OrderStatus? status=null, string? q=null, Guid? partnerId=null)
     {

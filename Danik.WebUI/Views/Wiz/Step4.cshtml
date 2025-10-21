@@ -15,7 +15,7 @@
     
 </style>
 <div class="row ">
-    <div class="col-md-6 order-2  order-md-1 mt-4">
+    <div class="col-md-6 order-2  order-md-1 mt-2">
         <div id="pEditorPersons">
 
         </div>
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="col-md-6 order-1 order-md-2 mt-4 ">
+    <div class="col-md-6 order-1 order-md-2 mt-2 ">
         <div id="pMain">
 
         </div>
@@ -108,7 +108,7 @@
             
             var images = template.Template.Images;
             if (images.length > 0) {
-                html += "<div class='row mb-2'>";
+                html += "<div class='row mb-1'>";
                 for (var j = 0; j < images.length; j++) {
                     html += "<div class='col-md-6 col-xl-4'><div id='ImageSelect" + j + "'></div></div>";
                 }
@@ -119,19 +119,20 @@
             for (var i = 0; i < template.PersonInfos.length; i++) {
                 var pi = template.PersonInfos[i];
                 html += "<div class='mb-3' id='person" + i + "'>";
-                        html += "<div class='mt-1'>Фамилия<input type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F.toUpperCase() + "'/></div>";
+                                html += "<div class='mt-1'><input placeholder='Фамилия' type='text' id='p" + i + "f' class='pi form-control' value='" + pi.F.toUpperCase() + "'/></div>";
                 html += "<div class='row'>";
-                html += "<div class='mt-1 col'>Имя<input type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
-                html += "<div class='mt-1 col'>Отчество<input type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
+                    html += "<div class='mt-1 col'><input placeholder='Имя' type='text' id='p" + i + "i' class='pi form-control' value='" + pi.I + "'/></div>";
+                    html += "<div class='mt-1 col'><input placeholder='Отчество' type='text' id='p" + i + "o' class='pi form-control' value='" + pi.O + "'/></div>";
                 html += "</div>";
-                html += "<div class='mt-1'>Годы жизни";
+                html += "<div class='mt-1'>";
                 html += "<div class='row'>";
                 // Use date-mask class, placeholder and pattern to enforce DD/MM/YYYY
-                html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "b' class='pi date-mask form-control' placeholder='ДД/MM/ГГГГ' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Birth + "'/></div>";
-                        html += "<div class='col-6 mt-1'><input type='text' id='p" + i + "d' class='pi date-mask form-control' placeholder='ДД/MM/ГГГГ' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Dead + "'/></div>";
+                html += "<div class='col mt-1'><input type='text' id='p" + i + "b' class='pi date-mask form-control' placeholder='Дата рождения' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Birth + "'/></div>";
+                html += "<div class='col mt-1'><input type='text' id='p" + i + "d' class='pi date-mask form-control' placeholder='Дата смерти' maxlength='10' pattern='\\d{2}/\\d{2}/\\d{4}' value='" + pi.Dead + "'/></div>";
+                
                 if (!singleEpitaph) {
                     html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\"  onclick='curEp=" + i +"' data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
-                            html += "<textarea id='epitaph" + i + "' rows='6' class='pi form-control'>" + pi.Epitaph + "</textarea></div>";
+                            html += "<textarea id='epitaph" + i + "' rows='3' class='pi form-control'>" + pi.Epitaph + "</textarea></div>";
                 }
 
                 html += "</div>";
@@ -140,7 +141,7 @@
             }
             if (singleEpitaph) {
                 html += "<div class='mt-3'>Эпитафия &nbsp;  <button type=\"button\" class=\"btn btn-sm text-primary float-end btn-link\" data-bs-toggle=\"modal\" data-bs-target=\"#exampleModal\">\r\nВыберите эпитафию</button>";
-                html += "<textarea id='epitaph' rows='6' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
+                html += "<textarea id='epitaph' rows='3' class='pi form-control'>" + template.Epitaph + "</textarea></div>";
             }
 
 

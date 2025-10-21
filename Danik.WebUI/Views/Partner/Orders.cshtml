@@ -1,0 +1,77 @@
+﻿@using Danik.WebUI.Code
+@using Danik.WebUI.Code.Domain
+@model OrdersList
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+@using (Html.BeginForm("Orders", "Partner", FormMethod.Get))
+{
+    <div class="alert alert-light" role="alert">
+        <div class="row">
+            <div class="col-auto mb-2">
+                <input type="text" placeholder="№ заказа, телефон, почта или имя" value="@Model.Q" name="q" class="form-control w-100" />
+            </div>
+            <div class="col-auto mb-2">
+                <select name="status" class="form-select">
+                    <!option value="" @(Model.Status == null ? "selected" : "") >Все статусы</!option>
+                    @foreach (var s in Enum.GetNames(typeof(OrderStatus)))
+                    {
+                        var st = Enum.Parse<OrderStatus>(s);
+                        <!option @(Model.Status == st ? "selected" : "") value="@((int)st)">@st</!option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto mb-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="fa fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>№, дата</th>
+
+
+        @if (Model.Status == null)
+        {
+            <th>Статус</th>
+        }
+
+        <th>Детали</th>
+        <th class="d-none d-md-block">Контакт</th>
+        <th></th>
+    </tr>
+    @foreach (var order in Model.Orders)
+    {
+        <tr>
+            <td>
+                <b>№@order.Number</b>
+                <div>@order.Date.ToString("dd.MM.yyyy HH:mm")</div>
+            </td>
+            @if (Model.Status == null)
+            {
+                <td>@order.Status</td>
+            }
+            <td>
+                @order.Type @("x" + order.Persons)
+                <div class="fst-italic">@order.Comment</div>
+            </td>
+            <td class="d-none d-md-block">
+                @order.Contact?.Name @order.Contact?.Phone
+                <br>@order.Contact?.Email @Html.Raw("&nbsp;")
+            </td>
+
+            <td class="text-end">
+            @if (order.Status >= OrderStatus.Оплачен)
+            {
+                <a class="btn btn-sm btn-primary mt-1" href="/Partner/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a class="btn btn-sm btn-primary mt-1" href="/Wiz/Step1/@order.Id"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-sm btn-primary mt-1" href="/Wiz/Step4/@order.Id"><i class="fa fa-user"></i></a>
+                <a class="btn btn-sm btn-danger mt-1" onclick="return confirm('Удалить заказ? Действие нельзя будет отменить')" href="/Partner/OrderDelete/@order.Id"><i class="fa fa-times"></i></a>
+            }
+        </tr>
+
+    }
+</table>
