@@ -5,8 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Danik.WebUI.Controllers;
 
+
 public class PartnerController : PartController
 {
+    public IActionResult Index()
+    {
+        return View();
+    }
     public IActionResult Orders(OrderStatus? status = null, string? q = null)
     {
         var partnerId = CurrentUser.PartnerId;

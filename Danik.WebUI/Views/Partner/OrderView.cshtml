@@ -5,138 +5,149 @@
 @{
     ViewData["Title"] = "Просмотр заказа";
 }
+<div class="my-3">
 
-<a href="javascript:history.back();">Назад к заказам</a>
-
-<div class="row">
-    <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
-        <div class="row">
-            <div class="col-4">
-                <label>Номер заказа:</label>
-                <input type="text" value="@Model.Number" readonly class="form-control" />
-            </div>
-            <div class="col-4">
-                <label>Статус:</label>
-                <input type="text" value="@Model.Status" readonly class="form-control" />
-            </div>
-            <div class="col-4">
-                <label>Дата:</label>
-                <input type="text" value="@Model.Date.ToString()" readonly class="form-control" />
-            </div>
-        </div>
-
-        <h4 class="mt-3">Камень</h4>
-        <div class="row">
-            <div class="col">
-                <label>Тип:</label>
-                <input type="text" value="@Model.Type" readonly class="form-control" />
-            </div>
-            <div class="col">
-                <label>Кол-во:</label>
-                <input type="text" value="@Model.Persons" readonly class="form-control" />
-            </div>
-            <div class="col">
-                <label>Размер:</label>
-                <input type="text" value="@Model.Options?.SizeStr" readonly class="form-control" />
-            </div>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/Partner/">Для партнёров</a></li>
+            <li class="breadcrumb-item"><a href="/Partner/Orders/">Заказы</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Просмотр заказа</li>
+        </ol>
+    </nav>
 
 
-        <div class="row">
-            <div class="col">
-                <label>Толщина:</label>
-                <input type="text" value="@Model.Options?.Depth" readonly class="form-control" />
-            </div>
-            <div class="col">
-                <label>Свой размер:</label>
-                <input type="text" value="@Model.Options?.OwnSize" readonly class="form-control" />
-            </div>
-        </div>
-        @if (Model.StoneForm != null)
-        {
-            var sf = Registry.Current.StoneForms.Find((Guid)Model.StoneForm);
-            var sfi = Registry.Current.Images.Find(sf.ImageId);
-            <div class="mt-2">
-                <label>Форма камня:</label><br />
-                <a target="_blank" href="@sfi.URL"><img src="@sfi.TMB" /></a>
-            </div>
-        }
-        <h4 class="mt-3">Конакты</h4>
-        <div class="row">
-            <div class="col">
-                <label>Телефон:</label>
-                <input type="text" value="@Model.Contact?.Phone" readonly class="form-control" />
-            </div>
-            <div class="col">
-                <label>Email:</label>
-                <input type="text" value="@Model.Contact?.Email" readonly class="form-control" />
-            </div>
-            <div class="col">
-                <label>Имя:</label>
-                <input type="text" value="@Model.Contact?.Name" readonly class="form-control" />
-            </div>
-        </div>
-        <div>
-            <label>Комментарий:</label>
-            <textarea readonly class="form-control">@Model.Comment</textarea>
-        </div>
-        <h4 class="mt-3">Камень</h4>
 
-        <div class="mt-2" id="pMain"></div>
-        <h4 class="mt-3">Персоны</h4>
-<div class="row">
-    
-    @if (Model.TemplateData.PersonInfos != null && Model.TemplateData.PersonInfos.Length > 0)
-    {
+    <div class="row">
+        <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10">
+            <div class="row">
+                <div class="col-4">
+                    <label>Номер заказа:</label>
+                    <input type="text" value="@Model.Number" readonly class="form-control" />
+                </div>
+                <div class="col-4">
+                    <label>Статус:</label>
+                    <input type="text" value="@Model.Status" readonly class="form-control" />
+                </div>
+                <div class="col-4">
+                    <label>Дата:</label>
+                    <input type="text" value="@Model.Date.ToString()" readonly class="form-control" />
+                </div>
+            </div>
 
-            @foreach (var p in Model.TemplateData.PersonInfos)
+            <h4 class="mt-3">Камень</h4>
+            <div class="row">
+                <div class="col">
+                    <label>Тип:</label>
+                    <input type="text" value="@Model.Type" readonly class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Кол-во:</label>
+                    <input type="text" value="@Model.Persons" readonly class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Размер:</label>
+                    <input type="text" value="@Model.Options?.SizeStr" readonly class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <label>Толщина:</label>
+                    <input type="text" value="@Model.Options?.Depth" readonly class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Свой размер:</label>
+                    <input type="text" value="@Model.Options?.OwnSize" readonly class="form-control" />
+                </div>
+            </div>
+            @if (Model.StoneForm != null)
             {
-                var img = Registry.Current.Images.Find(p.ImageId) ?? new Image(){Date = DateTime.Now,Folder = ImageFolder.Портреты,Name = ""};
-                <div class="mt-3 col text-center">
-                    <div><a href="@img.URL"><img src="@img.TMB" style="width: 100%;"/></a></div>
-                    <div class="mt-2">
-                        @p.F @p.I @p.O
-                        <div class="mt-2">@p.Birth - @p.Dead</div>
-                        @if (!Model.TemplateData.Template.SingleEpitaph)
-                        {
-                            <div class="mt-2">@p.Epitaph</div>
-                        }
-
-                    </div>
-                    <div class="fst-italic">@p.Comment</div>
+                var sf = Registry.Current.StoneForms.Find((Guid)Model.StoneForm);
+                var sfi = Registry.Current.Images.Find(sf.ImageId);
+                <div class="mt-2">
+                    <label>Форма камня:</label><br />
+                    <a target="_blank" href="@sfi.URL"><img src="@sfi.TMB" /></a>
                 </div>
             }
-    }
-    else
-    {
-        <span>Нет</span>
-    }
-</div>
-
-        @if (Model.TemplateData.Template.SingleEpitaph)
-        {
-            <div class="mt-3">
-                Эпитафия: <br />
-                <textarea readonly="readonly" rows="5" class="form-control">@Model.TemplateData.Epitaph</textarea>
+            <h4 class="mt-3">Конакты</h4>
+            <div class="row">
+                <div class="col">
+                    <label>Телефон:</label>
+                    <input type="text" value="@Model.Contact?.Phone" readonly class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Email:</label>
+                    <input type="text" value="@Model.Contact?.Email" readonly class="form-control" />
+                </div>
+                <div class="col">
+                    <label>Имя:</label>
+                    <input type="text" value="@Model.Contact?.Name" readonly class="form-control" />
+                </div>
             </div>
-        }
+            <div>
+                <label>Комментарий:</label>
+                <textarea readonly class="form-control">@Model.Comment</textarea>
+            </div>
+            <h4 class="mt-3">Камень</h4>
 
-        <div class="mt-3">
-            <h4>Свои примеры</h4>
-            @if (Model.ExampleImages != null && Model.ExampleImages.Length > 0)
-            {
-                
-                @foreach (var img in Model.ExampleImages)
+            <div class="mt-2" id="pMain"></div>
+            <h4 class="mt-3">Персоны</h4>
+    <div class="row">
+        
+        @if (Model.TemplateData.PersonInfos != null && Model.TemplateData.PersonInfos.Length > 0)
+        {
+
+                @foreach (var p in Model.TemplateData.PersonInfos)
                 {
-                        var i = Registry.Current.Images.Find(img);
-                    <div><a href="@i.URL"><img src="@i.TMB" /></a></div>
+                    var img = Registry.Current.Images.Find(p.ImageId) ?? new Image(){Date = DateTime.Now,Folder = ImageFolder.Портреты,Name = ""};
+                    <div class="mt-3 col text-center">
+                        <div><a href="@img.URL"><img src="@img.TMB" style="width: 100%;"/></a></div>
+                        <div class="mt-2">
+                            @p.F @p.I @p.O
+                            <div class="mt-2">@p.Birth - @p.Dead</div>
+                            @if (!Model.TemplateData.Template.SingleEpitaph)
+                            {
+                                <div class="mt-2">@p.Epitaph</div>
+                            }
+
+                        </div>
+                        <div class="fst-italic">@p.Comment</div>
+                    </div>
                 }
-                
-            }
-            else
+        }
+        else
+        {
+            <span>Нет</span>
+        }
+    </div>
+
+            @if (Model.TemplateData.Template.SingleEpitaph)
             {
-                <span>Нет</span>
+                <div class="mt-3">
+                    Эпитафия: <br />
+                    <textarea readonly="readonly" rows="5" class="form-control">@Model.TemplateData.Epitaph</textarea>
+                </div>
             }
+
+            <div class="mt-3">
+                <h4>Свои примеры</h4>
+                @if (Model.ExampleImages != null && Model.ExampleImages.Length > 0)
+                {
+                    
+                    @foreach (var img in Model.ExampleImages)
+                    {
+                            var i = Registry.Current.Images.Find(img);
+                        <div><a href="@i.URL"><img src="@i.TMB" /></a></div>
+                    }
+                    
+                }
+                else
+                {
+                    <span>Нет</span>
+                }
+            </div>
         </div>
     </div>
 </div>

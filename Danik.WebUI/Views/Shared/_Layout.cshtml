@@ -44,11 +44,12 @@
                         <ul class="dropdown-menu">
                             @if (user.IsAdmin)
                             {
-                                <li><a class="dropdown-item" href="/Admin/">Заказы</a></li>
-                                <li><a class="dropdown-item" href="/Admin/Gallery/">Галерея</a></li>
+                                <li><a class="dropdown-item" href="/Admin/">Все заказы</a></li>
+                                <li><a class="dropdown-item" href="/Partner/Orders/">Заказы (для партнёра)</a></li>
+                                <li><a class="dropdown-item" href="/Admin/Partner/">Партнёры</a></li>
+                                <li><a class="dropdown-item" href="/Admin/Gallery/">Галерея фото</a></li>
                                 <li><a class="dropdown-item" href="/Admin/Templates/">Шаблоны</a></li>
-                                    <li><a class="dropdown-item" href="/Admin/Epitaphs/">Эпитафии</a></li>
-                                    <li><a class="dropdown-item" href="/Admin/Partner/">Партнёры</a></li>
+                                <li><a class="dropdown-item" href="/Admin/Epitaphs/">Эпитафии</a></li>
                                 <li><a class="dropdown-item" href="/Admin/TemplateBgImage/">Фоны шаблонов</a></li>
                             }
                             else
@@ -56,7 +57,7 @@
                                     <li><a class="dropdown-item" href="/Partner/Orders/">Заказы</a></li>
                             }
                             <li><a class="dropdown-item" href="/Partner/Gallery/">Галерея работ</a></li>
-                                <li><a class="dropdown-item" href="/User/ChangePassword">Мой аккаунт</a></li>
+                                <li><a class="dropdown-item" href="/User/ChangePassword">Учётная запись</a></li>
                             <li><a class="dropdown-item text-danger" href="/Public/Logout/">Выйти</a></li>
                         </ul>
                     </div>

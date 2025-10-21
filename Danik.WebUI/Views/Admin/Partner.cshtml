@@ -38,7 +38,7 @@
                     @foreach (var u in users)
                     {
                         <tr>
-                            <td>@u.Email @if (u.IsAdmin) { <span class="badge bg-primary">Админ</span> }</td>
+                            <td title="@u.Id">@u.Email @if (u.IsAdmin) { <span class="badge bg-primary">Админ</span> }</td>
                             <td>@u.Name</td>
                             <td>@u.LastLogin</td>
                             <td>

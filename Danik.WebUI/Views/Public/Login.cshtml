@@ -7,6 +7,7 @@
 
     <div class="row mt-4 justify-content-center">
         <div class="col-sm-4">
+            <input type="hidden" autofocus name="returnUrl" value="@(Context.Request.Query.ContainsKey("returnUrl") ? Context.Request.Query["returnUrl"] :"")" />
             <input type="email" autofocus name="email" placeholder="Email" class="form-control form-control-lg" />
             <input type="password" name="password" placeholder="Password" class="form-control form-control-lg mt-4"/>
             <div class="mt-3">

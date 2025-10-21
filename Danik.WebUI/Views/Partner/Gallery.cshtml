@@ -4,17 +4,25 @@
 }
 
 
-<div class="my-5">
-@using (Html.BeginForm("UploadGalleryImages", "Partner", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    <div class="mb-3 row">
-            <div class="col-auto"><label for="galleryImages" class="form-label">Загрузить изображения в галерею работ</label></div>
-            <div class="col-auto"><input class="form-control" type="file" id="galleryImages" name="files" multiple /></div>
-        <div class="col-auto"><input type="submit" class="btn btn-primary" value="ОКЕЙ"/></div>
-        
-        
-    </div>
-}
+<div class="my-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"><i class="fa fa-home"></i></a></li>
+            <li class="breadcrumb-item"><a href="/Partner/">Для партнёров</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Галерея моих работ</li>
+        </ol>
+    </nav>
+
+    @using (Html.BeginForm("UploadGalleryImages", "Partner", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="mb-3 row">
+            <div class="col-auto pt-1"><label for="galleryImages" class="form-label">Загрузить изображения в галерею работ</label></div>
+            <div class="col-auto"><input class="form-control" type="file" id="galleryImages" name="files" multiple/></div>
+            <div class="col-auto"><input type="submit" class="btn btn-primary" value="ОКЕЙ"/></div>
+
+
+        </div>
+    }
 </div>
 <div class="row">
     @foreach (var g in Model)
