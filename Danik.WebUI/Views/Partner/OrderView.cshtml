@@ -71,28 +71,31 @@
                     <a target="_blank" href="@sfi.URL"><img src="@sfi.TMB" /></a>
                 </div>
             }
-            <h4 class="mt-3">Конакты</h4>
-            <div class="row">
-                <div class="col">
-                    <label>Телефон:</label>
-                    <input type="text" value="@Model.Contact?.Phone" readonly class="form-control" />
+            @if (order.Status >= OrderStatus.Оплачен)
+            {
+                <h4 class="mt-3">Конакты</h4>
+                <div class="row">
+                    <div class="col">
+                        <label>Телефон:</label>
+                        <input type="text" value="@Model.Contact?.Phone" readonly class="form-control"/>
+                    </div>
+                    <div class="col">
+                        <label>Email:</label>
+                        <input type="text" value="@Model.Contact?.Email" readonly class="form-control"/>
+                    </div>
+                    <div class="col">
+                        <label>Имя:</label>
+                        <input type="text" value="@Model.Contact?.Name" readonly class="form-control"/>
+                    </div>
                 </div>
-                <div class="col">
-                    <label>Email:</label>
-                    <input type="text" value="@Model.Contact?.Email" readonly class="form-control" />
-                </div>
-                <div class="col">
-                    <label>Имя:</label>
-                    <input type="text" value="@Model.Contact?.Name" readonly class="form-control" />
-                </div>
-            </div>
+            }
             <div>
                 <label>Комментарий:</label>
                 <textarea readonly class="form-control">@Model.Comment</textarea>
             </div>
-            <h4 class="mt-3">Камень</h4>
             @if (Model.Status >= OrderStatus.Оплачен)
             {
+                <h4 class="mt-3">Камень</h4>
                 <div class="mt-2" id="pMain"></div>
             }
             <h4 class="mt-3">Персоны</h4>

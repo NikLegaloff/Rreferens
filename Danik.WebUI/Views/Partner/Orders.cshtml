@@ -65,8 +65,11 @@
                     <div class="fst-italic">@order.Comment</div>
                 </td>
                 <td class="d-none d-md-block">
+                    @if(order.Status>=OrderStatus.Оплачен){
                     @order.Contact?.Name @order.Contact?.Phone
-                    <br>@order.Contact?.Email @Html.Raw("&nbsp;")
+                        <br>
+                        @order.Contact?.Email @Html.Raw("&nbsp;")
+                    }
                 </td>
 
                 <td class="text-end">
