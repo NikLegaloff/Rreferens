@@ -47,7 +47,6 @@ public class PartnerController : PartController
         var model = Registry.Current.Orders.Find(id);
         if (model == null) return RedirectToAction("Orders");
         if (model.PartnerId!=CurrentUser.PartnerId && !CurrentUser.IsAdmin) return RedirectToAction("Orders");
-        if (model.Status==OrderStatus.Создаётся || model.Status==OrderStatus.Создан ) return RedirectToAction("Orders");
         return View(model);
     }
 
