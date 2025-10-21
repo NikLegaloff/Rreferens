@@ -72,10 +72,24 @@
                 <td class="text-end">
                 @if (order.Status >= OrderStatus.Оплачен)
                 {
-                    <a class="btn btn-sm btn-primary mt-1" href="/Partner/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass"></i></a>
-                    <a class="btn btn-sm btn-primary mt-1" href="/Wiz/Step1/@order.Id"><i class="fa fa-edit"></i></a>
-                    <a class="btn btn-sm btn-primary mt-1" href="/Wiz/Step4/@order.Id"><i class="fa fa-user"></i></a>
-                    <a class="btn btn-sm btn-danger mt-1" onclick="return confirm('Удалить заказ? Действие нельзя будет отменить')" href="/Partner/OrderDelete/@order.Id"><i class="fa fa-times"></i></a>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton-@order.Id" data-bs-toggle="dropdown" aria-expanded="false">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton-@order.Id">
+                            <li><a class="dropdown-item" href="/Partner/OrderView/@order.Id"><i class="fa-solid fa-magnifying-glass me-2"></i>Просмотр</a></li>
+                            <li><a class="dropdown-item" href="/Wiz/Step1/@order.Id"><i class="fa fa-edit me-2"></i>Редактировать</a></li>
+                            <li><a class="dropdown-item" href="/Wiz/Step4/@order.Id"><i class="fa fa-user me-2"></i>Редактировать макет</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            @if (order.Status == OrderStatus.Оплачен)
+                            {
+                                <li><a class="dropdown-item" href="/Partner/OrderClose/@order.Id"><i class="fa fa-arrow-right me-2"></i>Завершить</a></li>
+                            }
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item text-danger" onclick="return confirm('Удалить заказ? Действие нельзя будет отменить')" href="/Admin/OrderDelete/@order.Id"><i class="fa fa-times me-2"></i>Удалить</a></li>
+                        </ul>
+                    </div>
+                    
+                    
                 }
             </tr>
 

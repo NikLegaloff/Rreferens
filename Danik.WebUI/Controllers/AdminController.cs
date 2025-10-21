@@ -102,6 +102,15 @@ public class AdminController : AdmController
         return View(Registry.Current.TemplateBgImages.SelectAll());
     }
 
+    public IActionResult OrderSetStatus(Guid id, OrderStatus status)
+    {
+        var order = Registry.Current.Orders.Find(id);
+        if (order == null) return NotFound();
+        order.Status = status;
+        Registry.Current.Orders.Save(order);
+        return RedirectToAction("Index");
+    }
+
     public IActionResult OrderDelete(Guid id)
     {
         Registry.Current.Orders.Delete(id);

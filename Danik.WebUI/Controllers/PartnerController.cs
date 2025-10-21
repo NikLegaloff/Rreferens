@@ -30,9 +30,25 @@ public class PartnerController : PartController
         return View(new OrdersList(selectAll.ToArray(), status, q, partnerId));
 
     }
+
+    public IActionResult OrderClose(Guid id)
+    {
+        var model = Registry.Current.Orders.Find(id);
+        if (model == null) return RedirectToAction("Orders");
+        if (model.PartnerId != CurrentUser.PartnerId && !CurrentUser.IsAdmin) return RedirectToAction("Orders");
+        if (model.Status == OrderStatus.Создаётся || model.Status == OrderStatus.Создан || model.Status == OrderStatus.Отменён) return RedirectToAction("Orders");
+        model.Status = OrderStatus.Завершён;
+        Registry.Current.Orders.Save(model);
+        return RedirectToAction("Orders");
+    }
+
     public IActionResult OrderView(Guid id)
     {
-        return View(Registry.Current.Orders.Find(id));
+        var model = Registry.Current.Orders.Find(id);
+        if (model == null) return RedirectToAction("Orders");
+        if (model.PartnerId!=CurrentUser.PartnerId && !CurrentUser.IsAdmin) return RedirectToAction("Orders");
+        if (model.Status==OrderStatus.Создаётся || model.Status==OrderStatus.Создан ) return RedirectToAction("Orders");
+        return View(model);
     }
 
     public IActionResult OrderDelete(Guid id)
