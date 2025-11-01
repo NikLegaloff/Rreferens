@@ -55,17 +55,21 @@
             <h4 class="mt-4">2. Ориентация</h4>
 
             <div class="row">
-                <div class="col-4 text-center  mt-2">
+                <div class="col-3 text-center  mt-2">
                     <div><img onclick="$('#o1').click()" id="img1" src="/img/v1.png" class="stone" style="width: 100%;" /></div>
-                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true,0)" id="o1" @(Model.Type==Type.Вертикальный ? "checked":"") value="0" /> Верт</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(0)" id="o1" @(Model.Type==Type.Вертикальный ? "checked":"") value="0" /> Верт</label></div>
                 </div>
-                <div class="col-4 text-center  mt-2">
+                <div class="col-3 text-center  mt-2">
                     <div><img onclick="$('#o2').click()" id="img2" src="/img/h1.png" class="stone" style="width:100%;" /></div>
-                    <div class="mt-2"><label><input type="radio" name="type"  @(Model.Type==Type.Горизонтальный ? "checked":"") onchange="SetVert(false,1)" id="o2" value="1" /> Горизон</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type"  @(Model.Type==Type.Горизонтальный ? "checked":"") onchange="SetVert(1)" id="o2" value="1" /> Горизон</label></div>
                 </div>
-                <div class="col-4 text-center  mt-2" style="display: none;" id="pSplit">
+                <div class="col-3 text-center  mt-2">
+                    <div><img onclick="$('#o4').click()" id="img4" src="/img/square.png" class="stone" style="width: 100%; " /></div>
+                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(3)"  @(Model.Type==Type.Квадрат ? "checked":"") id="o4" value="2" /> Квадрат</label></div>
+                </div>
+                <div class="col-3 text-center  mt-2" style="display: none;" id="pSplit">
                     <div><img onclick="$('#o3').click()" id="img3" src="/img/split2.png" class="stone" style="width: 100%; " /></div>
-                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(true,2)"  @(Model.Type==Type.Сплит ? "checked":"") id="o3" value="2" /> Сплит</label></div>
+                    <div class="mt-2"><label><input type="radio" name="type" onchange="SetVert(2)"  @(Model.Type==Type.Сплит ? "checked":"") id="o3" value="2" /> Сплит</label></div>
                 </div>
             </div>
 
@@ -95,7 +99,7 @@
                             <button type="button" id="btnCloseSF" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-center">
-                            @for (StoneType st = StoneType.Вертикальный; st <= StoneType.Сплит; st++)
+                            @for (StoneType st = StoneType.Вертикальный; st <= StoneType.Квадрат; st++)
                             {
                                 <div class="stoneType stoneType@((int)st)">
                                     @foreach (var sf in allSf.Where(s => s.Type == st))
@@ -211,6 +215,7 @@
             document.getElementById('img1').src = "/img/v" + count + ".png";
             document.getElementById('img2').src = "/img/h" + count + ".png";
             document.getElementById('img3').src = "/img/split" + count + ".png";
+            document.getElementById('img4').src = "/img/sq" + count + ".png";
             if (count > 1) {
                 document.getElementById('pSplit').style.display = 'block';
             } else {
@@ -231,11 +236,11 @@
             }
         }
         
-        function SetVert(isVert, t) {
-            document.getElementById('sSize1').innerHTML = isVert ? "40 x 80" : "80 x 40";
-            document.getElementById('sSize2').innerHTML = isVert ? "50 x 100" : "100 x 50";
-            document.getElementById('sSize3').innerHTML = isVert ? "60 x 120" : "120 x 60";
-            $(".sizeOption img").attr("src", isVert ? "/img/v1.png" : "/img/h1.png");
+        function SetVert(t) {
+            document.getElementById('sSize1').innerHTML = t==0 || t==2 ? "40 x 80" : (t==1 ? "80 x 40": "80 x 80");
+            document.getElementById('sSize2').innerHTML = t==0 || t==2 ? "50 x 100" : (t==1 ? "100 x 50": "100 x 100");
+            document.getElementById('sSize3').innerHTML = t==0 || t==2 ? "60 x 120" : (t==1 ? "120 x 60": "120 x 120");
+            $(".sizeOption img").attr("src", t==0 || t==2 ? "/img/v1.png" : (t==1 ? "/img/h1.png" : "/img/sq1.png"));
 
             $(".stoneType").hide();
             $(".stoneType" + t).show();
@@ -248,7 +253,7 @@
         }
 
         ColChange(@Model.Persons);
-        SetVert(@(Model.Type == Type.Вертикальный || Model.Type == Type.Сплит ? "true" : "false"), @((int)Model.Type));
+        SetVert(@((int)Model.Type));
         @if (Model.StoneForm != null)
         {
             var sf = Registry.Current.StoneForms.Find((Guid)Model.StoneForm);

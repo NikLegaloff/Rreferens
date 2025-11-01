@@ -5,7 +5,7 @@ namespace Danik.WebUI.Code.Domain;
 
 public enum StoneType
 {
-    Вертикальный, Горизонтальный, Сплит
+    Вертикальный, Горизонтальный, Сплит, Квадрат
 }
 public enum OrderStatus
 {
